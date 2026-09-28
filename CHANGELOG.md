@@ -5,6 +5,15 @@ Each entry lists what changed, which files, and why.
 
 ## [0.1.0] — 2026-09-28
 
+### Added — local test suite
+- **What:** `npm test` runs the real Apps Script files in Node against in-memory spreadsheets
+  seeded with the dummy source data. 10 tests cover row counts, idempotency, every derived
+  field rule, the header-check gate and blank-key handling.
+- **Files:** `tests/harness.js`, `tests/pipeline.test.js`, `tests/fixtures/source_dummy.json`,
+  `tests/fixtures/export_source_fixture.py`, `package.json`.
+- **Why:** Apps Script can't run in the cloud dev environment. The tests prove each change
+  before `clasp push`. Excluded from Apps Script by `.claspignore`.
+
 ### Added — stg → fct pipeline (Goalkeep Data Pipeline SoP v1.0)
 - **What:** Apps Script pipeline that reads the APFP Central Administration workbook and builds
   8 `stg_` tabs and 5 `fct_` tabs (T1–T5 from the dashboard mockup) in the Data Pipeline
