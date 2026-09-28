@@ -1,0 +1,5 @@
+# Push only the Apps Script code and manifest. Everything else (tests, fixtures,
+# docs, package.json) stays in GitHub.
+**/**
+!appsscript.json
+!*.js
