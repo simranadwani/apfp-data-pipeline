@@ -1,0 +1,8 @@
+{
+  "name": "apfp-data-pipeline",
+  "private": true,
+  "description": "Local tests for the APFP Apps Script pipeline. Not pushed to Apps Script.",
+  "scripts": {
+    "test": "TZ=Asia/Kolkata node --test tests/*.test.js"
+  }
+}
