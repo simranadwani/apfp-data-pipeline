@@ -13,6 +13,7 @@ function runCompletePipeline() {
   const idx = getSheetIndex(ss);
   const start = Date.now();
   try {
+    alignTimeZones(ss, idx);
     const headerCheck = runSourceHeaderCheck(ss, idx);
     if (headerCheck.critical) {
       throw new Error(headerCheck.critical + ' critical source header issue(s). See the Source_Header_Audit tab.');
@@ -27,6 +28,26 @@ function runCompletePipeline() {
     log(ss, idx, 'ERROR', 'runCompletePipeline', 0, e.toString(), Date.now() - start, 'ERROR');
     MailApp.sendEmail(Session.getEffectiveUser().getEmail(), 'APFP Pipeline Error', e.toString());
     throw e;
+  }
+}
+
+/**
+ * Dates shift on every write/read when a spreadsheet's time zone differs from the
+ * script's (appsscript.json). The pipeline workbook is set to the script's zone;
+ * the source workbook is only reported, never changed (staging reads it in its own zone).
+ */
+function alignTimeZones(ss, idx) {
+  const scriptTz = Session.getScriptTimeZone();
+  const pipelineTz = ss.getSpreadsheetTimeZone();
+  if (pipelineTz !== scriptTz) {
+    ss.setSpreadsheetTimeZone(scriptTz);
+    log(ss, idx, 'WARN', 'alignTimeZones', 0,
+      'Pipeline workbook time zone changed from ' + pipelineTz + ' to ' + scriptTz + ' to match the script', null, 'SUCCESS');
+  }
+  const sourceTz = getSourceSpreadsheet().getSpreadsheetTimeZone();
+  if (sourceTz !== scriptTz) {
+    log(ss, idx, 'WARN', 'alignTimeZones', 0,
+      'Source workbook time zone is ' + sourceTz + ' (script: ' + scriptTz + '). Dates are read in the source zone, so values stay correct.', null, 'SUCCESS');
   }
 }
 
@@ -53,11 +74,13 @@ function runFinalLayer(ss, idx) {
 // (and later from a menu, once an onOpen trigger is added).
 function runStagingLayerMenu() {
   const ss = getPipelineSpreadsheet();
+  alignTimeZones(ss, getSheetIndex(ss));
   runStagingLayer(ss, getSheetIndex(ss));
 }
 
 function runFinalLayerMenu() {
   const ss = getPipelineSpreadsheet();
+  alignTimeZones(ss, getSheetIndex(ss));
   runFinalLayer(ss, getSheetIndex(ss));
 }
 
