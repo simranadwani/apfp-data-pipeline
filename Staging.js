@@ -173,7 +173,9 @@ function buildStgMaturity(ss, idx) { return stageTable(ss, idx, 'STG_MATURITY');
 function stageTable(ss, idx, stgKey) {
   const spec = STAGING_SPECS[stgKey];
   const srcSheetName = idx[spec.src];
-  const src = readSheetWithHeaders(getSourceSpreadsheet(), srcSheetName);
+  const sourceSs = getSourceSpreadsheet();
+  const sourceTz = sourceSs.getSpreadsheetTimeZone();
+  const src = readSheetWithHeaders(sourceSs, srcSheetName);
 
   const missing = spec.columns.filter(function (c) { return src.headers.indexOf(c[1]) === -1; });
   if (missing.length) {
@@ -187,7 +189,7 @@ function stageTable(ss, idx, stgKey) {
   src.rows.forEach(function (srcRow, i) {
     const out = {};
     spec.columns.forEach(function (c) {
-      const res = castValue(srcRow[c[1]], c[2]);
+      const res = castValue(srcRow[c[1]], c[2], sourceTz);
       if (res.error) problems.push('row ' + (i + 1) + ' ' + c[1] + ': "' + srcRow[c[1]] + '" is not a valid ' + c[2]);
       out[c[0]] = res.value;
     });
@@ -209,12 +211,15 @@ function stageTable(ss, idx, stgKey) {
   return writeSheet(ss, idx[stgKey], headers, rows);
 }
 
-/** Returns { value, error } for one source cell. Blank cells always give ''. */
-function castValue(v, type) {
+/**
+ * Returns { value, error } for one source cell. Blank cells always give ''.
+ * tz is the source workbook's time zone, used to read the calendar day of a date cell.
+ */
+function castValue(v, type, tz) {
   if (isBlank(v)) return { value: '' };
   switch (type) {
     case 'text':
-      return { value: v instanceof Date ? formatIsoDate(v) : String(v).trim() };
+      return { value: v instanceof Date ? Utilities.formatDate(v, tz || Session.getScriptTimeZone(), 'yyyy-MM-dd') : String(v).trim() };
     case 'number': {
       if (typeof v === 'number') return { value: v };
       const n = Number(String(v).replace(/[₹,\s]/g, ''));
@@ -229,7 +234,7 @@ function castValue(v, type) {
       return { value: pct ? n / 100 : n };
     }
     case 'date': {
-      const d = parseDateValue(v);
+      const d = parseDateValue(v, tz);
       return d ? { value: d } : { value: '', error: true };
     }
     case 'fy': {
@@ -241,9 +246,17 @@ function castValue(v, type) {
   }
 }
 
-/** Date objects are kept (time dropped); strings in yyyy-mm-dd or dd/mm/yyyy are parsed. */
-function parseDateValue(v) {
-  if (v instanceof Date) return isNaN(v.getTime()) ? null : new Date(v.getFullYear(), v.getMonth(), v.getDate());
+/**
+ * Returns a Date at midnight (script time zone) for the calendar day of the cell.
+ * Date cells are read in tz, the time zone of the sheet they came from, so a source
+ * workbook in another zone still gives the day that is shown in the source.
+ * Strings in yyyy-mm-dd or dd/mm/yyyy are parsed.
+ */
+function parseDateValue(v, tz) {
+  if (v instanceof Date) {
+    if (isNaN(v.getTime())) return null;
+    v = Utilities.formatDate(v, tz || Session.getScriptTimeZone(), 'yyyy-MM-dd');
+  }
   const s = String(v).trim();
   let m = /^(\d{4})-(\d{1,2})-(\d{1,2})/.exec(s);
   if (m) return new Date(Number(m[1]), Number(m[2]) - 1, Number(m[3]));

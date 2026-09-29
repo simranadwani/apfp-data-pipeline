@@ -3,6 +3,24 @@
 All notable changes to the APFP data pipeline. Newest first.
 Each entry lists what changed, which files, and why.
 
+## [0.1.1] — 2026-09-29
+
+### Fixed — dates shifted back by up to a day in stg_/fct_ tabs
+- **What:** The first live run wrote `2026-04-01` as `2026-03-31 11:30` in stg_ and
+  `2026-03-31 04:30` in fct_. As a result `grant_period` and `as_of_date` were a day early, and
+  due windows could be off by a day. `runCompletePipeline` now first aligns the Data Pipeline
+  workbook's time zone to the script's (Asia/Kolkata) and logs a WARN when it changes it.
+  - Staging reads source dates in the source workbook's own time zone.
+  - Every date column is formatted `yyyy-mm-dd` (it was US `mm-dd-yy`).
+  - Added 3 tests; one of them fails on the old code.
+- **Files:** `Pipeline.js` (`alignTimeZones`), `Staging.js` (`castValue`, `parseDateValue`,
+  `stageTable`), `Utilities.js` (`writeSheet`), `tests/harness.js`, `tests/pipeline.test.js`,
+  `PIPELINE_LOGIC.md` (§3, §4, §7 notes 10–12).
+- **Why:** The Data Pipeline sheet was in a US time zone (UTC−7) while the script runs in
+  Asia/Kolkata; Apps Script shifts dates on each write/read when these differ. All non-date
+  values in the first run were verified correct against an independent recomputation from the
+  live source.
+
 ## [0.1.0] — 2026-09-28
 
 ### Added — pipeline logic documentation

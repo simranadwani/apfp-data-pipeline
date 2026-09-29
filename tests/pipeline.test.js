@@ -151,6 +151,45 @@ test('staging skips rows with a blank key and logs a warning', () => {
   assert.match(warn.message, /skipped/);
 });
 
+test('pipeline workbook in another time zone is aligned to the script time zone before any write', () => {
+  const h = loadPipeline(null, { pipelineTimeZone: 'America/Los_Angeles' });
+  h.ctx.runCompletePipeline();
+  assert.equal(h.pipeline.getSpreadsheetTimeZone(), 'Asia/Kolkata');
+  const warn = h.pipeline.getSheetByName('Pipeline Log').toObjects().find((r) => r.function === 'alignTimeZones');
+  assert.match(warn.message, /America\/Los_Angeles to Asia\/Kolkata/);
+  // Second run: nothing to align, no new warning.
+  h.ctx.runCompletePipeline();
+  const warns = h.pipeline.getSheetByName('Pipeline Log').toObjects().filter((r) => r.function === 'alignTimeZones');
+  assert.equal(warns.length, 1);
+});
+
+test('source workbook in another time zone is reported, not changed, and dates keep the source day', () => {
+  // Midnight 1 Apr 2026 in Auckland is still 31 Mar in India: reading the day in the
+  // script zone would give 31 Mar.
+  const src = clone(require('./fixtures/source_dummy.json'));
+  const reg = src['8. Grant Registry'];
+  const col = reg[0].indexOf('Grant Start Date');
+  reg[1][col] = { __date__: '2026-03-31T11:00:00.000Z' }; // = 2026-04-01 00:00 Pacific/Auckland
+  const h = loadPipeline(src, { sourceTimeZone: 'Pacific/Auckland' });
+  h.ctx.runCompletePipeline();
+  assert.equal(h.source.getSpreadsheetTimeZone(), 'Pacific/Auckland');
+  const brigh = h.pipeline.getSheetByName('fct1_grant_portfolio').toObjects().find((r) => r.grant_id === 'BRIGH_01_202627_301');
+  assert.match(brigh.grant_period, /^2026-04-01 - /);
+  assert.ok(h.pipeline.getSheetByName('Pipeline Log').toObjects().some((r) => /Source workbook time zone is Pacific\/Auckland/.test(r.message)));
+});
+
+test('date columns are written with the yyyy-mm-dd number format', () => {
+  const h = runFull();
+  const sheet = h.pipeline.getSheetByName('fct1_grant_portfolio');
+  const headers = sheet.data[0];
+  ['grant_start_date', 'grant_end_date', 'decision_due_date', 'as_of_date'].forEach((c) => {
+    assert.equal(sheet.numberFormats[headers.indexOf(c) + 1], 'yyyy-mm-dd', c);
+  });
+  assert.equal(sheet.numberFormats[headers.indexOf('approved_amount') + 1], undefined);
+  const stg = h.pipeline.getSheetByName('stg_disbursements');
+  assert.equal(stg.numberFormats[stg.data[0].indexOf('planned_date') + 1], 'yyyy-mm-dd');
+});
+
 test('helper rules', () => {
   const { ctx } = loadPipeline();
   assert.equal(ctx.normaliseFinancialYear('April 25-March 26'), '2025-26');

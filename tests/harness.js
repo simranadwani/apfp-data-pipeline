@@ -29,6 +29,10 @@ class FakeRange {
     }
     return out;
   }
+  setNumberFormat(fmt) {
+    for (let c = 0; c < this.numCols; c++) this.sheet.numberFormats[this.col + c] = fmt;
+    return this;
+  }
   setValues(values) {
     if (values.length !== this.numRows || values.some((r) => r.length !== this.numCols)) {
       throw new Error('setValues: dimensions do not match the range');
@@ -49,6 +53,7 @@ class FakeSheet {
     this.name = name;
     this.data = data || [];
     this.frozenRows = 0;
+    this.numberFormats = {}; // column number → format, kept across clearContents like Sheets
   }
   getName() { return this.name; }
   getLastRow() { return this.data.length; }
@@ -66,8 +71,9 @@ class FakeSheet {
 }
 
 class FakeSpreadsheet {
-  constructor(id, tabs) {
+  constructor(id, tabs, timeZone) {
     this.id = id;
+    this.timeZone = timeZone || 'Asia/Kolkata';
     this.sheets = {};
     Object.entries(tabs || {}).forEach(([name, data]) => { this.sheets[name] = new FakeSheet(name, data); });
   }
@@ -77,6 +83,8 @@ class FakeSpreadsheet {
     return (this.sheets[name] = new FakeSheet(name));
   }
   getSheets() { return Object.values(this.sheets); }
+  getSpreadsheetTimeZone() { return this.timeZone; }
+  setSpreadsheetTimeZone(tz) { this.timeZone = tz; }
 }
 
 function reviveDates(tabs) {
@@ -89,20 +97,24 @@ function reviveDates(tabs) {
 
 function pad(n) { return String(n).padStart(2, '0'); }
 
-function formatDate(date, _tz, fmt) {
-  const map = {
-    yyyy: date.getFullYear(), MM: pad(date.getMonth() + 1), dd: pad(date.getDate()),
-    HH: pad(date.getHours()), mm: pad(date.getMinutes()), ss: pad(date.getSeconds()),
-  };
+// Like Utilities.formatDate: renders the instant as wall time in the given time zone.
+function formatDate(date, tz, fmt) {
+  const parts = Object.fromEntries(new Intl.DateTimeFormat('en-CA', {
+    timeZone: tz, year: 'numeric', month: '2-digit', day: '2-digit',
+    hour: '2-digit', minute: '2-digit', second: '2-digit', hourCycle: 'h23',
+  }).formatToParts(date).map((p) => [p.type, p.value]));
+  const map = { yyyy: parts.year, MM: parts.month, dd: parts.day, HH: parts.hour, mm: parts.minute, ss: parts.second };
   return fmt.replace(/yyyy|MM|dd|HH|mm|ss/g, (t) => map[t]);
 }
 
 /**
  * Loads the Apps Script files into a fresh context.
  * sourceTabs: { tabName: rows[][] } for the source workbook (defaults to the fixture).
+ * options.pipelineTimeZone / options.sourceTimeZone: spreadsheet time zones (default Asia/Kolkata).
  * Returns { ctx, source, pipeline, mails, logs }.
  */
-function loadPipeline(sourceTabs) {
+function loadPipeline(sourceTabs, options) {
+  options = options || {};
   const fixture = sourceTabs || JSON.parse(fs.readFileSync(path.join(__dirname, 'fixtures', 'source_dummy.json'), 'utf8'));
   const mails = [];
   const logs = [];
@@ -128,8 +140,8 @@ function loadPipeline(sourceTabs) {
   const code = SCRIPT_FILES.map((f) => fs.readFileSync(path.join(ROOT, f), 'utf8')).join('\n;\n');
   // Expose top-level consts on the context so tests can read them.
   vm.runInContext(code + '\n;globalThis.__consts = { SOURCE_SPREADSHEET_ID, PIPELINE_SPREADSHEET_ID };', ctx, { filename: 'apps-script-bundle.js' });
-  const source = new FakeSpreadsheet(ctx.__consts.SOURCE_SPREADSHEET_ID, reviveDates(fixture));
-  const pipeline = new FakeSpreadsheet(ctx.__consts.PIPELINE_SPREADSHEET_ID, { Sheet1: [] });
+  const source = new FakeSpreadsheet(ctx.__consts.SOURCE_SPREADSHEET_ID, reviveDates(fixture), options.sourceTimeZone);
+  const pipeline = new FakeSpreadsheet(ctx.__consts.PIPELINE_SPREADSHEET_ID, { Sheet1: [] }, options.pipelineTimeZone);
   books[source.id] = source;
   books[pipeline.id] = pipeline;
   return { ctx, source, pipeline, mails, logs };

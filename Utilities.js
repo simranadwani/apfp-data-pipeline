@@ -73,6 +73,13 @@ function writeSheet(ss, sheetName, headers, rows) {
   }));
   sheet.getRange(1, 1, matrix.length, headers.length).setValues(matrix);
   sheet.setFrozenRows(1);
+  // Unambiguous date format (the sheet default can be US mm-dd-yy); Looker reads these as dates.
+  if (matrix.length > 1) {
+    headers.forEach(function (_, c) {
+      const isDateColumn = matrix.some(function (r, i) { return i > 0 && r[c] instanceof Date; });
+      if (isDateColumn) sheet.getRange(2, c + 1, matrix.length - 1, 1).setNumberFormat('yyyy-mm-dd');
+    });
+  }
   return rows.length;
 }
 

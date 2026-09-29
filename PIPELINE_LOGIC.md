@@ -54,6 +54,10 @@ The `System - *` tabs are not read.
 
 No triggers are installed. From the Apps Script editor, run **`runCompletePipeline`**:
 
+0. **Time-zone alignment.** If the Data Pipeline workbook's time zone differs from the script's
+   (`Asia/Kolkata` in `appsscript.json`), it is switched to the script's and a WARN is logged.
+   Otherwise Apps Script shifts dates on every write/read. The source workbook is never changed;
+   a different source zone is only logged, because staging reads source dates in the source's own zone.
 1. **Source header check.** Compares the live source headers with `ref_source_header_baseline`
    (the first run creates the baseline). A missing or renamed column that the pipeline uses is
    CRITICAL: the pipeline stops before staging, logs an ERROR and emails you.
@@ -80,7 +84,7 @@ Every run fully rebuilds each tab (`clearContents` then write), so running twice
 | Text | Trimmed. |
 | Numbers | Stored as numbers. `₹`, commas and spaces are stripped. Unparseable values are blanked and logged as WARN. |
 | Rates | `attrition_rate` and `foreign_contribution_rate` are kept as fractions (0.08). Text like `8%` becomes 0.08. |
-| Dates | Stored as real dates at midnight. Text `yyyy-mm-dd` and `dd/mm/yyyy` are parsed. |
+| Dates | Stored as real dates at midnight. A date cell is read as the calendar day **shown in the source**, using the source workbook's time zone. Text `yyyy-mm-dd` and `dd/mm/yyyy` are parsed. Every date column in stg_/fct_ tabs is formatted `yyyy-mm-dd`. |
 | Financial year | Source format `YYYY-YY` (e.g. `2026-27`) everywhere. Dividends `April 25-March 26` → `2025-26`. `FY 26-27` and `2026-2027` are also accepted. |
 | Blank keys | Rows whose key (`grant_id`, `organization_id`, `outcome_id`, `disbursement_id` or `financial_year`) is blank are skipped and logged as WARN. |
 
@@ -252,3 +256,6 @@ The mockup's *Dashboard Metric* columns are aggregates. They are **not stored** 
 | 7 | Budget sample data | Dummy dividends (₹25–34 L/yr) are far below dummy commitments (₹1.3 Cr in 2026-27), so `fct4` shows negative balances. The logic is correct; the numbers are dummy. | — |
 | 8 | Grantee 360 link | Blank until the Looker report URL is known. | Share the report URL and filter parameter |
 | 9 | Record Status | Rows are not filtered on Record Status (all dummy rows are `Active`). | Say if archived records should be excluded |
+| 10 | Dummy outcome data | The dummy data fills Q1–Q4 of FY 26-27, including quarters still in the future, and every Q4 is On Track. So all 18 grants are `On Track` and the off-track charts are empty. Real data only has reported quarters. | — |
+| 11 | Dummy decision dates | Every pending decision is due 31 Mar 2027/28, so all are `61+ days`; Overdue and 0–30 are empty. | — |
+| 12 | `Sheet1` | An empty default tab remains in Data Pipeline. The pipeline never uses it. | Delete it by hand |
