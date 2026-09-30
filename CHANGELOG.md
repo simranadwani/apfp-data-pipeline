@@ -3,6 +3,22 @@
 All notable changes to the APFP data pipeline. Newest first.
 Each entry lists what changed, which files, and why.
 
+## [0.1.3] — 2026-09-30
+
+### Added — Looker Studio dashboard build specification and Cowork prompt
+- **What:** A self-contained Word specification for building the five-page APFP dashboard in
+  Looker Studio (data sources and field IDs, every calculated field, filters, pixel layouts for
+  all pages, 39 charts and 12 tiles with exact titles, metrics and display headers, colours and
+  fonts from the mockup, Indian-rupee formula, build order and a QA checklist with expected
+  values from the current data), the prompt to give Claude Cowork, and a paste-safe text file of
+  all formulas.
+- **Files:** `docs/APFP_Looker_Dashboard_Build_Spec.docx`, `docs/COWORK_PROMPT.md`,
+  `docs/looker_calculated_fields.txt`, `README.md`. No script changes; `.claspignore` already
+  keeps `docs/` out of Apps Script.
+- **Why:** The dashboard is to be built by Cowork in a browser, which needs the design, filter
+  and metric decisions written down in one place. Filters follow the product owner's spec (FY
+  shared, other filters per page); the doc records the deviations from the mockup.
+
 ## [0.1.2] — 2026-09-30
 
 ### Added — columns the Looker Studio dashboard needs for its page filters and Grantee 360

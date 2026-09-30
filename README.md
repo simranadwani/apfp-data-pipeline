@@ -6,6 +6,7 @@ Built to the Goalkeep *Data Pipeline Build Phase SoP v1.0*.
 
 - **Logic for every table and column:** [PIPELINE_LOGIC.md](PIPELINE_LOGIC.md)
 - **History of changes:** [CHANGELOG.md](CHANGELOG.md)
+- **Dashboard build spec (Looker Studio):** [docs/APFP_Looker_Dashboard_Build_Spec.docx](docs/APFP_Looker_Dashboard_Build_Spec.docx), with the Cowork prompt in [docs/COWORK_PROMPT.md](docs/COWORK_PROMPT.md) and paste-safe formulas in [docs/looker_calculated_fields.txt](docs/looker_calculated_fields.txt)
 
 ## Files
 

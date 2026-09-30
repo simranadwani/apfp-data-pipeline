@@ -1,0 +1,454 @@
+APFP Looker Studio calculated fields (paste-safe copy of Section 4 and Appendix C)
+Straight quotes only. Create each field in the data source named in its heading.
+
+====================================================================================================
+DATA SOURCE: fct1_grant_portfolio  (fields marked "all-years copy" in Section 4 also go into "fct1_grant_portfolio (all years)")
+====================================================================================================
+
+Field name : m_active_orgs
+Type       : Number
+Display    : Active grantees
+Used by    : 1.01, 1.07, 1.16 (all-years copy too)
+Formula    : COUNT_DISTINCT(CASE WHEN is_active_grant THEN organization_id END)
+
+Field name : m_active_grants
+Type       : Number
+Display    : Active grants
+Used by    : 1.05, 1.06
+Formula    : COUNT_DISTINCT(CASE WHEN is_active_grant THEN grant_id END)
+
+Field name : m_on_track_grants
+Type       : Number
+Display    : On-track active grants
+Used by    : 1.02
+Formula    : COUNT_DISTINCT(CASE WHEN is_on_track_active_grant THEN grant_id END)
+
+Field name : m_off_track_grants
+Type       : Number
+Display    : Off-track active grants
+Used by    : 1.03
+Formula    : COUNT_DISTINCT(CASE WHEN is_off_track_active_grant THEN grant_id END)
+
+Field name : m_pct_on_track
+Type       : Percent
+Display    : Active grantees on track
+Used by    : 1.02
+Formula    : CASE WHEN m_active_grants = 0 THEN NULL ELSE m_on_track_grants / m_active_grants END
+
+Field name : m_grantees
+Type       : Number
+Display    : Grantees
+Used by    : 1.08, 1.10
+Formula    : COUNT_DISTINCT(organization_id)
+
+Field name : m_beneficiaries
+Type       : Number
+Display    : Primary beneficiaries
+Used by    : 1.09
+Formula    : SUM(primary_beneficiary_count)
+
+Field name : m_funded_grantees
+Type       : Number
+Display    : Grantees
+Used by    : 2.07
+Formula    : COUNT_DISTINCT(CASE WHEN is_funded_grantee THEN organization_id END)
+
+Field name : m_committed
+Type       : Number
+Display    : Committed
+Used by    : 2.05, 2.06 (feeds lakh fields)
+Formula    : SUM(committed_amount)
+
+Field name : m_disbursed
+Type       : Number
+Display    : Disbursed
+Used by    : 2.05, 2.06
+Formula    : SUM(disbursed_amount)
+
+Field name : m_approved
+Type       : Number
+Display    : APFP approved
+Used by    : 1.11, 4.01 (feeds inr_approved)
+Formula    : SUM(approved_amount)
+
+Field name : m_proposed
+Type       : Number
+Display    : Proposed amount
+Used by    : 3.07, 4.08
+Formula    : SUM(proposed_amount)
+
+Field name : m_annual_budget
+Type       : Number
+Display    : Annual budget
+Used by    : 1.11, 4.02 (feeds inr_annual_budget)
+Formula    : MAX(annual_budget)
+
+Field name : m_cost_per_beneficiary
+Type       : Number
+Display    : Cost per beneficiary
+Used by    : 1.11, 4.05
+Formula    : CASE WHEN SUM(primary_beneficiary_count) = 0 THEN NULL ELSE SUM(approved_amount) / SUM(primary_beneficiary_count) END
+
+Field name : m_apfp_share
+Type       : Percent
+Display    : % Annual Budget funded by APFP
+Used by    : 4.02
+Formula    : CASE WHEN MAX(annual_budget) = 0 THEN NULL ELSE SUM(approved_amount) / MAX(annual_budget) END
+
+Field name : m_pending
+Type       : Number
+Display    : Pending decisions
+Used by    : 3.01, 3.05, 3.06 (rename to "Distinct pending grants" in 3.05 and 3.06)
+Formula    : COUNT_DISTINCT(CASE WHEN is_pending_decision THEN grant_id END)
+
+Field name : m_overdue
+Type       : Number
+Display    : Overdue
+Used by    : 3.02
+Formula    : COUNT_DISTINCT(CASE WHEN is_overdue_decision THEN grant_id END)
+
+Field name : m_due30
+Type       : Number
+Display    : Due in 30 days
+Used by    : 3.03
+Formula    : COUNT_DISTINCT(CASE WHEN is_due_within_30_days THEN grant_id END)
+
+Field name : m_proposed_renewal
+Type       : Number
+Display    : Proposed renewals
+Used by    : 3.04 (feeds inr_proposed_renewal)
+Formula    : SUM(CASE WHEN is_pending_decision AND recommendation = "Renew" THEN proposed_amount ELSE 0 END)
+
+Field name : m_pct_achieved
+Type       : Percent
+Display    : Outcome achieved
+Used by    : 3.07
+Formula    : CASE WHEN SUM(total_outcomes_count) = 0 THEN NULL ELSE SUM(achieved_outcomes_count) / SUM(total_outcomes_count) END
+
+Field name : m_disbursed_if_different
+Type       : Number
+Display    : Disbursed (where different, ₹ lakh)
+Used by    : 4.03 (all-years copy)
+Formula    : CASE WHEN SUM(disbursed_amount) <> SUM(approved_amount) THEN SUM(disbursed_amount) / 100000 END
+
+Field name : m_approved_lakh
+Type       : Number
+Display    : Approved (₹ lakh)
+Used by    : 4.03 (all-years copy)
+Formula    : SUM(approved_amount) / 100000
+
+Field name : m_disbursed_lakh
+Type       : Number
+Display    : Disbursed (₹ lakh)
+Used by    : 2.05, 2.06, 2.08 (all-years copy too)
+Formula    : SUM(disbursed_amount) / 100000
+
+Field name : m_committed_lakh
+Type       : Number
+Display    : Committed (₹ lakh)
+Used by    : 2.05, 2.06, 2.08 (all-years copy too)
+Formula    : SUM(committed_amount) / 100000
+
+Field name : m_team_size
+Type       : Number
+Display    : Team size
+Used by    : 4.02 (all-years copy)
+Formula    : MAX(team_size)
+
+Field name : m_attrition
+Type       : Percent
+Display    : Attrition
+Used by    : 4.02 (all-years copy)
+Formula    : MAX(attrition_rate)
+
+Field name : m_foreign_share
+Type       : Percent
+Display    : Foreign contribution share
+Used by    : 4.02 (all-years copy)
+Formula    : MAX(foreign_contribution_rate)
+
+Field name : core_policies_text
+Type       : Text
+Display    : Core policies
+Used by    : 4.02 (all-years copy)
+Formula    : CONCAT(CAST(MAX(core_policies_met_count) AS TEXT), " / ", CAST(MAX(core_policies_total_count) AS TEXT))
+
+Field name : fy_label
+Type       : Text (dimension)
+Display    : Financial Year
+Used by    : axis / breakdown labels: 1.16, 2.08, 4.02, 4.05 (create in both copies)
+Formula    : CONCAT("FY ", SUBSTR(financial_year, 3, 5))
+
+Field name : funding_range_order
+Type       : Number (dimension)
+Display    : (sort key, hidden)
+Used by    : 2.07 sort
+Formula    : CASE WHEN funding_range = "<₹1 lakh" THEN 1 WHEN funding_range = "₹1–10 lakh" THEN 2 WHEN funding_range = "₹11–20 lakh" THEN 3 WHEN funding_range = "₹21–50 lakh" THEN 4 WHEN funding_range = ">₹50 lakh" THEN 5 ELSE 6 END
+
+Field name : due_window_order
+Type       : Number (dimension)
+Display    : (sort key, hidden)
+Used by    : 3.05 sort
+Formula    : CASE WHEN due_window = "Overdue" THEN 1 WHEN due_window = "0–30 days" THEN 2 WHEN due_window = "31–60 days" THEN 3 WHEN due_window = "61+ days" THEN 4 ELSE 5 END
+
+Field name : recommendation_copy
+Type       : Text (dimension)
+Display    : Recommendation
+Used by    : 3.06 (lets the bar take its colour from the value)
+Formula    : recommendation
+
+Field name : due_date_text
+Type       : Text (dimension)
+Display    : Due date
+Used by    : 3.07, 4.08 (sort by decision_due_date, not this text). If Looker rejects this formula, show the plain date and log a deviation.
+Formula    : FORMAT_DATETIME("%d %b %Y", decision_due_date)
+
+Field name : annual_report_link_text
+Type       : Text (dimension)
+Display    : Evidence
+Used by    : 4.08
+Formula    : HYPERLINK(annual_report_link, "Annual Report link")
+
+Field name : link_360
+Type       : Text (dimension)
+Display    : Grantee 360 link
+Used by    : 3.07 (replace both placeholders after the pages exist; see chart 3.07)
+Formula    : HYPERLINK("https://lookerstudio.google.com/reporting/<REPORT_ID>/page/<GRANTEE_360_PAGE_ID>", "Click here")
+
+Field name : grant_status_line
+Type       : Text (dimension)
+Display    : Current grant
+Used by    : 4.01 (the ₹ amount is a separate cell)
+Formula    : CONCAT(grant_status, " • ", grant_type)
+
+Field name : sub_category_line
+Type       : Text (dimension)
+Display    : Sub-category
+Used by    : 4.01
+Formula    : CONCAT(education_sub_category, " • ", proximity_to_children_beneficiary)
+
+Field name : inr_approved
+Type       : Text
+Display    : APFP approved
+Used by    : 1.11, 4.01
+Formula    : CASE WHEN m_approved IS NULL THEN "–" ELSE CONCAT(CASE WHEN m_approved < 0 THEN "-₹" ELSE "₹" END, CASE WHEN ROUND(ABS(m_approved)) < 1000 THEN CAST(ROUND(ABS(m_approved)) AS TEXT) WHEN ROUND(ABS(m_approved)) < 100000 THEN CONCAT(CAST(FLOOR(ROUND(ABS(m_approved)) / 1000) AS TEXT), ",", CASE WHEN (ROUND(ABS(m_approved)) - FLOOR(ROUND(ABS(m_approved)) / 1000) * 1000) < 10 THEN CONCAT("00", CAST((ROUND(ABS(m_approved)) - FLOOR(ROUND(ABS(m_approved)) / 1000) * 1000) AS TEXT)) WHEN (ROUND(ABS(m_approved)) - FLOOR(ROUND(ABS(m_approved)) / 1000) * 1000) < 100 THEN CONCAT("0", CAST((ROUND(ABS(m_approved)) - FLOOR(ROUND(ABS(m_approved)) / 1000) * 1000) AS TEXT)) ELSE CAST((ROUND(ABS(m_approved)) - FLOOR(ROUND(ABS(m_approved)) / 1000) * 1000) AS TEXT) END) WHEN ROUND(ABS(m_approved)) < 10000000 THEN CONCAT(CAST(FLOOR(ROUND(ABS(m_approved)) / 100000) AS TEXT), ",", CASE WHEN (FLOOR(ROUND(ABS(m_approved)) / 1000) - FLOOR(ROUND(ABS(m_approved)) / 100000) * 100) < 10 THEN CONCAT("0", CAST((FLOOR(ROUND(ABS(m_approved)) / 1000) - FLOOR(ROUND(ABS(m_approved)) / 100000) * 100) AS TEXT)) ELSE CAST((FLOOR(ROUND(ABS(m_approved)) / 1000) - FLOOR(ROUND(ABS(m_approved)) / 100000) * 100) AS TEXT) END, ",", CASE WHEN (ROUND(ABS(m_approved)) - FLOOR(ROUND(ABS(m_approved)) / 1000) * 1000) < 10 THEN CONCAT("00", CAST((ROUND(ABS(m_approved)) - FLOOR(ROUND(ABS(m_approved)) / 1000) * 1000) AS TEXT)) WHEN (ROUND(ABS(m_approved)) - FLOOR(ROUND(ABS(m_approved)) / 1000) * 1000) < 100 THEN CONCAT("0", CAST((ROUND(ABS(m_approved)) - FLOOR(ROUND(ABS(m_approved)) / 1000) * 1000) AS TEXT)) ELSE CAST((ROUND(ABS(m_approved)) - FLOOR(ROUND(ABS(m_approved)) / 1000) * 1000) AS TEXT) END) ELSE CONCAT(CASE WHEN FLOOR(ROUND(ABS(m_approved)) / 10000000) < 100 THEN CAST(FLOOR(ROUND(ABS(m_approved)) / 10000000) AS TEXT) ELSE CONCAT(CAST(FLOOR(FLOOR(ROUND(ABS(m_approved)) / 10000000) / 100) AS TEXT), ",", CASE WHEN (FLOOR(ROUND(ABS(m_approved)) / 10000000) - FLOOR(FLOOR(ROUND(ABS(m_approved)) / 10000000) / 100) * 100) < 10 THEN CONCAT("0", CAST((FLOOR(ROUND(ABS(m_approved)) / 10000000) - FLOOR(FLOOR(ROUND(ABS(m_approved)) / 10000000) / 100) * 100) AS TEXT)) ELSE CAST((FLOOR(ROUND(ABS(m_approved)) / 10000000) - FLOOR(FLOOR(ROUND(ABS(m_approved)) / 10000000) / 100) * 100) AS TEXT) END) END, ",", CASE WHEN (FLOOR(ROUND(ABS(m_approved)) / 100000) - FLOOR(ROUND(ABS(m_approved)) / 10000000) * 100) < 10 THEN CONCAT("0", CAST((FLOOR(ROUND(ABS(m_approved)) / 100000) - FLOOR(ROUND(ABS(m_approved)) / 10000000) * 100) AS TEXT)) ELSE CAST((FLOOR(ROUND(ABS(m_approved)) / 100000) - FLOOR(ROUND(ABS(m_approved)) / 10000000) * 100) AS TEXT) END, ",", CASE WHEN (FLOOR(ROUND(ABS(m_approved)) / 1000) - FLOOR(ROUND(ABS(m_approved)) / 100000) * 100) < 10 THEN CONCAT("0", CAST((FLOOR(ROUND(ABS(m_approved)) / 1000) - FLOOR(ROUND(ABS(m_approved)) / 100000) * 100) AS TEXT)) ELSE CAST((FLOOR(ROUND(ABS(m_approved)) / 1000) - FLOOR(ROUND(ABS(m_approved)) / 100000) * 100) AS TEXT) END, ",", CASE WHEN (ROUND(ABS(m_approved)) - FLOOR(ROUND(ABS(m_approved)) / 1000) * 1000) < 10 THEN CONCAT("00", CAST((ROUND(ABS(m_approved)) - FLOOR(ROUND(ABS(m_approved)) / 1000) * 1000) AS TEXT)) WHEN (ROUND(ABS(m_approved)) - FLOOR(ROUND(ABS(m_approved)) / 1000) * 1000) < 100 THEN CONCAT("0", CAST((ROUND(ABS(m_approved)) - FLOOR(ROUND(ABS(m_approved)) / 1000) * 1000) AS TEXT)) ELSE CAST((ROUND(ABS(m_approved)) - FLOOR(ROUND(ABS(m_approved)) / 1000) * 1000) AS TEXT) END) END) END
+
+Field name : inr_annual_budget
+Type       : Text
+Display    : Annual budget
+Used by    : 1.11, 4.02
+Formula    : CASE WHEN m_annual_budget IS NULL THEN "–" ELSE CONCAT(CASE WHEN m_annual_budget < 0 THEN "-₹" ELSE "₹" END, CASE WHEN ROUND(ABS(m_annual_budget)) < 1000 THEN CAST(ROUND(ABS(m_annual_budget)) AS TEXT) WHEN ROUND(ABS(m_annual_budget)) < 100000 THEN CONCAT(CAST(FLOOR(ROUND(ABS(m_annual_budget)) / 1000) AS TEXT), ",", CASE WHEN (ROUND(ABS(m_annual_budget)) - FLOOR(ROUND(ABS(m_annual_budget)) / 1000) * 1000) < 10 THEN CONCAT("00", CAST((ROUND(ABS(m_annual_budget)) - FLOOR(ROUND(ABS(m_annual_budget)) / 1000) * 1000) AS TEXT)) WHEN (ROUND(ABS(m_annual_budget)) - FLOOR(ROUND(ABS(m_annual_budget)) / 1000) * 1000) < 100 THEN CONCAT("0", CAST((ROUND(ABS(m_annual_budget)) - FLOOR(ROUND(ABS(m_annual_budget)) / 1000) * 1000) AS TEXT)) ELSE CAST((ROUND(ABS(m_annual_budget)) - FLOOR(ROUND(ABS(m_annual_budget)) / 1000) * 1000) AS TEXT) END) WHEN ROUND(ABS(m_annual_budget)) < 10000000 THEN CONCAT(CAST(FLOOR(ROUND(ABS(m_annual_budget)) / 100000) AS TEXT), ",", CASE WHEN (FLOOR(ROUND(ABS(m_annual_budget)) / 1000) - FLOOR(ROUND(ABS(m_annual_budget)) / 100000) * 100) < 10 THEN CONCAT("0", CAST((FLOOR(ROUND(ABS(m_annual_budget)) / 1000) - FLOOR(ROUND(ABS(m_annual_budget)) / 100000) * 100) AS TEXT)) ELSE CAST((FLOOR(ROUND(ABS(m_annual_budget)) / 1000) - FLOOR(ROUND(ABS(m_annual_budget)) / 100000) * 100) AS TEXT) END, ",", CASE WHEN (ROUND(ABS(m_annual_budget)) - FLOOR(ROUND(ABS(m_annual_budget)) / 1000) * 1000) < 10 THEN CONCAT("00", CAST((ROUND(ABS(m_annual_budget)) - FLOOR(ROUND(ABS(m_annual_budget)) / 1000) * 1000) AS TEXT)) WHEN (ROUND(ABS(m_annual_budget)) - FLOOR(ROUND(ABS(m_annual_budget)) / 1000) * 1000) < 100 THEN CONCAT("0", CAST((ROUND(ABS(m_annual_budget)) - FLOOR(ROUND(ABS(m_annual_budget)) / 1000) * 1000) AS TEXT)) ELSE CAST((ROUND(ABS(m_annual_budget)) - FLOOR(ROUND(ABS(m_annual_budget)) / 1000) * 1000) AS TEXT) END) ELSE CONCAT(CASE WHEN FLOOR(ROUND(ABS(m_annual_budget)) / 10000000) < 100 THEN CAST(FLOOR(ROUND(ABS(m_annual_budget)) / 10000000) AS TEXT) ELSE CONCAT(CAST(FLOOR(FLOOR(ROUND(ABS(m_annual_budget)) / 10000000) / 100) AS TEXT), ",", CASE WHEN (FLOOR(ROUND(ABS(m_annual_budget)) / 10000000) - FLOOR(FLOOR(ROUND(ABS(m_annual_budget)) / 10000000) / 100) * 100) < 10 THEN CONCAT("0", CAST((FLOOR(ROUND(ABS(m_annual_budget)) / 10000000) - FLOOR(FLOOR(ROUND(ABS(m_annual_budget)) / 10000000) / 100) * 100) AS TEXT)) ELSE CAST((FLOOR(ROUND(ABS(m_annual_budget)) / 10000000) - FLOOR(FLOOR(ROUND(ABS(m_annual_budget)) / 10000000) / 100) * 100) AS TEXT) END) END, ",", CASE WHEN (FLOOR(ROUND(ABS(m_annual_budget)) / 100000) - FLOOR(ROUND(ABS(m_annual_budget)) / 10000000) * 100) < 10 THEN CONCAT("0", CAST((FLOOR(ROUND(ABS(m_annual_budget)) / 100000) - FLOOR(ROUND(ABS(m_annual_budget)) / 10000000) * 100) AS TEXT)) ELSE CAST((FLOOR(ROUND(ABS(m_annual_budget)) / 100000) - FLOOR(ROUND(ABS(m_annual_budget)) / 10000000) * 100) AS TEXT) END, ",", CASE WHEN (FLOOR(ROUND(ABS(m_annual_budget)) / 1000) - FLOOR(ROUND(ABS(m_annual_budget)) / 100000) * 100) < 10 THEN CONCAT("0", CAST((FLOOR(ROUND(ABS(m_annual_budget)) / 1000) - FLOOR(ROUND(ABS(m_annual_budget)) / 100000) * 100) AS TEXT)) ELSE CAST((FLOOR(ROUND(ABS(m_annual_budget)) / 1000) - FLOOR(ROUND(ABS(m_annual_budget)) / 100000) * 100) AS TEXT) END, ",", CASE WHEN (ROUND(ABS(m_annual_budget)) - FLOOR(ROUND(ABS(m_annual_budget)) / 1000) * 1000) < 10 THEN CONCAT("00", CAST((ROUND(ABS(m_annual_budget)) - FLOOR(ROUND(ABS(m_annual_budget)) / 1000) * 1000) AS TEXT)) WHEN (ROUND(ABS(m_annual_budget)) - FLOOR(ROUND(ABS(m_annual_budget)) / 1000) * 1000) < 100 THEN CONCAT("0", CAST((ROUND(ABS(m_annual_budget)) - FLOOR(ROUND(ABS(m_annual_budget)) / 1000) * 1000) AS TEXT)) ELSE CAST((ROUND(ABS(m_annual_budget)) - FLOOR(ROUND(ABS(m_annual_budget)) / 1000) * 1000) AS TEXT) END) END) END
+
+Field name : inr_cost_per_beneficiary
+Type       : Text
+Display    : Cost / beneficiary
+Used by    : 1.11, 4.05
+Formula    : CASE WHEN m_cost_per_beneficiary IS NULL THEN "–" ELSE CONCAT(CASE WHEN m_cost_per_beneficiary < 0 THEN "-₹" ELSE "₹" END, CASE WHEN ROUND(ABS(m_cost_per_beneficiary)) < 1000 THEN CAST(ROUND(ABS(m_cost_per_beneficiary)) AS TEXT) WHEN ROUND(ABS(m_cost_per_beneficiary)) < 100000 THEN CONCAT(CAST(FLOOR(ROUND(ABS(m_cost_per_beneficiary)) / 1000) AS TEXT), ",", CASE WHEN (ROUND(ABS(m_cost_per_beneficiary)) - FLOOR(ROUND(ABS(m_cost_per_beneficiary)) / 1000) * 1000) < 10 THEN CONCAT("00", CAST((ROUND(ABS(m_cost_per_beneficiary)) - FLOOR(ROUND(ABS(m_cost_per_beneficiary)) / 1000) * 1000) AS TEXT)) WHEN (ROUND(ABS(m_cost_per_beneficiary)) - FLOOR(ROUND(ABS(m_cost_per_beneficiary)) / 1000) * 1000) < 100 THEN CONCAT("0", CAST((ROUND(ABS(m_cost_per_beneficiary)) - FLOOR(ROUND(ABS(m_cost_per_beneficiary)) / 1000) * 1000) AS TEXT)) ELSE CAST((ROUND(ABS(m_cost_per_beneficiary)) - FLOOR(ROUND(ABS(m_cost_per_beneficiary)) / 1000) * 1000) AS TEXT) END) WHEN ROUND(ABS(m_cost_per_beneficiary)) < 10000000 THEN CONCAT(CAST(FLOOR(ROUND(ABS(m_cost_per_beneficiary)) / 100000) AS TEXT), ",", CASE WHEN (FLOOR(ROUND(ABS(m_cost_per_beneficiary)) / 1000) - FLOOR(ROUND(ABS(m_cost_per_beneficiary)) / 100000) * 100) < 10 THEN CONCAT("0", CAST((FLOOR(ROUND(ABS(m_cost_per_beneficiary)) / 1000) - FLOOR(ROUND(ABS(m_cost_per_beneficiary)) / 100000) * 100) AS TEXT)) ELSE CAST((FLOOR(ROUND(ABS(m_cost_per_beneficiary)) / 1000) - FLOOR(ROUND(ABS(m_cost_per_beneficiary)) / 100000) * 100) AS TEXT) END, ",", CASE WHEN (ROUND(ABS(m_cost_per_beneficiary)) - FLOOR(ROUND(ABS(m_cost_per_beneficiary)) / 1000) * 1000) < 10 THEN CONCAT("00", CAST((ROUND(ABS(m_cost_per_beneficiary)) - FLOOR(ROUND(ABS(m_cost_per_beneficiary)) / 1000) * 1000) AS TEXT)) WHEN (ROUND(ABS(m_cost_per_beneficiary)) - FLOOR(ROUND(ABS(m_cost_per_beneficiary)) / 1000) * 1000) < 100 THEN CONCAT("0", CAST((ROUND(ABS(m_cost_per_beneficiary)) - FLOOR(ROUND(ABS(m_cost_per_beneficiary)) / 1000) * 1000) AS TEXT)) ELSE CAST((ROUND(ABS(m_cost_per_beneficiary)) - FLOOR(ROUND(ABS(m_cost_per_beneficiary)) / 1000) * 1000) AS TEXT) END) ELSE CONCAT(CASE WHEN FLOOR(ROUND(ABS(m_cost_per_beneficiary)) / 10000000) < 100 THEN CAST(FLOOR(ROUND(ABS(m_cost_per_beneficiary)) / 10000000) AS TEXT) ELSE CONCAT(CAST(FLOOR(FLOOR(ROUND(ABS(m_cost_per_beneficiary)) / 10000000) / 100) AS TEXT), ",", CASE WHEN (FLOOR(ROUND(ABS(m_cost_per_beneficiary)) / 10000000) - FLOOR(FLOOR(ROUND(ABS(m_cost_per_beneficiary)) / 10000000) / 100) * 100) < 10 THEN CONCAT("0", CAST((FLOOR(ROUND(ABS(m_cost_per_beneficiary)) / 10000000) - FLOOR(FLOOR(ROUND(ABS(m_cost_per_beneficiary)) / 10000000) / 100) * 100) AS TEXT)) ELSE CAST((FLOOR(ROUND(ABS(m_cost_per_beneficiary)) / 10000000) - FLOOR(FLOOR(ROUND(ABS(m_cost_per_beneficiary)) / 10000000) / 100) * 100) AS TEXT) END) END, ",", CASE WHEN (FLOOR(ROUND(ABS(m_cost_per_beneficiary)) / 100000) - FLOOR(ROUND(ABS(m_cost_per_beneficiary)) / 10000000) * 100) < 10 THEN CONCAT("0", CAST((FLOOR(ROUND(ABS(m_cost_per_beneficiary)) / 100000) - FLOOR(ROUND(ABS(m_cost_per_beneficiary)) / 10000000) * 100) AS TEXT)) ELSE CAST((FLOOR(ROUND(ABS(m_cost_per_beneficiary)) / 100000) - FLOOR(ROUND(ABS(m_cost_per_beneficiary)) / 10000000) * 100) AS TEXT) END, ",", CASE WHEN (FLOOR(ROUND(ABS(m_cost_per_beneficiary)) / 1000) - FLOOR(ROUND(ABS(m_cost_per_beneficiary)) / 100000) * 100) < 10 THEN CONCAT("0", CAST((FLOOR(ROUND(ABS(m_cost_per_beneficiary)) / 1000) - FLOOR(ROUND(ABS(m_cost_per_beneficiary)) / 100000) * 100) AS TEXT)) ELSE CAST((FLOOR(ROUND(ABS(m_cost_per_beneficiary)) / 1000) - FLOOR(ROUND(ABS(m_cost_per_beneficiary)) / 100000) * 100) AS TEXT) END, ",", CASE WHEN (ROUND(ABS(m_cost_per_beneficiary)) - FLOOR(ROUND(ABS(m_cost_per_beneficiary)) / 1000) * 1000) < 10 THEN CONCAT("00", CAST((ROUND(ABS(m_cost_per_beneficiary)) - FLOOR(ROUND(ABS(m_cost_per_beneficiary)) / 1000) * 1000) AS TEXT)) WHEN (ROUND(ABS(m_cost_per_beneficiary)) - FLOOR(ROUND(ABS(m_cost_per_beneficiary)) / 1000) * 1000) < 100 THEN CONCAT("0", CAST((ROUND(ABS(m_cost_per_beneficiary)) - FLOOR(ROUND(ABS(m_cost_per_beneficiary)) / 1000) * 1000) AS TEXT)) ELSE CAST((ROUND(ABS(m_cost_per_beneficiary)) - FLOOR(ROUND(ABS(m_cost_per_beneficiary)) / 1000) * 1000) AS TEXT) END) END) END
+
+Field name : inr_proposed
+Type       : Text
+Display    : Proposed amount
+Used by    : 3.07, 4.08
+Formula    : CASE WHEN m_proposed IS NULL THEN "–" ELSE CONCAT(CASE WHEN m_proposed < 0 THEN "-₹" ELSE "₹" END, CASE WHEN ROUND(ABS(m_proposed)) < 1000 THEN CAST(ROUND(ABS(m_proposed)) AS TEXT) WHEN ROUND(ABS(m_proposed)) < 100000 THEN CONCAT(CAST(FLOOR(ROUND(ABS(m_proposed)) / 1000) AS TEXT), ",", CASE WHEN (ROUND(ABS(m_proposed)) - FLOOR(ROUND(ABS(m_proposed)) / 1000) * 1000) < 10 THEN CONCAT("00", CAST((ROUND(ABS(m_proposed)) - FLOOR(ROUND(ABS(m_proposed)) / 1000) * 1000) AS TEXT)) WHEN (ROUND(ABS(m_proposed)) - FLOOR(ROUND(ABS(m_proposed)) / 1000) * 1000) < 100 THEN CONCAT("0", CAST((ROUND(ABS(m_proposed)) - FLOOR(ROUND(ABS(m_proposed)) / 1000) * 1000) AS TEXT)) ELSE CAST((ROUND(ABS(m_proposed)) - FLOOR(ROUND(ABS(m_proposed)) / 1000) * 1000) AS TEXT) END) WHEN ROUND(ABS(m_proposed)) < 10000000 THEN CONCAT(CAST(FLOOR(ROUND(ABS(m_proposed)) / 100000) AS TEXT), ",", CASE WHEN (FLOOR(ROUND(ABS(m_proposed)) / 1000) - FLOOR(ROUND(ABS(m_proposed)) / 100000) * 100) < 10 THEN CONCAT("0", CAST((FLOOR(ROUND(ABS(m_proposed)) / 1000) - FLOOR(ROUND(ABS(m_proposed)) / 100000) * 100) AS TEXT)) ELSE CAST((FLOOR(ROUND(ABS(m_proposed)) / 1000) - FLOOR(ROUND(ABS(m_proposed)) / 100000) * 100) AS TEXT) END, ",", CASE WHEN (ROUND(ABS(m_proposed)) - FLOOR(ROUND(ABS(m_proposed)) / 1000) * 1000) < 10 THEN CONCAT("00", CAST((ROUND(ABS(m_proposed)) - FLOOR(ROUND(ABS(m_proposed)) / 1000) * 1000) AS TEXT)) WHEN (ROUND(ABS(m_proposed)) - FLOOR(ROUND(ABS(m_proposed)) / 1000) * 1000) < 100 THEN CONCAT("0", CAST((ROUND(ABS(m_proposed)) - FLOOR(ROUND(ABS(m_proposed)) / 1000) * 1000) AS TEXT)) ELSE CAST((ROUND(ABS(m_proposed)) - FLOOR(ROUND(ABS(m_proposed)) / 1000) * 1000) AS TEXT) END) ELSE CONCAT(CASE WHEN FLOOR(ROUND(ABS(m_proposed)) / 10000000) < 100 THEN CAST(FLOOR(ROUND(ABS(m_proposed)) / 10000000) AS TEXT) ELSE CONCAT(CAST(FLOOR(FLOOR(ROUND(ABS(m_proposed)) / 10000000) / 100) AS TEXT), ",", CASE WHEN (FLOOR(ROUND(ABS(m_proposed)) / 10000000) - FLOOR(FLOOR(ROUND(ABS(m_proposed)) / 10000000) / 100) * 100) < 10 THEN CONCAT("0", CAST((FLOOR(ROUND(ABS(m_proposed)) / 10000000) - FLOOR(FLOOR(ROUND(ABS(m_proposed)) / 10000000) / 100) * 100) AS TEXT)) ELSE CAST((FLOOR(ROUND(ABS(m_proposed)) / 10000000) - FLOOR(FLOOR(ROUND(ABS(m_proposed)) / 10000000) / 100) * 100) AS TEXT) END) END, ",", CASE WHEN (FLOOR(ROUND(ABS(m_proposed)) / 100000) - FLOOR(ROUND(ABS(m_proposed)) / 10000000) * 100) < 10 THEN CONCAT("0", CAST((FLOOR(ROUND(ABS(m_proposed)) / 100000) - FLOOR(ROUND(ABS(m_proposed)) / 10000000) * 100) AS TEXT)) ELSE CAST((FLOOR(ROUND(ABS(m_proposed)) / 100000) - FLOOR(ROUND(ABS(m_proposed)) / 10000000) * 100) AS TEXT) END, ",", CASE WHEN (FLOOR(ROUND(ABS(m_proposed)) / 1000) - FLOOR(ROUND(ABS(m_proposed)) / 100000) * 100) < 10 THEN CONCAT("0", CAST((FLOOR(ROUND(ABS(m_proposed)) / 1000) - FLOOR(ROUND(ABS(m_proposed)) / 100000) * 100) AS TEXT)) ELSE CAST((FLOOR(ROUND(ABS(m_proposed)) / 1000) - FLOOR(ROUND(ABS(m_proposed)) / 100000) * 100) AS TEXT) END, ",", CASE WHEN (ROUND(ABS(m_proposed)) - FLOOR(ROUND(ABS(m_proposed)) / 1000) * 1000) < 10 THEN CONCAT("00", CAST((ROUND(ABS(m_proposed)) - FLOOR(ROUND(ABS(m_proposed)) / 1000) * 1000) AS TEXT)) WHEN (ROUND(ABS(m_proposed)) - FLOOR(ROUND(ABS(m_proposed)) / 1000) * 1000) < 100 THEN CONCAT("0", CAST((ROUND(ABS(m_proposed)) - FLOOR(ROUND(ABS(m_proposed)) / 1000) * 1000) AS TEXT)) ELSE CAST((ROUND(ABS(m_proposed)) - FLOOR(ROUND(ABS(m_proposed)) / 1000) * 1000) AS TEXT) END) END) END
+
+Field name : inr_proposed_renewal
+Type       : Text
+Display    : Proposed renewals
+Used by    : 3.04
+Formula    : CASE WHEN m_proposed_renewal IS NULL THEN "–" ELSE CONCAT(CASE WHEN m_proposed_renewal < 0 THEN "-₹" ELSE "₹" END, CASE WHEN ROUND(ABS(m_proposed_renewal)) < 1000 THEN CAST(ROUND(ABS(m_proposed_renewal)) AS TEXT) WHEN ROUND(ABS(m_proposed_renewal)) < 100000 THEN CONCAT(CAST(FLOOR(ROUND(ABS(m_proposed_renewal)) / 1000) AS TEXT), ",", CASE WHEN (ROUND(ABS(m_proposed_renewal)) - FLOOR(ROUND(ABS(m_proposed_renewal)) / 1000) * 1000) < 10 THEN CONCAT("00", CAST((ROUND(ABS(m_proposed_renewal)) - FLOOR(ROUND(ABS(m_proposed_renewal)) / 1000) * 1000) AS TEXT)) WHEN (ROUND(ABS(m_proposed_renewal)) - FLOOR(ROUND(ABS(m_proposed_renewal)) / 1000) * 1000) < 100 THEN CONCAT("0", CAST((ROUND(ABS(m_proposed_renewal)) - FLOOR(ROUND(ABS(m_proposed_renewal)) / 1000) * 1000) AS TEXT)) ELSE CAST((ROUND(ABS(m_proposed_renewal)) - FLOOR(ROUND(ABS(m_proposed_renewal)) / 1000) * 1000) AS TEXT) END) WHEN ROUND(ABS(m_proposed_renewal)) < 10000000 THEN CONCAT(CAST(FLOOR(ROUND(ABS(m_proposed_renewal)) / 100000) AS TEXT), ",", CASE WHEN (FLOOR(ROUND(ABS(m_proposed_renewal)) / 1000) - FLOOR(ROUND(ABS(m_proposed_renewal)) / 100000) * 100) < 10 THEN CONCAT("0", CAST((FLOOR(ROUND(ABS(m_proposed_renewal)) / 1000) - FLOOR(ROUND(ABS(m_proposed_renewal)) / 100000) * 100) AS TEXT)) ELSE CAST((FLOOR(ROUND(ABS(m_proposed_renewal)) / 1000) - FLOOR(ROUND(ABS(m_proposed_renewal)) / 100000) * 100) AS TEXT) END, ",", CASE WHEN (ROUND(ABS(m_proposed_renewal)) - FLOOR(ROUND(ABS(m_proposed_renewal)) / 1000) * 1000) < 10 THEN CONCAT("00", CAST((ROUND(ABS(m_proposed_renewal)) - FLOOR(ROUND(ABS(m_proposed_renewal)) / 1000) * 1000) AS TEXT)) WHEN (ROUND(ABS(m_proposed_renewal)) - FLOOR(ROUND(ABS(m_proposed_renewal)) / 1000) * 1000) < 100 THEN CONCAT("0", CAST((ROUND(ABS(m_proposed_renewal)) - FLOOR(ROUND(ABS(m_proposed_renewal)) / 1000) * 1000) AS TEXT)) ELSE CAST((ROUND(ABS(m_proposed_renewal)) - FLOOR(ROUND(ABS(m_proposed_renewal)) / 1000) * 1000) AS TEXT) END) ELSE CONCAT(CASE WHEN FLOOR(ROUND(ABS(m_proposed_renewal)) / 10000000) < 100 THEN CAST(FLOOR(ROUND(ABS(m_proposed_renewal)) / 10000000) AS TEXT) ELSE CONCAT(CAST(FLOOR(FLOOR(ROUND(ABS(m_proposed_renewal)) / 10000000) / 100) AS TEXT), ",", CASE WHEN (FLOOR(ROUND(ABS(m_proposed_renewal)) / 10000000) - FLOOR(FLOOR(ROUND(ABS(m_proposed_renewal)) / 10000000) / 100) * 100) < 10 THEN CONCAT("0", CAST((FLOOR(ROUND(ABS(m_proposed_renewal)) / 10000000) - FLOOR(FLOOR(ROUND(ABS(m_proposed_renewal)) / 10000000) / 100) * 100) AS TEXT)) ELSE CAST((FLOOR(ROUND(ABS(m_proposed_renewal)) / 10000000) - FLOOR(FLOOR(ROUND(ABS(m_proposed_renewal)) / 10000000) / 100) * 100) AS TEXT) END) END, ",", CASE WHEN (FLOOR(ROUND(ABS(m_proposed_renewal)) / 100000) - FLOOR(ROUND(ABS(m_proposed_renewal)) / 10000000) * 100) < 10 THEN CONCAT("0", CAST((FLOOR(ROUND(ABS(m_proposed_renewal)) / 100000) - FLOOR(ROUND(ABS(m_proposed_renewal)) / 10000000) * 100) AS TEXT)) ELSE CAST((FLOOR(ROUND(ABS(m_proposed_renewal)) / 100000) - FLOOR(ROUND(ABS(m_proposed_renewal)) / 10000000) * 100) AS TEXT) END, ",", CASE WHEN (FLOOR(ROUND(ABS(m_proposed_renewal)) / 1000) - FLOOR(ROUND(ABS(m_proposed_renewal)) / 100000) * 100) < 10 THEN CONCAT("0", CAST((FLOOR(ROUND(ABS(m_proposed_renewal)) / 1000) - FLOOR(ROUND(ABS(m_proposed_renewal)) / 100000) * 100) AS TEXT)) ELSE CAST((FLOOR(ROUND(ABS(m_proposed_renewal)) / 1000) - FLOOR(ROUND(ABS(m_proposed_renewal)) / 100000) * 100) AS TEXT) END, ",", CASE WHEN (ROUND(ABS(m_proposed_renewal)) - FLOOR(ROUND(ABS(m_proposed_renewal)) / 1000) * 1000) < 10 THEN CONCAT("00", CAST((ROUND(ABS(m_proposed_renewal)) - FLOOR(ROUND(ABS(m_proposed_renewal)) / 1000) * 1000) AS TEXT)) WHEN (ROUND(ABS(m_proposed_renewal)) - FLOOR(ROUND(ABS(m_proposed_renewal)) / 1000) * 1000) < 100 THEN CONCAT("0", CAST((ROUND(ABS(m_proposed_renewal)) - FLOOR(ROUND(ABS(m_proposed_renewal)) / 1000) * 1000) AS TEXT)) ELSE CAST((ROUND(ABS(m_proposed_renewal)) - FLOOR(ROUND(ABS(m_proposed_renewal)) / 1000) * 1000) AS TEXT) END) END) END
+
+====================================================================================================
+DATA SOURCE: fct2_outcome_progress
+====================================================================================================
+
+Field name : m_outcomes_latest
+Type       : Number
+Display    : Outcomes (latest update)
+Used by    : 1.12
+Formula    : COUNT_DISTINCT(CASE WHEN is_latest_update THEN outcome_id END)
+
+Field name : m_outcomes_latest_on_track
+Type       : Number
+Display    : Outcomes on track (latest update)
+Used by    : 1.12
+Formula    : COUNT_DISTINCT(CASE WHEN is_latest_update AND status = "On Track" THEN outcome_id END)
+
+Field name : m_pct_outcomes_on_track
+Type       : Percent
+Display    : % outcomes on track (latest update)
+Used by    : 1.12 scorecard
+Formula    : CASE WHEN m_outcomes_latest = 0 THEN NULL ELSE m_outcomes_latest_on_track / m_outcomes_latest END
+
+Field name : status_q1
+Type       : Text
+Display    : Q1
+Used by    : 4.06
+Formula    : CASE WHEN MAX(CASE WHEN quarter = "Q1" THEN CASE WHEN status = "On Track" THEN 2 ELSE 1 END END) = 2 THEN "On Track" WHEN MAX(CASE WHEN quarter = "Q1" THEN CASE WHEN status = "On Track" THEN 2 ELSE 1 END END) = 1 THEN "Off Track" ELSE "–" END
+
+Field name : status_q2
+Type       : Text
+Display    : Q2
+Used by    : 4.06
+Formula    : CASE WHEN MAX(CASE WHEN quarter = "Q2" THEN CASE WHEN status = "On Track" THEN 2 ELSE 1 END END) = 2 THEN "On Track" WHEN MAX(CASE WHEN quarter = "Q2" THEN CASE WHEN status = "On Track" THEN 2 ELSE 1 END END) = 1 THEN "Off Track" ELSE "–" END
+
+Field name : status_q3
+Type       : Text
+Display    : Q3
+Used by    : 4.06
+Formula    : CASE WHEN MAX(CASE WHEN quarter = "Q3" THEN CASE WHEN status = "On Track" THEN 2 ELSE 1 END END) = 2 THEN "On Track" WHEN MAX(CASE WHEN quarter = "Q3" THEN CASE WHEN status = "On Track" THEN 2 ELSE 1 END END) = 1 THEN "Off Track" ELSE "–" END
+
+Field name : status_q4
+Type       : Text
+Display    : Q4
+Used by    : 4.06
+Formula    : CASE WHEN MAX(CASE WHEN quarter = "Q4" THEN CASE WHEN status = "On Track" THEN 2 ELSE 1 END END) = 2 THEN "On Track" WHEN MAX(CASE WHEN quarter = "Q4" THEN CASE WHEN status = "On Track" THEN 2 ELSE 1 END END) = 1 THEN "Off Track" ELSE "–" END
+
+Field name : m_annual_pct
+Type       : Percent
+Display    : Annual
+Used by    : 4.06
+Formula    : MAX(annual_achievement_pct)
+
+====================================================================================================
+DATA SOURCE: fct3_support_activity
+====================================================================================================
+
+Field name : m_open_needs
+Type       : Number
+Display    : Open support needs
+Used by    : 1.04
+Formula    : COUNT_DISTINCT(CASE WHEN is_open_support_need THEN support_id END)
+
+Field name : m_needs
+Type       : Number
+Display    : Support needs
+Used by    : 1.14
+Formula    : COUNT_DISTINCT(support_id)
+
+Field name : m_support_grantees
+Type       : Number
+Display    : Grantees
+Used by    : 1.14, 1.15
+Formula    : COUNT_DISTINCT(organization_id)
+
+Field name : m_responses
+Type       : Number
+Display    : Responses
+Used by    : 1.15 (blank until the source captures a response type)
+Formula    : COUNT_DISTINCT(CASE WHEN response_category IS NOT NULL AND response_category <> "" THEN support_id END)
+
+====================================================================================================
+DATA SOURCE: fct4_budget_year
+====================================================================================================
+
+Field name : n_available
+Type       : Number
+Display    : (feeds inr_available)
+Used by    : 2.01
+Formula    : SUM(available_budget)
+
+Field name : n_dividends
+Type       : Number
+Display    : (feeds inr_dividends)
+Used by    : 2.09
+Formula    : SUM(dividend_income)
+
+Field name : n_carry_forward
+Type       : Number
+Display    : (feeds inr_carry_forward)
+Used by    : 2.10
+Formula    : SUM(prior_year_carry_forward)
+
+Field name : n_committed_current
+Type       : Number
+Display    : (feeds inr_committed_current)
+Used by    : 2.11
+Formula    : SUM(annual_committed_funding)
+
+Field name : n_next_q1
+Type       : Number
+Display    : (feeds inr_next_q1)
+Used by    : 2.12
+Formula    : SUM(next_year_q1_committed_funding)
+
+Field name : n_committed_total
+Type       : Number
+Display    : (feeds inr_committed_total)
+Used by    : 2.02
+Formula    : SUM(annual_committed_funding) + SUM(next_year_q1_committed_funding)
+
+Field name : n_disbursed
+Type       : Number
+Display    : (feeds inr_disbursed)
+Used by    : 2.03
+Formula    : SUM(annual_disbursed_funding)
+
+Field name : n_unallocated
+Type       : Number
+Display    : (feeds inr_unallocated)
+Used by    : 2.04
+Formula    : SUM(unallocated_balance)
+
+Field name : inr_available
+Type       : Text
+Display    : Available budget
+Used by    : 2.01
+Formula    : CASE WHEN n_available IS NULL THEN "–" ELSE CONCAT(CASE WHEN n_available < 0 THEN "-₹" ELSE "₹" END, CASE WHEN ROUND(ABS(n_available)) < 1000 THEN CAST(ROUND(ABS(n_available)) AS TEXT) WHEN ROUND(ABS(n_available)) < 100000 THEN CONCAT(CAST(FLOOR(ROUND(ABS(n_available)) / 1000) AS TEXT), ",", CASE WHEN (ROUND(ABS(n_available)) - FLOOR(ROUND(ABS(n_available)) / 1000) * 1000) < 10 THEN CONCAT("00", CAST((ROUND(ABS(n_available)) - FLOOR(ROUND(ABS(n_available)) / 1000) * 1000) AS TEXT)) WHEN (ROUND(ABS(n_available)) - FLOOR(ROUND(ABS(n_available)) / 1000) * 1000) < 100 THEN CONCAT("0", CAST((ROUND(ABS(n_available)) - FLOOR(ROUND(ABS(n_available)) / 1000) * 1000) AS TEXT)) ELSE CAST((ROUND(ABS(n_available)) - FLOOR(ROUND(ABS(n_available)) / 1000) * 1000) AS TEXT) END) WHEN ROUND(ABS(n_available)) < 10000000 THEN CONCAT(CAST(FLOOR(ROUND(ABS(n_available)) / 100000) AS TEXT), ",", CASE WHEN (FLOOR(ROUND(ABS(n_available)) / 1000) - FLOOR(ROUND(ABS(n_available)) / 100000) * 100) < 10 THEN CONCAT("0", CAST((FLOOR(ROUND(ABS(n_available)) / 1000) - FLOOR(ROUND(ABS(n_available)) / 100000) * 100) AS TEXT)) ELSE CAST((FLOOR(ROUND(ABS(n_available)) / 1000) - FLOOR(ROUND(ABS(n_available)) / 100000) * 100) AS TEXT) END, ",", CASE WHEN (ROUND(ABS(n_available)) - FLOOR(ROUND(ABS(n_available)) / 1000) * 1000) < 10 THEN CONCAT("00", CAST((ROUND(ABS(n_available)) - FLOOR(ROUND(ABS(n_available)) / 1000) * 1000) AS TEXT)) WHEN (ROUND(ABS(n_available)) - FLOOR(ROUND(ABS(n_available)) / 1000) * 1000) < 100 THEN CONCAT("0", CAST((ROUND(ABS(n_available)) - FLOOR(ROUND(ABS(n_available)) / 1000) * 1000) AS TEXT)) ELSE CAST((ROUND(ABS(n_available)) - FLOOR(ROUND(ABS(n_available)) / 1000) * 1000) AS TEXT) END) ELSE CONCAT(CASE WHEN FLOOR(ROUND(ABS(n_available)) / 10000000) < 100 THEN CAST(FLOOR(ROUND(ABS(n_available)) / 10000000) AS TEXT) ELSE CONCAT(CAST(FLOOR(FLOOR(ROUND(ABS(n_available)) / 10000000) / 100) AS TEXT), ",", CASE WHEN (FLOOR(ROUND(ABS(n_available)) / 10000000) - FLOOR(FLOOR(ROUND(ABS(n_available)) / 10000000) / 100) * 100) < 10 THEN CONCAT("0", CAST((FLOOR(ROUND(ABS(n_available)) / 10000000) - FLOOR(FLOOR(ROUND(ABS(n_available)) / 10000000) / 100) * 100) AS TEXT)) ELSE CAST((FLOOR(ROUND(ABS(n_available)) / 10000000) - FLOOR(FLOOR(ROUND(ABS(n_available)) / 10000000) / 100) * 100) AS TEXT) END) END, ",", CASE WHEN (FLOOR(ROUND(ABS(n_available)) / 100000) - FLOOR(ROUND(ABS(n_available)) / 10000000) * 100) < 10 THEN CONCAT("0", CAST((FLOOR(ROUND(ABS(n_available)) / 100000) - FLOOR(ROUND(ABS(n_available)) / 10000000) * 100) AS TEXT)) ELSE CAST((FLOOR(ROUND(ABS(n_available)) / 100000) - FLOOR(ROUND(ABS(n_available)) / 10000000) * 100) AS TEXT) END, ",", CASE WHEN (FLOOR(ROUND(ABS(n_available)) / 1000) - FLOOR(ROUND(ABS(n_available)) / 100000) * 100) < 10 THEN CONCAT("0", CAST((FLOOR(ROUND(ABS(n_available)) / 1000) - FLOOR(ROUND(ABS(n_available)) / 100000) * 100) AS TEXT)) ELSE CAST((FLOOR(ROUND(ABS(n_available)) / 1000) - FLOOR(ROUND(ABS(n_available)) / 100000) * 100) AS TEXT) END, ",", CASE WHEN (ROUND(ABS(n_available)) - FLOOR(ROUND(ABS(n_available)) / 1000) * 1000) < 10 THEN CONCAT("00", CAST((ROUND(ABS(n_available)) - FLOOR(ROUND(ABS(n_available)) / 1000) * 1000) AS TEXT)) WHEN (ROUND(ABS(n_available)) - FLOOR(ROUND(ABS(n_available)) / 1000) * 1000) < 100 THEN CONCAT("0", CAST((ROUND(ABS(n_available)) - FLOOR(ROUND(ABS(n_available)) / 1000) * 1000) AS TEXT)) ELSE CAST((ROUND(ABS(n_available)) - FLOOR(ROUND(ABS(n_available)) / 1000) * 1000) AS TEXT) END) END) END
+
+Field name : inr_dividends
+Type       : Text
+Display    : Dividends
+Used by    : 2.09
+Formula    : CASE WHEN n_dividends IS NULL THEN "–" ELSE CONCAT(CASE WHEN n_dividends < 0 THEN "-₹" ELSE "₹" END, CASE WHEN ROUND(ABS(n_dividends)) < 1000 THEN CAST(ROUND(ABS(n_dividends)) AS TEXT) WHEN ROUND(ABS(n_dividends)) < 100000 THEN CONCAT(CAST(FLOOR(ROUND(ABS(n_dividends)) / 1000) AS TEXT), ",", CASE WHEN (ROUND(ABS(n_dividends)) - FLOOR(ROUND(ABS(n_dividends)) / 1000) * 1000) < 10 THEN CONCAT("00", CAST((ROUND(ABS(n_dividends)) - FLOOR(ROUND(ABS(n_dividends)) / 1000) * 1000) AS TEXT)) WHEN (ROUND(ABS(n_dividends)) - FLOOR(ROUND(ABS(n_dividends)) / 1000) * 1000) < 100 THEN CONCAT("0", CAST((ROUND(ABS(n_dividends)) - FLOOR(ROUND(ABS(n_dividends)) / 1000) * 1000) AS TEXT)) ELSE CAST((ROUND(ABS(n_dividends)) - FLOOR(ROUND(ABS(n_dividends)) / 1000) * 1000) AS TEXT) END) WHEN ROUND(ABS(n_dividends)) < 10000000 THEN CONCAT(CAST(FLOOR(ROUND(ABS(n_dividends)) / 100000) AS TEXT), ",", CASE WHEN (FLOOR(ROUND(ABS(n_dividends)) / 1000) - FLOOR(ROUND(ABS(n_dividends)) / 100000) * 100) < 10 THEN CONCAT("0", CAST((FLOOR(ROUND(ABS(n_dividends)) / 1000) - FLOOR(ROUND(ABS(n_dividends)) / 100000) * 100) AS TEXT)) ELSE CAST((FLOOR(ROUND(ABS(n_dividends)) / 1000) - FLOOR(ROUND(ABS(n_dividends)) / 100000) * 100) AS TEXT) END, ",", CASE WHEN (ROUND(ABS(n_dividends)) - FLOOR(ROUND(ABS(n_dividends)) / 1000) * 1000) < 10 THEN CONCAT("00", CAST((ROUND(ABS(n_dividends)) - FLOOR(ROUND(ABS(n_dividends)) / 1000) * 1000) AS TEXT)) WHEN (ROUND(ABS(n_dividends)) - FLOOR(ROUND(ABS(n_dividends)) / 1000) * 1000) < 100 THEN CONCAT("0", CAST((ROUND(ABS(n_dividends)) - FLOOR(ROUND(ABS(n_dividends)) / 1000) * 1000) AS TEXT)) ELSE CAST((ROUND(ABS(n_dividends)) - FLOOR(ROUND(ABS(n_dividends)) / 1000) * 1000) AS TEXT) END) ELSE CONCAT(CASE WHEN FLOOR(ROUND(ABS(n_dividends)) / 10000000) < 100 THEN CAST(FLOOR(ROUND(ABS(n_dividends)) / 10000000) AS TEXT) ELSE CONCAT(CAST(FLOOR(FLOOR(ROUND(ABS(n_dividends)) / 10000000) / 100) AS TEXT), ",", CASE WHEN (FLOOR(ROUND(ABS(n_dividends)) / 10000000) - FLOOR(FLOOR(ROUND(ABS(n_dividends)) / 10000000) / 100) * 100) < 10 THEN CONCAT("0", CAST((FLOOR(ROUND(ABS(n_dividends)) / 10000000) - FLOOR(FLOOR(ROUND(ABS(n_dividends)) / 10000000) / 100) * 100) AS TEXT)) ELSE CAST((FLOOR(ROUND(ABS(n_dividends)) / 10000000) - FLOOR(FLOOR(ROUND(ABS(n_dividends)) / 10000000) / 100) * 100) AS TEXT) END) END, ",", CASE WHEN (FLOOR(ROUND(ABS(n_dividends)) / 100000) - FLOOR(ROUND(ABS(n_dividends)) / 10000000) * 100) < 10 THEN CONCAT("0", CAST((FLOOR(ROUND(ABS(n_dividends)) / 100000) - FLOOR(ROUND(ABS(n_dividends)) / 10000000) * 100) AS TEXT)) ELSE CAST((FLOOR(ROUND(ABS(n_dividends)) / 100000) - FLOOR(ROUND(ABS(n_dividends)) / 10000000) * 100) AS TEXT) END, ",", CASE WHEN (FLOOR(ROUND(ABS(n_dividends)) / 1000) - FLOOR(ROUND(ABS(n_dividends)) / 100000) * 100) < 10 THEN CONCAT("0", CAST((FLOOR(ROUND(ABS(n_dividends)) / 1000) - FLOOR(ROUND(ABS(n_dividends)) / 100000) * 100) AS TEXT)) ELSE CAST((FLOOR(ROUND(ABS(n_dividends)) / 1000) - FLOOR(ROUND(ABS(n_dividends)) / 100000) * 100) AS TEXT) END, ",", CASE WHEN (ROUND(ABS(n_dividends)) - FLOOR(ROUND(ABS(n_dividends)) / 1000) * 1000) < 10 THEN CONCAT("00", CAST((ROUND(ABS(n_dividends)) - FLOOR(ROUND(ABS(n_dividends)) / 1000) * 1000) AS TEXT)) WHEN (ROUND(ABS(n_dividends)) - FLOOR(ROUND(ABS(n_dividends)) / 1000) * 1000) < 100 THEN CONCAT("0", CAST((ROUND(ABS(n_dividends)) - FLOOR(ROUND(ABS(n_dividends)) / 1000) * 1000) AS TEXT)) ELSE CAST((ROUND(ABS(n_dividends)) - FLOOR(ROUND(ABS(n_dividends)) / 1000) * 1000) AS TEXT) END) END) END
+
+Field name : inr_carry_forward
+Type       : Text
+Display    : Carry Forward
+Used by    : 2.10
+Formula    : CASE WHEN n_carry_forward IS NULL THEN "–" ELSE CONCAT(CASE WHEN n_carry_forward < 0 THEN "-₹" ELSE "₹" END, CASE WHEN ROUND(ABS(n_carry_forward)) < 1000 THEN CAST(ROUND(ABS(n_carry_forward)) AS TEXT) WHEN ROUND(ABS(n_carry_forward)) < 100000 THEN CONCAT(CAST(FLOOR(ROUND(ABS(n_carry_forward)) / 1000) AS TEXT), ",", CASE WHEN (ROUND(ABS(n_carry_forward)) - FLOOR(ROUND(ABS(n_carry_forward)) / 1000) * 1000) < 10 THEN CONCAT("00", CAST((ROUND(ABS(n_carry_forward)) - FLOOR(ROUND(ABS(n_carry_forward)) / 1000) * 1000) AS TEXT)) WHEN (ROUND(ABS(n_carry_forward)) - FLOOR(ROUND(ABS(n_carry_forward)) / 1000) * 1000) < 100 THEN CONCAT("0", CAST((ROUND(ABS(n_carry_forward)) - FLOOR(ROUND(ABS(n_carry_forward)) / 1000) * 1000) AS TEXT)) ELSE CAST((ROUND(ABS(n_carry_forward)) - FLOOR(ROUND(ABS(n_carry_forward)) / 1000) * 1000) AS TEXT) END) WHEN ROUND(ABS(n_carry_forward)) < 10000000 THEN CONCAT(CAST(FLOOR(ROUND(ABS(n_carry_forward)) / 100000) AS TEXT), ",", CASE WHEN (FLOOR(ROUND(ABS(n_carry_forward)) / 1000) - FLOOR(ROUND(ABS(n_carry_forward)) / 100000) * 100) < 10 THEN CONCAT("0", CAST((FLOOR(ROUND(ABS(n_carry_forward)) / 1000) - FLOOR(ROUND(ABS(n_carry_forward)) / 100000) * 100) AS TEXT)) ELSE CAST((FLOOR(ROUND(ABS(n_carry_forward)) / 1000) - FLOOR(ROUND(ABS(n_carry_forward)) / 100000) * 100) AS TEXT) END, ",", CASE WHEN (ROUND(ABS(n_carry_forward)) - FLOOR(ROUND(ABS(n_carry_forward)) / 1000) * 1000) < 10 THEN CONCAT("00", CAST((ROUND(ABS(n_carry_forward)) - FLOOR(ROUND(ABS(n_carry_forward)) / 1000) * 1000) AS TEXT)) WHEN (ROUND(ABS(n_carry_forward)) - FLOOR(ROUND(ABS(n_carry_forward)) / 1000) * 1000) < 100 THEN CONCAT("0", CAST((ROUND(ABS(n_carry_forward)) - FLOOR(ROUND(ABS(n_carry_forward)) / 1000) * 1000) AS TEXT)) ELSE CAST((ROUND(ABS(n_carry_forward)) - FLOOR(ROUND(ABS(n_carry_forward)) / 1000) * 1000) AS TEXT) END) ELSE CONCAT(CASE WHEN FLOOR(ROUND(ABS(n_carry_forward)) / 10000000) < 100 THEN CAST(FLOOR(ROUND(ABS(n_carry_forward)) / 10000000) AS TEXT) ELSE CONCAT(CAST(FLOOR(FLOOR(ROUND(ABS(n_carry_forward)) / 10000000) / 100) AS TEXT), ",", CASE WHEN (FLOOR(ROUND(ABS(n_carry_forward)) / 10000000) - FLOOR(FLOOR(ROUND(ABS(n_carry_forward)) / 10000000) / 100) * 100) < 10 THEN CONCAT("0", CAST((FLOOR(ROUND(ABS(n_carry_forward)) / 10000000) - FLOOR(FLOOR(ROUND(ABS(n_carry_forward)) / 10000000) / 100) * 100) AS TEXT)) ELSE CAST((FLOOR(ROUND(ABS(n_carry_forward)) / 10000000) - FLOOR(FLOOR(ROUND(ABS(n_carry_forward)) / 10000000) / 100) * 100) AS TEXT) END) END, ",", CASE WHEN (FLOOR(ROUND(ABS(n_carry_forward)) / 100000) - FLOOR(ROUND(ABS(n_carry_forward)) / 10000000) * 100) < 10 THEN CONCAT("0", CAST((FLOOR(ROUND(ABS(n_carry_forward)) / 100000) - FLOOR(ROUND(ABS(n_carry_forward)) / 10000000) * 100) AS TEXT)) ELSE CAST((FLOOR(ROUND(ABS(n_carry_forward)) / 100000) - FLOOR(ROUND(ABS(n_carry_forward)) / 10000000) * 100) AS TEXT) END, ",", CASE WHEN (FLOOR(ROUND(ABS(n_carry_forward)) / 1000) - FLOOR(ROUND(ABS(n_carry_forward)) / 100000) * 100) < 10 THEN CONCAT("0", CAST((FLOOR(ROUND(ABS(n_carry_forward)) / 1000) - FLOOR(ROUND(ABS(n_carry_forward)) / 100000) * 100) AS TEXT)) ELSE CAST((FLOOR(ROUND(ABS(n_carry_forward)) / 1000) - FLOOR(ROUND(ABS(n_carry_forward)) / 100000) * 100) AS TEXT) END, ",", CASE WHEN (ROUND(ABS(n_carry_forward)) - FLOOR(ROUND(ABS(n_carry_forward)) / 1000) * 1000) < 10 THEN CONCAT("00", CAST((ROUND(ABS(n_carry_forward)) - FLOOR(ROUND(ABS(n_carry_forward)) / 1000) * 1000) AS TEXT)) WHEN (ROUND(ABS(n_carry_forward)) - FLOOR(ROUND(ABS(n_carry_forward)) / 1000) * 1000) < 100 THEN CONCAT("0", CAST((ROUND(ABS(n_carry_forward)) - FLOOR(ROUND(ABS(n_carry_forward)) / 1000) * 1000) AS TEXT)) ELSE CAST((ROUND(ABS(n_carry_forward)) - FLOOR(ROUND(ABS(n_carry_forward)) / 1000) * 1000) AS TEXT) END) END) END
+
+Field name : inr_committed_total
+Type       : Text
+Display    : Committed funding
+Used by    : 2.02
+Formula    : CASE WHEN n_committed_total IS NULL THEN "–" ELSE CONCAT(CASE WHEN n_committed_total < 0 THEN "-₹" ELSE "₹" END, CASE WHEN ROUND(ABS(n_committed_total)) < 1000 THEN CAST(ROUND(ABS(n_committed_total)) AS TEXT) WHEN ROUND(ABS(n_committed_total)) < 100000 THEN CONCAT(CAST(FLOOR(ROUND(ABS(n_committed_total)) / 1000) AS TEXT), ",", CASE WHEN (ROUND(ABS(n_committed_total)) - FLOOR(ROUND(ABS(n_committed_total)) / 1000) * 1000) < 10 THEN CONCAT("00", CAST((ROUND(ABS(n_committed_total)) - FLOOR(ROUND(ABS(n_committed_total)) / 1000) * 1000) AS TEXT)) WHEN (ROUND(ABS(n_committed_total)) - FLOOR(ROUND(ABS(n_committed_total)) / 1000) * 1000) < 100 THEN CONCAT("0", CAST((ROUND(ABS(n_committed_total)) - FLOOR(ROUND(ABS(n_committed_total)) / 1000) * 1000) AS TEXT)) ELSE CAST((ROUND(ABS(n_committed_total)) - FLOOR(ROUND(ABS(n_committed_total)) / 1000) * 1000) AS TEXT) END) WHEN ROUND(ABS(n_committed_total)) < 10000000 THEN CONCAT(CAST(FLOOR(ROUND(ABS(n_committed_total)) / 100000) AS TEXT), ",", CASE WHEN (FLOOR(ROUND(ABS(n_committed_total)) / 1000) - FLOOR(ROUND(ABS(n_committed_total)) / 100000) * 100) < 10 THEN CONCAT("0", CAST((FLOOR(ROUND(ABS(n_committed_total)) / 1000) - FLOOR(ROUND(ABS(n_committed_total)) / 100000) * 100) AS TEXT)) ELSE CAST((FLOOR(ROUND(ABS(n_committed_total)) / 1000) - FLOOR(ROUND(ABS(n_committed_total)) / 100000) * 100) AS TEXT) END, ",", CASE WHEN (ROUND(ABS(n_committed_total)) - FLOOR(ROUND(ABS(n_committed_total)) / 1000) * 1000) < 10 THEN CONCAT("00", CAST((ROUND(ABS(n_committed_total)) - FLOOR(ROUND(ABS(n_committed_total)) / 1000) * 1000) AS TEXT)) WHEN (ROUND(ABS(n_committed_total)) - FLOOR(ROUND(ABS(n_committed_total)) / 1000) * 1000) < 100 THEN CONCAT("0", CAST((ROUND(ABS(n_committed_total)) - FLOOR(ROUND(ABS(n_committed_total)) / 1000) * 1000) AS TEXT)) ELSE CAST((ROUND(ABS(n_committed_total)) - FLOOR(ROUND(ABS(n_committed_total)) / 1000) * 1000) AS TEXT) END) ELSE CONCAT(CASE WHEN FLOOR(ROUND(ABS(n_committed_total)) / 10000000) < 100 THEN CAST(FLOOR(ROUND(ABS(n_committed_total)) / 10000000) AS TEXT) ELSE CONCAT(CAST(FLOOR(FLOOR(ROUND(ABS(n_committed_total)) / 10000000) / 100) AS TEXT), ",", CASE WHEN (FLOOR(ROUND(ABS(n_committed_total)) / 10000000) - FLOOR(FLOOR(ROUND(ABS(n_committed_total)) / 10000000) / 100) * 100) < 10 THEN CONCAT("0", CAST((FLOOR(ROUND(ABS(n_committed_total)) / 10000000) - FLOOR(FLOOR(ROUND(ABS(n_committed_total)) / 10000000) / 100) * 100) AS TEXT)) ELSE CAST((FLOOR(ROUND(ABS(n_committed_total)) / 10000000) - FLOOR(FLOOR(ROUND(ABS(n_committed_total)) / 10000000) / 100) * 100) AS TEXT) END) END, ",", CASE WHEN (FLOOR(ROUND(ABS(n_committed_total)) / 100000) - FLOOR(ROUND(ABS(n_committed_total)) / 10000000) * 100) < 10 THEN CONCAT("0", CAST((FLOOR(ROUND(ABS(n_committed_total)) / 100000) - FLOOR(ROUND(ABS(n_committed_total)) / 10000000) * 100) AS TEXT)) ELSE CAST((FLOOR(ROUND(ABS(n_committed_total)) / 100000) - FLOOR(ROUND(ABS(n_committed_total)) / 10000000) * 100) AS TEXT) END, ",", CASE WHEN (FLOOR(ROUND(ABS(n_committed_total)) / 1000) - FLOOR(ROUND(ABS(n_committed_total)) / 100000) * 100) < 10 THEN CONCAT("0", CAST((FLOOR(ROUND(ABS(n_committed_total)) / 1000) - FLOOR(ROUND(ABS(n_committed_total)) / 100000) * 100) AS TEXT)) ELSE CAST((FLOOR(ROUND(ABS(n_committed_total)) / 1000) - FLOOR(ROUND(ABS(n_committed_total)) / 100000) * 100) AS TEXT) END, ",", CASE WHEN (ROUND(ABS(n_committed_total)) - FLOOR(ROUND(ABS(n_committed_total)) / 1000) * 1000) < 10 THEN CONCAT("00", CAST((ROUND(ABS(n_committed_total)) - FLOOR(ROUND(ABS(n_committed_total)) / 1000) * 1000) AS TEXT)) WHEN (ROUND(ABS(n_committed_total)) - FLOOR(ROUND(ABS(n_committed_total)) / 1000) * 1000) < 100 THEN CONCAT("0", CAST((ROUND(ABS(n_committed_total)) - FLOOR(ROUND(ABS(n_committed_total)) / 1000) * 1000) AS TEXT)) ELSE CAST((ROUND(ABS(n_committed_total)) - FLOOR(ROUND(ABS(n_committed_total)) / 1000) * 1000) AS TEXT) END) END) END
+
+Field name : inr_committed_current
+Type       : Text
+Display    : Current FY
+Used by    : 2.11
+Formula    : CASE WHEN n_committed_current IS NULL THEN "–" ELSE CONCAT(CASE WHEN n_committed_current < 0 THEN "-₹" ELSE "₹" END, CASE WHEN ROUND(ABS(n_committed_current)) < 1000 THEN CAST(ROUND(ABS(n_committed_current)) AS TEXT) WHEN ROUND(ABS(n_committed_current)) < 100000 THEN CONCAT(CAST(FLOOR(ROUND(ABS(n_committed_current)) / 1000) AS TEXT), ",", CASE WHEN (ROUND(ABS(n_committed_current)) - FLOOR(ROUND(ABS(n_committed_current)) / 1000) * 1000) < 10 THEN CONCAT("00", CAST((ROUND(ABS(n_committed_current)) - FLOOR(ROUND(ABS(n_committed_current)) / 1000) * 1000) AS TEXT)) WHEN (ROUND(ABS(n_committed_current)) - FLOOR(ROUND(ABS(n_committed_current)) / 1000) * 1000) < 100 THEN CONCAT("0", CAST((ROUND(ABS(n_committed_current)) - FLOOR(ROUND(ABS(n_committed_current)) / 1000) * 1000) AS TEXT)) ELSE CAST((ROUND(ABS(n_committed_current)) - FLOOR(ROUND(ABS(n_committed_current)) / 1000) * 1000) AS TEXT) END) WHEN ROUND(ABS(n_committed_current)) < 10000000 THEN CONCAT(CAST(FLOOR(ROUND(ABS(n_committed_current)) / 100000) AS TEXT), ",", CASE WHEN (FLOOR(ROUND(ABS(n_committed_current)) / 1000) - FLOOR(ROUND(ABS(n_committed_current)) / 100000) * 100) < 10 THEN CONCAT("0", CAST((FLOOR(ROUND(ABS(n_committed_current)) / 1000) - FLOOR(ROUND(ABS(n_committed_current)) / 100000) * 100) AS TEXT)) ELSE CAST((FLOOR(ROUND(ABS(n_committed_current)) / 1000) - FLOOR(ROUND(ABS(n_committed_current)) / 100000) * 100) AS TEXT) END, ",", CASE WHEN (ROUND(ABS(n_committed_current)) - FLOOR(ROUND(ABS(n_committed_current)) / 1000) * 1000) < 10 THEN CONCAT("00", CAST((ROUND(ABS(n_committed_current)) - FLOOR(ROUND(ABS(n_committed_current)) / 1000) * 1000) AS TEXT)) WHEN (ROUND(ABS(n_committed_current)) - FLOOR(ROUND(ABS(n_committed_current)) / 1000) * 1000) < 100 THEN CONCAT("0", CAST((ROUND(ABS(n_committed_current)) - FLOOR(ROUND(ABS(n_committed_current)) / 1000) * 1000) AS TEXT)) ELSE CAST((ROUND(ABS(n_committed_current)) - FLOOR(ROUND(ABS(n_committed_current)) / 1000) * 1000) AS TEXT) END) ELSE CONCAT(CASE WHEN FLOOR(ROUND(ABS(n_committed_current)) / 10000000) < 100 THEN CAST(FLOOR(ROUND(ABS(n_committed_current)) / 10000000) AS TEXT) ELSE CONCAT(CAST(FLOOR(FLOOR(ROUND(ABS(n_committed_current)) / 10000000) / 100) AS TEXT), ",", CASE WHEN (FLOOR(ROUND(ABS(n_committed_current)) / 10000000) - FLOOR(FLOOR(ROUND(ABS(n_committed_current)) / 10000000) / 100) * 100) < 10 THEN CONCAT("0", CAST((FLOOR(ROUND(ABS(n_committed_current)) / 10000000) - FLOOR(FLOOR(ROUND(ABS(n_committed_current)) / 10000000) / 100) * 100) AS TEXT)) ELSE CAST((FLOOR(ROUND(ABS(n_committed_current)) / 10000000) - FLOOR(FLOOR(ROUND(ABS(n_committed_current)) / 10000000) / 100) * 100) AS TEXT) END) END, ",", CASE WHEN (FLOOR(ROUND(ABS(n_committed_current)) / 100000) - FLOOR(ROUND(ABS(n_committed_current)) / 10000000) * 100) < 10 THEN CONCAT("0", CAST((FLOOR(ROUND(ABS(n_committed_current)) / 100000) - FLOOR(ROUND(ABS(n_committed_current)) / 10000000) * 100) AS TEXT)) ELSE CAST((FLOOR(ROUND(ABS(n_committed_current)) / 100000) - FLOOR(ROUND(ABS(n_committed_current)) / 10000000) * 100) AS TEXT) END, ",", CASE WHEN (FLOOR(ROUND(ABS(n_committed_current)) / 1000) - FLOOR(ROUND(ABS(n_committed_current)) / 100000) * 100) < 10 THEN CONCAT("0", CAST((FLOOR(ROUND(ABS(n_committed_current)) / 1000) - FLOOR(ROUND(ABS(n_committed_current)) / 100000) * 100) AS TEXT)) ELSE CAST((FLOOR(ROUND(ABS(n_committed_current)) / 1000) - FLOOR(ROUND(ABS(n_committed_current)) / 100000) * 100) AS TEXT) END, ",", CASE WHEN (ROUND(ABS(n_committed_current)) - FLOOR(ROUND(ABS(n_committed_current)) / 1000) * 1000) < 10 THEN CONCAT("00", CAST((ROUND(ABS(n_committed_current)) - FLOOR(ROUND(ABS(n_committed_current)) / 1000) * 1000) AS TEXT)) WHEN (ROUND(ABS(n_committed_current)) - FLOOR(ROUND(ABS(n_committed_current)) / 1000) * 1000) < 100 THEN CONCAT("0", CAST((ROUND(ABS(n_committed_current)) - FLOOR(ROUND(ABS(n_committed_current)) / 1000) * 1000) AS TEXT)) ELSE CAST((ROUND(ABS(n_committed_current)) - FLOOR(ROUND(ABS(n_committed_current)) / 1000) * 1000) AS TEXT) END) END) END
+
+Field name : inr_next_q1
+Type       : Text
+Display    : Next FY Q1
+Used by    : 2.12
+Formula    : CASE WHEN n_next_q1 IS NULL THEN "–" ELSE CONCAT(CASE WHEN n_next_q1 < 0 THEN "-₹" ELSE "₹" END, CASE WHEN ROUND(ABS(n_next_q1)) < 1000 THEN CAST(ROUND(ABS(n_next_q1)) AS TEXT) WHEN ROUND(ABS(n_next_q1)) < 100000 THEN CONCAT(CAST(FLOOR(ROUND(ABS(n_next_q1)) / 1000) AS TEXT), ",", CASE WHEN (ROUND(ABS(n_next_q1)) - FLOOR(ROUND(ABS(n_next_q1)) / 1000) * 1000) < 10 THEN CONCAT("00", CAST((ROUND(ABS(n_next_q1)) - FLOOR(ROUND(ABS(n_next_q1)) / 1000) * 1000) AS TEXT)) WHEN (ROUND(ABS(n_next_q1)) - FLOOR(ROUND(ABS(n_next_q1)) / 1000) * 1000) < 100 THEN CONCAT("0", CAST((ROUND(ABS(n_next_q1)) - FLOOR(ROUND(ABS(n_next_q1)) / 1000) * 1000) AS TEXT)) ELSE CAST((ROUND(ABS(n_next_q1)) - FLOOR(ROUND(ABS(n_next_q1)) / 1000) * 1000) AS TEXT) END) WHEN ROUND(ABS(n_next_q1)) < 10000000 THEN CONCAT(CAST(FLOOR(ROUND(ABS(n_next_q1)) / 100000) AS TEXT), ",", CASE WHEN (FLOOR(ROUND(ABS(n_next_q1)) / 1000) - FLOOR(ROUND(ABS(n_next_q1)) / 100000) * 100) < 10 THEN CONCAT("0", CAST((FLOOR(ROUND(ABS(n_next_q1)) / 1000) - FLOOR(ROUND(ABS(n_next_q1)) / 100000) * 100) AS TEXT)) ELSE CAST((FLOOR(ROUND(ABS(n_next_q1)) / 1000) - FLOOR(ROUND(ABS(n_next_q1)) / 100000) * 100) AS TEXT) END, ",", CASE WHEN (ROUND(ABS(n_next_q1)) - FLOOR(ROUND(ABS(n_next_q1)) / 1000) * 1000) < 10 THEN CONCAT("00", CAST((ROUND(ABS(n_next_q1)) - FLOOR(ROUND(ABS(n_next_q1)) / 1000) * 1000) AS TEXT)) WHEN (ROUND(ABS(n_next_q1)) - FLOOR(ROUND(ABS(n_next_q1)) / 1000) * 1000) < 100 THEN CONCAT("0", CAST((ROUND(ABS(n_next_q1)) - FLOOR(ROUND(ABS(n_next_q1)) / 1000) * 1000) AS TEXT)) ELSE CAST((ROUND(ABS(n_next_q1)) - FLOOR(ROUND(ABS(n_next_q1)) / 1000) * 1000) AS TEXT) END) ELSE CONCAT(CASE WHEN FLOOR(ROUND(ABS(n_next_q1)) / 10000000) < 100 THEN CAST(FLOOR(ROUND(ABS(n_next_q1)) / 10000000) AS TEXT) ELSE CONCAT(CAST(FLOOR(FLOOR(ROUND(ABS(n_next_q1)) / 10000000) / 100) AS TEXT), ",", CASE WHEN (FLOOR(ROUND(ABS(n_next_q1)) / 10000000) - FLOOR(FLOOR(ROUND(ABS(n_next_q1)) / 10000000) / 100) * 100) < 10 THEN CONCAT("0", CAST((FLOOR(ROUND(ABS(n_next_q1)) / 10000000) - FLOOR(FLOOR(ROUND(ABS(n_next_q1)) / 10000000) / 100) * 100) AS TEXT)) ELSE CAST((FLOOR(ROUND(ABS(n_next_q1)) / 10000000) - FLOOR(FLOOR(ROUND(ABS(n_next_q1)) / 10000000) / 100) * 100) AS TEXT) END) END, ",", CASE WHEN (FLOOR(ROUND(ABS(n_next_q1)) / 100000) - FLOOR(ROUND(ABS(n_next_q1)) / 10000000) * 100) < 10 THEN CONCAT("0", CAST((FLOOR(ROUND(ABS(n_next_q1)) / 100000) - FLOOR(ROUND(ABS(n_next_q1)) / 10000000) * 100) AS TEXT)) ELSE CAST((FLOOR(ROUND(ABS(n_next_q1)) / 100000) - FLOOR(ROUND(ABS(n_next_q1)) / 10000000) * 100) AS TEXT) END, ",", CASE WHEN (FLOOR(ROUND(ABS(n_next_q1)) / 1000) - FLOOR(ROUND(ABS(n_next_q1)) / 100000) * 100) < 10 THEN CONCAT("0", CAST((FLOOR(ROUND(ABS(n_next_q1)) / 1000) - FLOOR(ROUND(ABS(n_next_q1)) / 100000) * 100) AS TEXT)) ELSE CAST((FLOOR(ROUND(ABS(n_next_q1)) / 1000) - FLOOR(ROUND(ABS(n_next_q1)) / 100000) * 100) AS TEXT) END, ",", CASE WHEN (ROUND(ABS(n_next_q1)) - FLOOR(ROUND(ABS(n_next_q1)) / 1000) * 1000) < 10 THEN CONCAT("00", CAST((ROUND(ABS(n_next_q1)) - FLOOR(ROUND(ABS(n_next_q1)) / 1000) * 1000) AS TEXT)) WHEN (ROUND(ABS(n_next_q1)) - FLOOR(ROUND(ABS(n_next_q1)) / 1000) * 1000) < 100 THEN CONCAT("0", CAST((ROUND(ABS(n_next_q1)) - FLOOR(ROUND(ABS(n_next_q1)) / 1000) * 1000) AS TEXT)) ELSE CAST((ROUND(ABS(n_next_q1)) - FLOOR(ROUND(ABS(n_next_q1)) / 1000) * 1000) AS TEXT) END) END) END
+
+Field name : inr_disbursed
+Type       : Text
+Display    : Disbursed funding
+Used by    : 2.03
+Formula    : CASE WHEN n_disbursed IS NULL THEN "–" ELSE CONCAT(CASE WHEN n_disbursed < 0 THEN "-₹" ELSE "₹" END, CASE WHEN ROUND(ABS(n_disbursed)) < 1000 THEN CAST(ROUND(ABS(n_disbursed)) AS TEXT) WHEN ROUND(ABS(n_disbursed)) < 100000 THEN CONCAT(CAST(FLOOR(ROUND(ABS(n_disbursed)) / 1000) AS TEXT), ",", CASE WHEN (ROUND(ABS(n_disbursed)) - FLOOR(ROUND(ABS(n_disbursed)) / 1000) * 1000) < 10 THEN CONCAT("00", CAST((ROUND(ABS(n_disbursed)) - FLOOR(ROUND(ABS(n_disbursed)) / 1000) * 1000) AS TEXT)) WHEN (ROUND(ABS(n_disbursed)) - FLOOR(ROUND(ABS(n_disbursed)) / 1000) * 1000) < 100 THEN CONCAT("0", CAST((ROUND(ABS(n_disbursed)) - FLOOR(ROUND(ABS(n_disbursed)) / 1000) * 1000) AS TEXT)) ELSE CAST((ROUND(ABS(n_disbursed)) - FLOOR(ROUND(ABS(n_disbursed)) / 1000) * 1000) AS TEXT) END) WHEN ROUND(ABS(n_disbursed)) < 10000000 THEN CONCAT(CAST(FLOOR(ROUND(ABS(n_disbursed)) / 100000) AS TEXT), ",", CASE WHEN (FLOOR(ROUND(ABS(n_disbursed)) / 1000) - FLOOR(ROUND(ABS(n_disbursed)) / 100000) * 100) < 10 THEN CONCAT("0", CAST((FLOOR(ROUND(ABS(n_disbursed)) / 1000) - FLOOR(ROUND(ABS(n_disbursed)) / 100000) * 100) AS TEXT)) ELSE CAST((FLOOR(ROUND(ABS(n_disbursed)) / 1000) - FLOOR(ROUND(ABS(n_disbursed)) / 100000) * 100) AS TEXT) END, ",", CASE WHEN (ROUND(ABS(n_disbursed)) - FLOOR(ROUND(ABS(n_disbursed)) / 1000) * 1000) < 10 THEN CONCAT("00", CAST((ROUND(ABS(n_disbursed)) - FLOOR(ROUND(ABS(n_disbursed)) / 1000) * 1000) AS TEXT)) WHEN (ROUND(ABS(n_disbursed)) - FLOOR(ROUND(ABS(n_disbursed)) / 1000) * 1000) < 100 THEN CONCAT("0", CAST((ROUND(ABS(n_disbursed)) - FLOOR(ROUND(ABS(n_disbursed)) / 1000) * 1000) AS TEXT)) ELSE CAST((ROUND(ABS(n_disbursed)) - FLOOR(ROUND(ABS(n_disbursed)) / 1000) * 1000) AS TEXT) END) ELSE CONCAT(CASE WHEN FLOOR(ROUND(ABS(n_disbursed)) / 10000000) < 100 THEN CAST(FLOOR(ROUND(ABS(n_disbursed)) / 10000000) AS TEXT) ELSE CONCAT(CAST(FLOOR(FLOOR(ROUND(ABS(n_disbursed)) / 10000000) / 100) AS TEXT), ",", CASE WHEN (FLOOR(ROUND(ABS(n_disbursed)) / 10000000) - FLOOR(FLOOR(ROUND(ABS(n_disbursed)) / 10000000) / 100) * 100) < 10 THEN CONCAT("0", CAST((FLOOR(ROUND(ABS(n_disbursed)) / 10000000) - FLOOR(FLOOR(ROUND(ABS(n_disbursed)) / 10000000) / 100) * 100) AS TEXT)) ELSE CAST((FLOOR(ROUND(ABS(n_disbursed)) / 10000000) - FLOOR(FLOOR(ROUND(ABS(n_disbursed)) / 10000000) / 100) * 100) AS TEXT) END) END, ",", CASE WHEN (FLOOR(ROUND(ABS(n_disbursed)) / 100000) - FLOOR(ROUND(ABS(n_disbursed)) / 10000000) * 100) < 10 THEN CONCAT("0", CAST((FLOOR(ROUND(ABS(n_disbursed)) / 100000) - FLOOR(ROUND(ABS(n_disbursed)) / 10000000) * 100) AS TEXT)) ELSE CAST((FLOOR(ROUND(ABS(n_disbursed)) / 100000) - FLOOR(ROUND(ABS(n_disbursed)) / 10000000) * 100) AS TEXT) END, ",", CASE WHEN (FLOOR(ROUND(ABS(n_disbursed)) / 1000) - FLOOR(ROUND(ABS(n_disbursed)) / 100000) * 100) < 10 THEN CONCAT("0", CAST((FLOOR(ROUND(ABS(n_disbursed)) / 1000) - FLOOR(ROUND(ABS(n_disbursed)) / 100000) * 100) AS TEXT)) ELSE CAST((FLOOR(ROUND(ABS(n_disbursed)) / 1000) - FLOOR(ROUND(ABS(n_disbursed)) / 100000) * 100) AS TEXT) END, ",", CASE WHEN (ROUND(ABS(n_disbursed)) - FLOOR(ROUND(ABS(n_disbursed)) / 1000) * 1000) < 10 THEN CONCAT("00", CAST((ROUND(ABS(n_disbursed)) - FLOOR(ROUND(ABS(n_disbursed)) / 1000) * 1000) AS TEXT)) WHEN (ROUND(ABS(n_disbursed)) - FLOOR(ROUND(ABS(n_disbursed)) / 1000) * 1000) < 100 THEN CONCAT("0", CAST((ROUND(ABS(n_disbursed)) - FLOOR(ROUND(ABS(n_disbursed)) / 1000) * 1000) AS TEXT)) ELSE CAST((ROUND(ABS(n_disbursed)) - FLOOR(ROUND(ABS(n_disbursed)) / 1000) * 1000) AS TEXT) END) END) END
+
+Field name : inr_unallocated
+Type       : Text
+Display    : Unallocated balance
+Used by    : 2.04
+Formula    : CASE WHEN n_unallocated IS NULL THEN "–" ELSE CONCAT(CASE WHEN n_unallocated < 0 THEN "-₹" ELSE "₹" END, CASE WHEN ROUND(ABS(n_unallocated)) < 1000 THEN CAST(ROUND(ABS(n_unallocated)) AS TEXT) WHEN ROUND(ABS(n_unallocated)) < 100000 THEN CONCAT(CAST(FLOOR(ROUND(ABS(n_unallocated)) / 1000) AS TEXT), ",", CASE WHEN (ROUND(ABS(n_unallocated)) - FLOOR(ROUND(ABS(n_unallocated)) / 1000) * 1000) < 10 THEN CONCAT("00", CAST((ROUND(ABS(n_unallocated)) - FLOOR(ROUND(ABS(n_unallocated)) / 1000) * 1000) AS TEXT)) WHEN (ROUND(ABS(n_unallocated)) - FLOOR(ROUND(ABS(n_unallocated)) / 1000) * 1000) < 100 THEN CONCAT("0", CAST((ROUND(ABS(n_unallocated)) - FLOOR(ROUND(ABS(n_unallocated)) / 1000) * 1000) AS TEXT)) ELSE CAST((ROUND(ABS(n_unallocated)) - FLOOR(ROUND(ABS(n_unallocated)) / 1000) * 1000) AS TEXT) END) WHEN ROUND(ABS(n_unallocated)) < 10000000 THEN CONCAT(CAST(FLOOR(ROUND(ABS(n_unallocated)) / 100000) AS TEXT), ",", CASE WHEN (FLOOR(ROUND(ABS(n_unallocated)) / 1000) - FLOOR(ROUND(ABS(n_unallocated)) / 100000) * 100) < 10 THEN CONCAT("0", CAST((FLOOR(ROUND(ABS(n_unallocated)) / 1000) - FLOOR(ROUND(ABS(n_unallocated)) / 100000) * 100) AS TEXT)) ELSE CAST((FLOOR(ROUND(ABS(n_unallocated)) / 1000) - FLOOR(ROUND(ABS(n_unallocated)) / 100000) * 100) AS TEXT) END, ",", CASE WHEN (ROUND(ABS(n_unallocated)) - FLOOR(ROUND(ABS(n_unallocated)) / 1000) * 1000) < 10 THEN CONCAT("00", CAST((ROUND(ABS(n_unallocated)) - FLOOR(ROUND(ABS(n_unallocated)) / 1000) * 1000) AS TEXT)) WHEN (ROUND(ABS(n_unallocated)) - FLOOR(ROUND(ABS(n_unallocated)) / 1000) * 1000) < 100 THEN CONCAT("0", CAST((ROUND(ABS(n_unallocated)) - FLOOR(ROUND(ABS(n_unallocated)) / 1000) * 1000) AS TEXT)) ELSE CAST((ROUND(ABS(n_unallocated)) - FLOOR(ROUND(ABS(n_unallocated)) / 1000) * 1000) AS TEXT) END) ELSE CONCAT(CASE WHEN FLOOR(ROUND(ABS(n_unallocated)) / 10000000) < 100 THEN CAST(FLOOR(ROUND(ABS(n_unallocated)) / 10000000) AS TEXT) ELSE CONCAT(CAST(FLOOR(FLOOR(ROUND(ABS(n_unallocated)) / 10000000) / 100) AS TEXT), ",", CASE WHEN (FLOOR(ROUND(ABS(n_unallocated)) / 10000000) - FLOOR(FLOOR(ROUND(ABS(n_unallocated)) / 10000000) / 100) * 100) < 10 THEN CONCAT("0", CAST((FLOOR(ROUND(ABS(n_unallocated)) / 10000000) - FLOOR(FLOOR(ROUND(ABS(n_unallocated)) / 10000000) / 100) * 100) AS TEXT)) ELSE CAST((FLOOR(ROUND(ABS(n_unallocated)) / 10000000) - FLOOR(FLOOR(ROUND(ABS(n_unallocated)) / 10000000) / 100) * 100) AS TEXT) END) END, ",", CASE WHEN (FLOOR(ROUND(ABS(n_unallocated)) / 100000) - FLOOR(ROUND(ABS(n_unallocated)) / 10000000) * 100) < 10 THEN CONCAT("0", CAST((FLOOR(ROUND(ABS(n_unallocated)) / 100000) - FLOOR(ROUND(ABS(n_unallocated)) / 10000000) * 100) AS TEXT)) ELSE CAST((FLOOR(ROUND(ABS(n_unallocated)) / 100000) - FLOOR(ROUND(ABS(n_unallocated)) / 10000000) * 100) AS TEXT) END, ",", CASE WHEN (FLOOR(ROUND(ABS(n_unallocated)) / 1000) - FLOOR(ROUND(ABS(n_unallocated)) / 100000) * 100) < 10 THEN CONCAT("0", CAST((FLOOR(ROUND(ABS(n_unallocated)) / 1000) - FLOOR(ROUND(ABS(n_unallocated)) / 100000) * 100) AS TEXT)) ELSE CAST((FLOOR(ROUND(ABS(n_unallocated)) / 1000) - FLOOR(ROUND(ABS(n_unallocated)) / 100000) * 100) AS TEXT) END, ",", CASE WHEN (ROUND(ABS(n_unallocated)) - FLOOR(ROUND(ABS(n_unallocated)) / 1000) * 1000) < 10 THEN CONCAT("00", CAST((ROUND(ABS(n_unallocated)) - FLOOR(ROUND(ABS(n_unallocated)) / 1000) * 1000) AS TEXT)) WHEN (ROUND(ABS(n_unallocated)) - FLOOR(ROUND(ABS(n_unallocated)) / 1000) * 1000) < 100 THEN CONCAT("0", CAST((ROUND(ABS(n_unallocated)) - FLOOR(ROUND(ABS(n_unallocated)) / 1000) * 1000) AS TEXT)) ELSE CAST((ROUND(ABS(n_unallocated)) - FLOOR(ROUND(ABS(n_unallocated)) / 1000) * 1000) AS TEXT) END) END) END
+
+====================================================================================================
+DATA SOURCE: fct5_maturity_rag
+====================================================================================================
+
+Field name : m_assessed
+Type       : Number
+Display    : Assessed grantees
+Used by    : 1.13
+Formula    : COUNT_DISTINCT(organization_id)
+
+Field name : aspect_order
+Type       : Number (dimension)
+Display    : (sort key, hidden)
+Used by    : 1.13, 4.04 sort
+Formula    : CASE WHEN aspect = "Clarity" THEN 1 WHEN aspect = "Capacity" THEN 2 WHEN aspect = "Compliance" THEN 3 ELSE 4 END
