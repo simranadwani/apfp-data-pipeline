@@ -89,6 +89,36 @@ test('fct2 unpivots quarters and marks the latest update', () => {
   assert.equal(rows[0].organization_id, 'BRIGH_202627_101');
 });
 
+test('fct2 carries target text, annual achievement and the latest notes on every quarter row', () => {
+  const h = runFull();
+  const rows = h.tab('fct2_outcome_progress').filter((r) => r.grant_id === 'BRIGH_01_202627_301');
+  assert.equal(rows.length, 4);
+  rows.forEach((r) => {
+    assert.equal(r.target_text, '70% of annual target');
+    assert.equal(r.final_actual_value, 0.8); // "80% achieved"
+    assert.ok(Math.abs(r.annual_achievement_pct - 0.8 / 0.7) < 1e-9);
+    assert.equal(r.latest_notes, 'Dummy Q4 review note 1'); // notes of the latest reported quarter (Q4)
+  });
+  // Distinct outcome rows never mix: each outcome keeps its own annual figures.
+  const all = h.tab('fct2_outcome_progress');
+  const byOutcome = {};
+  all.forEach((r) => { (byOutcome[r.outcome_id] = byOutcome[r.outcome_id] || new Set()).add(r.annual_achievement_pct); });
+  Object.values(byOutcome).forEach((set) => assert.equal(set.size, 1));
+});
+
+test('grant_status is present on fct2, fct3 and fct5 so the Grant Status filter reaches every table', () => {
+  const h = runFull();
+  const grantStatus = Object.fromEntries(h.tab('fct1_grant_portfolio').map((r) => [r.grant_id, r.grant_status]));
+  ['fct2_outcome_progress', 'fct3_support_activity', 'fct5_maturity_rag'].forEach((tab) => {
+    const rows = h.tab(tab);
+    assert.ok(rows.length > 0, tab);
+    rows.forEach((r) => {
+      assert.ok(r.grant_status !== '', tab + ' has a blank grant_status for ' + r.grant_id);
+      assert.equal(r.grant_status, grantStatus[r.grant_id], tab + ' ' + r.grant_id);
+    });
+  });
+});
+
 test('fct3 generates support ids and treats In Progress as Open', () => {
   const h = runFull();
   const rows = h.tab('fct3_support_activity');

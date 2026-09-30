@@ -3,6 +3,21 @@
 All notable changes to the APFP data pipeline. Newest first.
 Each entry lists what changed, which files, and why.
 
+## [0.1.2] — 2026-09-30
+
+### Added — columns the Looker Studio dashboard needs for its page filters and Grantee 360
+- **What:**
+  - `grant_status` on `fct2_outcome_progress`, `fct3_support_activity` and `fct5_maturity_rag`
+    (joined from `stg_grants`), so the Grant Status filter on Portfolio Overview and
+    Grantee 360 reaches every chart, not only the `fct1` ones.
+  - `fct2`: `target_text`, `final_actual_value`, `annual_achievement_pct` (final actual ÷
+    target) and `latest_notes`, for the Grantee 360 outcome table (target, Q1–Q4, annual, notes).
+  - Two new tests (15 in total).
+- **Files:** `Final.js`, `tests/pipeline.test.js`, `PIPELINE_LOGIC.md`.
+- **Why:** Checking the dashboard filter spec (FY, Thematic Area, Grant Status, Decision
+  Status, Organisation) against the pipeline showed these columns were missing. Existing
+  columns and row counts are unchanged.
+
 ## [0.1.1] — 2026-09-29
 
 ### Fixed — dates shifted back by up to a day in stg_/fct_ tabs
