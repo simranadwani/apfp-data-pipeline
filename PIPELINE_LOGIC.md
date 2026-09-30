@@ -159,15 +159,19 @@ Built by unpivoting Q1–Q4 in `stg_outcome_progress`. A quarter gets a row only
 |---|---|---|---|
 | financial_year | text | Outcome Progress › Financial Year | As source |
 | grant_id | text | Outcome Progress › Grant ID | — |
-| organization_id, organisation, thematic_area | text | stg_grants | Joined on `grant_id` |
+| organization_id, organisation, thematic_area, grant_status | text | stg_grants | Joined on `grant_id`. `grant_status` lets the dashboard's Grant Status filter reach this table |
 | outcome_id | text | Outcome Progress › Outcome ID | — |
 | outcome_indicator | text | Outcome Progress › Outcome / Indicator | As source |
 | quarter | text | column position | `Q1`–`Q4` |
 | status | text | Qn Status | As source (`On Track` / `Off Track`) |
+| target_text | text | End-of-Program Cycle Target | As source (e.g. `70% of annual target`), for display |
 | target_value | number | End-of-Program Cycle Target | First number in the text. `%` becomes a fraction (`70% of annual target` → 0.7); plain numbers are kept (`732 learners` → 732) |
 | achieved_value | number | Qn Progress | Same parsing (`35% achieved` → 0.35) |
 | outcome_achievement_pct | number | derived | `achieved_value ÷ target_value` |
+| final_actual_value | number | Final Actual | Same parsing as `target_value` (`80% achieved` → 0.8). Repeated on every quarter row of the outcome |
+| annual_achievement_pct | number | derived | `final_actual_value ÷ target_value` (`80%` ÷ `70%` = 1.143). Repeated on every quarter row of the outcome; the dashboard's "Annual" column |
 | outcome_notes | text | Qn Anagha Notes | As source |
+| latest_notes | text | Qn Anagha Notes | Notes of the outcome's latest reported quarter. Repeated on every quarter row so a table can show one note per outcome |
 | evidence_link | text | Qn Evidence Link | As source |
 | is_latest_update | boolean | derived | TRUE on the outcome's latest quarter that has a status (for "latest update" scorecards) |
 
@@ -177,7 +181,7 @@ Built by unpivoting Q1–Q4 in `stg_outcome_progress`. A quarter gets a row only
 |---|---|---|---|
 | financial_year | text | Support › Financial Year | As source |
 | grant_id | text | Support › Grant ID | — |
-| organization_id, organisation, thematic_area | text | stg_grants | Joined on `grant_id` |
+| organization_id, organisation, thematic_area, grant_status | text | stg_grants | Joined on `grant_id`. `grant_status` lets the dashboard's Grant Status filter reach this table |
 | support_id | text | derived | `SUP-<grant_id>-<quarter>-<n>`, where n = order of the request within that grant and quarter. The source has no Support ID, so this changes if rows are reordered (see §7) |
 | quarter | text | Support › Quarter | As source |
 | support_category | text | Support › Support Type | As source |
@@ -212,7 +216,7 @@ The next-year Q1 amount is only a reserve: it is subtracted from this year's una
 |---|---|---|---|
 | financial_year | text | Organisation Maturity › Financial Year | As source |
 | grant_id | text | Organisation Maturity › Grant ID | — |
-| organization_id, organisation, thematic_area | text | stg_grants | Joined on `grant_id` |
+| organization_id, organisation, thematic_area, grant_status | text | stg_grants | Joined on `grant_id`. `grant_status` lets the dashboard's Grant Status filter reach this table |
 | aspect | text | Organisation Maturity › Aspect | As source (`Clarity` / `Capacity` / `Compliance`) |
 | indicator | text | Organisation Maturity › Indicator | As source (the 11 source indicators, not the mockup's 6) |
 | status | text | Organisation Maturity › Status | As source (`Red` / `Amber` / `Green`) |

@@ -28,13 +28,14 @@ const FCT1_HEADERS = [
 ];
 
 const FCT2_HEADERS = [
-  'financial_year', 'grant_id', 'organization_id', 'organisation', 'thematic_area', 'outcome_id',
-  'outcome_indicator', 'quarter', 'status', 'target_value', 'achieved_value',
-  'outcome_achievement_pct', 'outcome_notes', 'evidence_link', 'is_latest_update',
+  'financial_year', 'grant_id', 'organization_id', 'organisation', 'thematic_area', 'grant_status',
+  'outcome_id', 'outcome_indicator', 'quarter', 'status', 'target_text', 'target_value',
+  'achieved_value', 'outcome_achievement_pct', 'final_actual_value', 'annual_achievement_pct',
+  'outcome_notes', 'latest_notes', 'evidence_link', 'is_latest_update',
 ];
 
 const FCT3_HEADERS = [
-  'financial_year', 'grant_id', 'organization_id', 'organisation', 'thematic_area', 'support_id',
+  'financial_year', 'grant_id', 'organization_id', 'organisation', 'thematic_area', 'grant_status', 'support_id',
   'quarter', 'support_category', 'request_description', 'support_status', 'is_open_support_need',
   'response_category', 'response_notes', 'response_date', 'evidence_link',
 ];
@@ -46,7 +47,7 @@ const FCT4_HEADERS = [
 ];
 
 const FCT5_HEADERS = [
-  'financial_year', 'grant_id', 'organization_id', 'organisation', 'thematic_area', 'aspect',
+  'financial_year', 'grant_id', 'organization_id', 'organisation', 'thematic_area', 'grant_status', 'aspect',
   'indicator', 'status',
 ];
 
@@ -174,6 +175,8 @@ function buildFct2OutcomeProgress(ss, idx) {
     const g = grantById[o.grant_id] || {};
     const target = parseMeasure(o.target_text);
     const latest = latestReportedQuarter(o);
+    const finalActual = parseMeasure(o.final_actual_text);
+    const latestNotes = latest ? o[latest.toLowerCase() + '_notes'] : '';
     QUARTERS.forEach(function (q) {
       const p = q.toLowerCase();
       const status = o[p + '_status'];
@@ -186,14 +189,19 @@ function buildFct2OutcomeProgress(ss, idx) {
         organization_id: g.organization_id,
         organisation: g.organisation || o.organisation,
         thematic_area: g.thematic_area,
+        grant_status: g.grant_status,
         outcome_id: o.outcome_id,
         outcome_indicator: o.outcome_indicator,
         quarter: q,
         status: status,
+        target_text: o.target_text,
         target_value: target === null ? '' : target,
         achieved_value: achieved === null ? '' : achieved,
         outcome_achievement_pct: (target && achieved !== null) ? achieved / target : '',
+        final_actual_value: finalActual === null ? '' : finalActual,
+        annual_achievement_pct: (target && finalActual !== null) ? finalActual / target : '',
         outcome_notes: o[p + '_notes'],
+        latest_notes: latestNotes,
         evidence_link: o[p + '_evidence_link'],
         is_latest_update: q === latest,
       });
@@ -222,6 +230,7 @@ function buildFct3SupportActivity(ss, idx) {
       organization_id: g.organization_id,
       organisation: g.organisation || s.organisation,
       thematic_area: g.thematic_area,
+      grant_status: g.grant_status,
       support_id: 'SUP-' + s.grant_id + '-' + (s.quarter || 'NQ') + '-' + seq[k],
       quarter: s.quarter,
       support_category: s.support_type,
@@ -296,6 +305,7 @@ function buildFct5MaturityRag(ss, idx) {
       organization_id: g.organization_id,
       organisation: g.organisation || m.organisation,
       thematic_area: g.thematic_area,
+      grant_status: g.grant_status,
       aspect: m.aspect,
       indicator: m.indicator,
       status: m.status,
