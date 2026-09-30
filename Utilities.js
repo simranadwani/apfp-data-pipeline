@@ -1,6 +1,11 @@
 /**
  * Utilities.gs — only reusable functions called by multiple build functions (SoP 2.1).
  * One-off helpers live in the file where they are used.
+ *
+ * Output tabs are native Google Sheets Tables. A Table owns its column types and number /
+ * date formats, and rejects attempts to change them. So this pipeline only ever writes
+ * VALUES (Date, number, boolean, text, '' for blank). It never sets a number format, and it
+ * never clears a Table's header row. Formatting belongs to the sheet (see docs/TABLE_FORMATS.md).
  */
 
 const PIPELINE_LOG_HEADERS = ['timestamp', 'level', 'function', 'rows_written', 'message', 'duration_ms', 'status'];
@@ -58,29 +63,63 @@ function readSheetSafe(ss, sheetName) {
 }
 
 /**
- * Clears the tab and writes headers + rows. Idempotent: never appends (SoP 5.3).
- * rows may be arrays (in header order) or objects keyed by header.
+ * Runs a purely cosmetic or tidy-up step. A failure is noted in the Apps Script log and
+ * never stops the pipeline.
+ */
+function bestEffort(label, fn) {
+  try {
+    return fn();
+  } catch (e) {
+    Logger.log('Skipped (' + label + '): ' + e);
+    return undefined;
+  }
+}
+
+/**
+ * Writes headers + rows to a tab, in place. Idempotent: the tab always ends up holding
+ * exactly this data (SoP 5.3). rows may be arrays (in header order) or objects keyed by header.
+ *
+ * Table-safe: the header and body go out in a single setValues (so the Table keeps its
+ * columns and types), nothing is formatted, and only what is left over from a bigger
+ * previous run is removed: surplus rows are deleted (the Table shrinks), or blanked if the
+ * sheet refuses; surplus columns are blanked. Returns the number of data rows written.
  */
 function writeSheet(ss, sheetName, headers, rows) {
   const sheet = ss.getSheetByName(sheetName) || ss.insertSheet(sheetName);
-  sheet.clearContents();
+  const previousLastRow = sheet.getLastRow();
+  const previousLastCol = sheet.getLastColumn();
+
   const matrix = [headers].concat(rows.map(function (r) {
-    if (Array.isArray(r)) return r;
-    return headers.map(function (hd) {
-      const v = r[hd];
-      return v === null || v === undefined ? '' : v;
-    });
+    if (Array.isArray(r)) return r.map(blankIfMissing);
+    return headers.map(function (hd) { return blankIfMissing(r[hd]); });
   }));
   sheet.getRange(1, 1, matrix.length, headers.length).setValues(matrix);
-  sheet.setFrozenRows(1);
-  // Unambiguous date format (the sheet default can be US mm-dd-yy); Looker reads these as dates.
-  if (matrix.length > 1) {
-    headers.forEach(function (_, c) {
-      const isDateColumn = matrix.some(function (r, i) { return i > 0 && r[c] instanceof Date; });
-      if (isDateColumn) sheet.getRange(2, c + 1, matrix.length - 1, 1).setNumberFormat('yyyy-mm-dd');
+
+  // A Table needs a header and at least one body row: keep row 2 even when there is no data.
+  const keepRows = Math.max(matrix.length, 2);
+  if (previousLastRow > keepRows) removeSurplusRows(sheet, keepRows, previousLastRow, Math.max(previousLastCol, headers.length));
+  if (matrix.length < 2 && previousLastRow >= 2) {
+    bestEffort('blank row 2 of ' + sheetName, function () { sheet.getRange(2, 1, 1, Math.max(previousLastCol, headers.length)).clearContent(); });
+  }
+  if (previousLastCol > headers.length) {
+    bestEffort('blank surplus columns of ' + sheetName, function () {
+      sheet.getRange(1, headers.length + 1, Math.max(previousLastRow, keepRows), previousLastCol - headers.length).clearContent();
     });
   }
+  bestEffort('freeze header of ' + sheetName, function () { sheet.setFrozenRows(1); });
   return rows.length;
+}
+
+function blankIfMissing(v) {
+  return v === null || v === undefined ? '' : v;
+}
+
+/** Deletes rows keepRows+1 … lastRow so a Table shrinks with its data; blanks them if deletion is refused. */
+function removeSurplusRows(sheet, keepRows, lastRow, width) {
+  const first = keepRows + 1;
+  const count = lastRow - keepRows;
+  const deleted = bestEffort('delete surplus rows', function () { sheet.deleteRows(first, count); return true; });
+  if (!deleted) bestEffort('blank surplus rows', function () { sheet.getRange(first, 1, count, width).clearContent(); });
 }
 
 function formatTimestamp(date) {
@@ -91,19 +130,28 @@ function formatIsoDate(date) {
   return Utilities.formatDate(date, Session.getScriptTimeZone(), 'yyyy-MM-dd');
 }
 
-/** Appends one entry to the Pipeline Log tab (SoP 5.1). */
+/**
+ * Appends one entry to the Pipeline Log tab (SoP 5.1). Logging must never break a run, so this
+ * never throws: appendRow, else setValues on the next free row, else the Apps Script log only.
+ */
 function log(ss, idx, level, fnName, rowsWritten, message, durationMs, status) {
-  const sheetName = (idx && idx.UTIL_PIPELINE_LOG) || 'Pipeline Log';
-  let sheet = ss.getSheetByName(sheetName);
-  if (!sheet) {
-    sheet = ss.insertSheet(sheetName);
-    sheet.getRange(1, 1, 1, PIPELINE_LOG_HEADERS.length).setValues([PIPELINE_LOG_HEADERS]);
-    sheet.setFrozenRows(1);
-  }
   const entry = [formatTimestamp(new Date()), level, fnName, rowsWritten || 0, message || '',
     durationMs === null || durationMs === undefined ? '' : durationMs, status || ''];
-  sheet.appendRow(entry);
   Logger.log(entry.join(' | '));
+  bestEffort('write Pipeline Log', function () {
+    const sheetName = (idx && idx.UTIL_PIPELINE_LOG) || 'Pipeline Log';
+    let sheet = ss.getSheetByName(sheetName);
+    if (!sheet) {
+      sheet = ss.insertSheet(sheetName);
+      sheet.getRange(1, 1, 1, PIPELINE_LOG_HEADERS.length).setValues([PIPELINE_LOG_HEADERS]);
+      bestEffort('freeze header of ' + sheetName, function () { sheet.setFrozenRows(1); });
+    }
+    try {
+      sheet.appendRow(entry);
+    } catch (e) {
+      sheet.getRange(sheet.getLastRow() + 1, 1, 1, entry.length).setValues([entry]);
+    }
+  });
 }
 
 /** Runs one build function, logging SUCCESS or ERROR with its duration. fn returns rows written. */

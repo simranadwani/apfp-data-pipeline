@@ -30,10 +30,25 @@ class FakeRange {
     return out;
   }
   setNumberFormat(fmt) {
+    // A native Sheets Table owns its number formats: typed columns reject changes.
+    if (this.sheet.table) {
+      this.sheet.formatCalls++;
+      throw new Error("You can't set the number format of cells in a typed column.");
+    }
     for (let c = 0; c < this.numCols; c++) this.sheet.numberFormats[this.col + c] = fmt;
+    this.sheet.formatCalls++;
+    return this;
+  }
+  clearContent() {
+    if (this.row === 1 && this.col === 1) this.sheet.headerClears++; // wiping the Table's own header (a leftover column to the right is harmless)
+    for (let r = 0; r < this.numRows; r++) {
+      const line = this.sheet.data[this.row - 1 + r];
+      if (line) for (let c = 0; c < this.numCols; c++) delete line[this.col - 1 + c];
+    }
     return this;
   }
   setValues(values) {
+    if (this.sheet.failAllWrites) throw new Error('Service error: Spreadsheets');
     if (values.length !== this.numRows || values.some((r) => r.length !== this.numCols)) {
       throw new Error('setValues: dimensions do not match the range');
     }
@@ -53,20 +68,52 @@ class FakeSheet {
     this.name = name;
     this.data = data || [];
     this.frozenRows = 0;
-    this.numberFormats = {}; // column number → format, kept across clearContents like Sheets
+    this.numberFormats = {}; // column number → format
+    this.table = false;      // true = native Sheets Table (typed columns)
+    this.appendFails = false;   // appendRow throws
+    this.failAllWrites = false; // appendRow and setValues throw
+    this.formatCalls = 0;    // every setNumberFormat attempt
+    this.headerClears = 0;   // times the header row was cleared
+    this.clearAllCalls = 0;  // clearContents() calls
+    this.deletedRows = 0;
   }
   getName() { return this.name; }
-  getLastRow() { return this.data.length; }
-  getLastColumn() { return this.data.reduce((m, r) => Math.max(m, r.length), 0); }
+  // Like Sheets: the last row / column that actually holds content.
+  getLastRow() {
+    for (let r = this.data.length - 1; r >= 0; r--) if ((this.data[r] || []).some((v) => v !== undefined && v !== '')) return r + 1;
+    return 0;
+  }
+  getLastColumn() {
+    let m = 0;
+    this.data.forEach((row) => (row || []).forEach((v, c) => { if (v !== undefined && v !== '') m = Math.max(m, c + 1); }));
+    return m;
+  }
   getDataRange() { return new FakeRange(this, 1, 1, Math.max(this.getLastRow(), 1), Math.max(this.getLastColumn(), 1)); }
   getRange(row, col, numRows, numCols) { return new FakeRange(this, row, col, numRows || 1, numCols || 1); }
-  clearContents() { this.data = []; return this; }
+  clearContents() {
+    this.clearAllCalls++;
+    if (this.getLastRow() >= 1) this.headerClears++;
+    this.data = [];
+    return this;
+  }
+  deleteRows(start, count) {
+    if (start <= this.frozenRows) throw new Error("You can't delete a frozen row.");
+    this.data.splice(start - 1, count);
+    this.deletedRows += count;
+  }
   setFrozenRows(n) { this.frozenRows = n; }
-  appendRow(values) { this.data.push(values.slice()); return this; }
-  // Plain values, as a Looker/Sheets reader would see them.
+  appendRow(values) {
+    if (this.appendFails || this.failAllWrites) throw new Error('Service error: Spreadsheets');
+    this.data[this.getLastRow()] = values.slice();
+    return this;
+  }
+  // Plain values, as a Looker/Sheets reader would see them (trailing blank rows and columns ignored).
   toObjects() {
-    const [headers, ...rows] = this.data;
-    return rows.map((r) => Object.fromEntries(headers.map((h, i) => [h, r[i] === undefined ? '' : r[i]])));
+    const lastRow = this.getLastRow();
+    const width = this.getLastColumn();
+    const cell = (r, c) => { const v = (this.data[r] || [])[c]; return v === undefined ? '' : v; };
+    const headers = Array.from({ length: width }, (_, c) => cell(0, c));
+    return Array.from({ length: Math.max(lastRow - 1, 0) }, (_, i) => Object.fromEntries(headers.map((h, c) => [h, cell(i + 1, c)])));
   }
 }
 
@@ -144,7 +191,9 @@ function loadPipeline(sourceTabs, options) {
   const pipeline = new FakeSpreadsheet(ctx.__consts.PIPELINE_SPREADSHEET_ID, { Sheet1: [] }, options.pipelineTimeZone);
   books[source.id] = source;
   books[pipeline.id] = pipeline;
-  return { ctx, source, pipeline, mails, logs };
+  // Simulates converting every tab to a native Table (what the product owner did on 30 Sep).
+  const convertToTables = () => Object.values(pipeline.sheets).forEach((sh) => { sh.table = true; });
+  return { ctx, source, pipeline, mails, logs, convertToTables };
 }
 
 module.exports = { loadPipeline, FakeSpreadsheet, FakeSheet, isDate };
