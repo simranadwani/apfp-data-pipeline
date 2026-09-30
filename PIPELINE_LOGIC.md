@@ -84,8 +84,9 @@ Every run fully rebuilds each tab (`clearContents` then write), so running twice
 | Text | Trimmed. |
 | Numbers | Stored as numbers. `₹`, commas and spaces are stripped. Unparseable values are blanked and logged as WARN. |
 | Rates | `attrition_rate` and `foreign_contribution_rate` are kept as fractions (0.08). Text like `8%` becomes 0.08. |
-| Dates | Stored as real dates at midnight. A date cell is read as the calendar day **shown in the source**, using the source workbook's time zone. Text `yyyy-mm-dd` and `dd/mm/yyyy` are parsed. Every date column in stg_/fct_ tabs is formatted `yyyy-mm-dd`. |
+| Dates | Stored as real dates at midnight. A date cell is read as the calendar day **shown in the source**, using the source workbook's time zone. Text `yyyy-mm-dd` and `dd/mm/yyyy` are parsed. The pipeline writes real dates only and **never sets a format**: date, number and percent display is owned by the sheet (the tabs are native Google Sheets Tables; see [docs/TABLE_FORMATS.md](docs/TABLE_FORMATS.md)). |
 | Financial year | Source format `YYYY-YY` (e.g. `2026-27`) everywhere. Dividends `April 25-March 26` → `2025-26`. `FY 26-27` and `2026-2027` are also accepted. |
+| Writing to Tables | Each tab is overwritten in place: header and rows go out in one `setValues`, so a Table keeps its columns and types. The header row is never cleared. Rows left over from a bigger previous run are deleted (or blanked if the sheet refuses); columns left over are blanked. A run with no data keeps the header and one blank row. Cosmetic steps and logging can never stop a run. |
 | Blank keys | Rows whose key (`grant_id`, `organization_id`, `outcome_id`, `disbursement_id` or `financial_year`) is blank are skipped and logged as WARN. |
 
 ## 5. Fact table logic

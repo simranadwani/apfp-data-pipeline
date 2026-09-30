@@ -3,6 +3,7 @@
   "private": true,
   "description": "Local tests for the APFP Apps Script pipeline. Not pushed to Apps Script.",
   "scripts": {
-    "test": "TZ=Asia/Kolkata node --test tests/*.test.js"
+    "test": "TZ=Asia/Kolkata node --test tests/*.test.js",
+    "formats": "node tests/generate_table_formats.js"
   }
 }

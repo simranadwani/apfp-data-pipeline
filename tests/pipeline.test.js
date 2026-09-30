@@ -208,16 +208,116 @@ test('source workbook in another time zone is reported, not changed, and dates k
   assert.ok(h.pipeline.getSheetByName('Pipeline Log').toObjects().some((r) => /Source workbook time zone is Pacific\/Auckland/.test(r.message)));
 });
 
-test('date columns are written with the yyyy-mm-dd number format', () => {
+test('the pipeline never sets a number format: dates and numbers are formatted by the sheet', () => {
   const h = runFull();
-  const sheet = h.pipeline.getSheetByName('fct1_grant_portfolio');
-  const headers = sheet.data[0];
-  ['grant_start_date', 'grant_end_date', 'decision_due_date', 'as_of_date'].forEach((c) => {
-    assert.equal(sheet.numberFormats[headers.indexOf(c) + 1], 'yyyy-mm-dd', c);
+  Object.values(h.pipeline.sheets).forEach((sh) => {
+    assert.equal(sh.formatCalls, 0, sh.name + ' had a number format set');
+    assert.deepEqual(sh.numberFormats, {}, sh.name);
   });
-  assert.equal(sheet.numberFormats[headers.indexOf('approved_amount') + 1], undefined);
-  const stg = h.pipeline.getSheetByName('stg_disbursements');
-  assert.equal(stg.numberFormats[stg.data[0].indexOf('planned_date') + 1], 'yyyy-mm-dd');
+});
+
+// ---- Google Sheets Tables (typed columns) ----
+const SNAPSHOT_TABS = /^(stg_|fct)/;
+function snapshot(h) {
+  return Object.fromEntries(Object.values(h.pipeline.sheets)
+    .filter((sh) => SNAPSHOT_TABS.test(sh.name))
+    .map((sh) => [sh.name, JSON.stringify(sh.data.slice(0, sh.getLastRow()))]));
+}
+
+test('after every tab is converted to a Table, the pipeline runs cleanly and output is identical', () => {
+  const h = runFull();
+  const before = snapshot(h);
+  h.convertToTables();
+  assert.doesNotThrow(() => h.ctx.runCompletePipeline());
+  assert.deepEqual(snapshot(h), before);
+  const log = h.tab('Pipeline Log');
+  assert.equal(log.filter((r) => r.status === 'ERROR').length, 0);
+  assert.equal(log.filter((r) => r.function === 'runCompletePipeline').pop().status, 'SUCCESS');
+  Object.values(h.pipeline.sheets).forEach((sh) => {
+    assert.equal(sh.formatCalls, 0, sh.name + ' had a number format set');
+    if (/^(stg_|fct|ref_|Index|Source_Header_Audit|Cardinality)/.test(sh.name)) assert.equal(sh.headerClears, 0, sh.name + ' header row was cleared');
+  });
+});
+
+test('a failing appendRow on the Pipeline Log never stops a run; entries go through the fallback', () => {
+  const h = runFull();
+  h.convertToTables();
+  h.pipeline.getSheetByName('Pipeline Log').appendFails = true;
+  const rowsBefore = h.tab('Pipeline Log').length;
+  assert.doesNotThrow(() => h.ctx.runCompletePipeline());
+  const log = h.tab('Pipeline Log');
+  assert.equal(log.length - rowsBefore, 15); // 8 staging + 5 fact + cardinality tests + run summary
+  assert.equal(log.filter((r) => r.status === 'ERROR').length, 0);
+  assert.equal(log.pop().function, 'runCompletePipeline');
+});
+
+test('even if the Pipeline Log cannot be written at all, the run still completes and logs to Apps Script', () => {
+  const h = runFull();
+  h.pipeline.getSheetByName('Pipeline Log').failAllWrites = true;
+  h.logs.length = 0;
+  assert.doesNotThrow(() => h.ctx.runCompletePipeline());
+  assert.ok(h.logs.some((l) => /runCompletePipeline/.test(l) && /SUCCESS/.test(l)));
+  assert.ok(h.logs.some((l) => /buildFct1GrantPortfolio/.test(l)));
+});
+
+test('a run with fewer rows than before leaves no stale rows and keeps the header', () => {
+  const h = runFull();
+  h.source.getSheetByName('3. Support').data.splice(3, 5); // 5 support requests removed
+  h.convertToTables();
+  h.ctx.runCompletePipeline();
+  ['stg_support', 'fct3_support_activity'].forEach((tab) => {
+    const sh = h.pipeline.getSheetByName(tab);
+    assert.equal(sh.getLastRow(), 14, tab + ' should have header + 13 rows');
+    assert.equal(sh.data.length, 14, tab + ' still has stale rows');
+    assert.equal(sh.headerClears, 0);
+  });
+  assert.equal(h.tab('fct3_support_activity').length, 13);
+});
+
+test('schema growth (v0.1.2 added columns) and shrinkage both write cleanly on a Table', () => {
+  const h = runFull();
+  const fct2 = h.pipeline.getSheetByName('fct2_outcome_progress');
+  const fullWidth = fct2.getLastColumn();
+  fct2.data = fct2.data.map((r) => r.slice(0, 15));             // pretend the Table is the old 15-column version
+  const stg = h.pipeline.getSheetByName('stg_support');
+  const extraCol = stg.getLastColumn();
+  stg.data.forEach((r, i) => { r[extraCol] = i === 0 ? 'old_extra_column' : 'stale'; }); // a column the new schema no longer has
+  h.convertToTables();
+  assert.doesNotThrow(() => h.ctx.runCompletePipeline());
+  assert.equal(fct2.getLastColumn(), fullWidth);
+  assert.ok(Object.keys(h.tab('fct2_outcome_progress')[0]).includes('annual_achievement_pct'));
+  assert.ok(!Object.keys(h.tab('stg_support')[0]).includes('old_extra_column'));
+  assert.equal(stg.headerClears, 0);
+});
+
+test('a run with no data rows keeps a header and one blank row (a Table needs a body)', () => {
+  const src = clone(require('./fixtures/source_dummy.json'));
+  const h = loadPipeline(src);
+  h.tab = (name) => h.pipeline.getSheetByName(name).toObjects();
+  h.ctx.runCompletePipeline();
+  h.convertToTables();
+  h.source.getSheetByName('3. Support').data.splice(2);         // header only
+  assert.doesNotThrow(() => h.ctx.runCompletePipeline());
+  assert.equal(h.tab('stg_support').length, 0);
+  assert.equal(h.pipeline.getSheetByName('stg_support').getLastRow(), 1);
+});
+
+test('every numeric and date output column has a format in tests/column_formats.js', () => {
+  const { FORMATS } = require('./column_formats');
+  const h = runFull();
+  Object.entries(FORMATS).forEach(([tab, groups]) => {
+    const listed = Object.values(groups).flat();
+    assert.equal(new Set(listed).size, listed.length, tab + ' lists a column twice');
+    const rows = h.tab(tab);
+    const cols = Object.keys(rows[0]);
+    listed.forEach((c) => assert.ok(cols.includes(c), tab + ' lists unknown column ' + c));
+    cols.forEach((c) => {
+      const numeric = rows.some((r) => typeof r[c] === 'number' || isDate(r[c]));
+      if (numeric) assert.ok(listed.includes(c), tab + '.' + c + ' is numeric/date but has no format');
+      else assert.ok(!listed.includes(c), tab + '.' + c + ' is listed but holds no numbers or dates');
+    });
+  });
+  ['stg_', 'fct'].forEach((prefix) => Object.keys(h.pipeline.sheets).filter((n) => n.startsWith(prefix)).forEach((n) => assert.ok(FORMATS[n], n + ' missing from column_formats.js')));
 });
 
 test('helper rules', () => {

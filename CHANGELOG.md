@@ -3,6 +3,31 @@
 All notable changes to the APFP data pipeline. Newest first.
 Each entry lists what changed, which files, and why.
 
+## [0.1.4] — 2026-09-30
+
+### Fixed — pipeline failed once the output tabs were converted to Google Sheets Tables
+- **What:** The 30 Sep run stopped at `buildStgGrants` with "You can't set the number format of
+  cells in a typed column". Every output tab is now a native Table, whose column types own the
+  number and date formats, and the writer tried to set one.
+  - `writeSheet` no longer sets any number format and no longer clears the whole tab. It writes
+    header and rows in one `setValues` (so a Table keeps its columns and types), then removes
+    only what a bigger previous run left behind: surplus rows are deleted (blanked if refused),
+    surplus columns blanked; a run with no data keeps the header and one blank row.
+  - `log` can no longer throw: `appendRow`, else `setValues` on the next free row, else the Apps
+    Script log only. A step that succeeded is no longer recorded as an ERROR because logging hiccuped.
+  - New `bestEffort` helper for purely cosmetic steps (freeze header, tidy-up).
+  - The `yyyy-mm-dd` date formatting added in 0.1.1 is removed; the sheet's Table column types
+    (or your own formats) show dates and numbers. New guide `docs/TABLE_FORMATS.md` lists every
+    column to format, with the Indian-rupee custom number formats.
+  - Harness models Tables (typed columns reject formats, failing `appendRow`); 7 new tests, all
+    of which fail on the previous code (22 tests in total). A test keeps the format list in step
+    with the real output columns.
+- **Files:** `Utilities.js`, `tests/harness.js`, `tests/pipeline.test.js`,
+  `tests/column_formats.js`, `tests/generate_table_formats.js`, `docs/TABLE_FORMATS.md`,
+  `PIPELINE_LOGIC.md`, `package.json` (`npm run formats`), dashboard spec (prerequisite 4).
+- **Why:** The product owner keeps the native Table look for all output tabs; the pipeline must
+  work with it. Output values are unchanged.
+
 ## [0.1.3] — 2026-09-30
 
 ### Added — Looker Studio dashboard build specification and Cowork prompt
