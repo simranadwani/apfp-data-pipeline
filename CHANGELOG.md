@@ -3,6 +3,21 @@
 All notable changes to the APFP data pipeline. Newest first.
 Each entry lists what changed, which files, and why.
 
+## [0.1.8] — 2026-10-01
+
+### Added — exact `link_360` formula so "Click here" opens a pre-filtered Grantee 360 (docs only)
+- **What:** `link_360` now targets the Grantee 360 page and sets the Organisation control through
+  its filter parameter (`df232`), with the organisation name encoded as Looker Studio expects
+  (double-encoded: space `%2520`, `&` `%2526`). Checked against the URL copied from the live
+  report (byte-for-byte for Civic Leadership Forum) and against an independent encoder for all
+  18 organisation names plus names with `, / + # ' %`. The Cowork fix prompt (item 7) and the
+  review document carry the formula.
+- **Files:** `docs/looker_calculated_fields.txt`, `docs/COWORK_FIX_PROMPT.md`,
+  `docs/APFP_Dashboard_Review_and_Cowork_Fixes.docx`. No script changes. The older build spec
+  `.docx` still shows the placeholder formula; the text file is the source of truth.
+- **Why:** Product owner enabled "Enable viewer filters in report link" and supplied the page URL.
+  The link breaks if the Organisation control is deleted and recreated (new `df` ID).
+
 ## [0.1.7] — 2026-10-01
 
 ### Added — `fct6_grantee_annual_info` (chart 4.02) and `fct5.aspect_display` (chart 4.04)
