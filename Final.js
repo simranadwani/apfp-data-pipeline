@@ -37,7 +37,7 @@ const FCT2_HEADERS = [
 const FCT3_HEADERS = [
   'financial_year', 'grant_id', 'organization_id', 'organisation', 'thematic_area', 'grant_status', 'support_id',
   'quarter', 'support_category', 'request_description', 'support_status', 'is_open_support_need',
-  'response_category', 'response_notes', 'response_date', 'evidence_link',
+  'response_notes', 'response_date', 'evidence_link', 'response_category',
 ];
 
 const FCT4_HEADERS = [
@@ -237,10 +237,10 @@ function buildFct3SupportActivity(ss, idx) {
       request_description: s.support_required,
       support_status: status,
       is_open_support_need: String(status).trim().toLowerCase() === 'open',
-      response_category: s.support_provided, // "Support Provided" dropdown in the source, value kept as entered
       response_notes: s.notes,
       response_date: '', // the source has no response date yet
       evidence_link: s.evidence_link,
+      response_category: s.support_provided, // "Support Provided" dropdown in the source, value kept as entered
     };
   });
   return writeSheet(ss, idx.FCT3_SUPPORT_ACTIVITY, FCT3_HEADERS, rows);

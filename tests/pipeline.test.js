@@ -142,6 +142,13 @@ test('fct3 response_category comes from the source "Support Provided" column, va
   assert.ok(h.tab('fct3_support_activity').every((r) => r.response_date === '')); // the source still has no response date
 });
 
+test('Support Provided is the last column of stg_support and fct3 (existing columns keep their positions)', () => {
+  const h = runFull();
+  const last = (name) => { const hd = h.pipeline.getSheetByName(name).data[0]; return hd[hd.length - 1]; };
+  assert.equal(last('stg_support'), 'support_provided');
+  assert.equal(last('fct3_support_activity'), 'response_category');
+});
+
 test('a request with no "Support Provided" yet has a blank response_category (not counted as a response)', () => {
   const src = clone(require('./fixtures/source_dummy.json'));
   const hdr = src['3. Support'][1];

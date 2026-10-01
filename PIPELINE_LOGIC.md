@@ -189,10 +189,10 @@ Built by unpivoting Q1–Q4 in `stg_outcome_progress`. A quarter gets a row only
 | request_description | text | Support › Support Required | As source |
 | support_status | text | Support › Status | `In Progress` → `Open`; `Open` / `Closed` as source |
 | is_open_support_need | boolean | derived | TRUE when `support_status = Open` |
-| response_category | text | Support › Support Provided | The dropdown value as entered (currently the placeholders `Support 1` / `Support 2`). Blank until APFP fills it in |
 | response_notes | text | Support › Anagha Notes | As source |
 | response_date | date | — | Blank: the source has no response date yet |
 | evidence_link | text | Support › Evidence Link | As source |
+| response_category | text | Support › Support Provided | The dropdown value as entered (currently the placeholders `Support 1` / `Support 2`). Blank until APFP fills it in. Last column of the table (added in 0.1.5, appended so the existing columns keep their positions) |
 
 ### fct4_budget_year — one row per financial year (T4)
 

@@ -10,9 +10,10 @@ Each entry lists what changed, which files, and why.
   is now staged (`stg_support.support_provided`) and becomes `fct3_support_activity.response_category`,
   with the value kept exactly as entered. This fills the gap that left dashboard chart 1.15
   (Support Provided to Grantees) empty and gives 4.07 its "APFP response". `response_date`
-  stays blank (the source has no date). The column is required, so a rename is caught by the
+  stays blank (the source has no date). The new column is the **last column** in `stg_support` and
+  `fct3_support_activity`; existing columns keep their positions. The column is required, so a rename is caught by the
   source header check.
-  - 3 new tests (25 in total); the test fixture was refreshed from the current source (only the
+  - 4 new tests (26 in total); the test fixture was refreshed from the current source (only the
     Support tab changed).
 - **Files:** `Staging.js`, `Final.js`, `tests/pipeline.test.js`,
   `tests/fixtures/source_dummy.json`, `PIPELINE_LOGIC.md`.
