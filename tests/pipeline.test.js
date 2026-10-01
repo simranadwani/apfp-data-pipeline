@@ -21,7 +21,7 @@ test('full pipeline builds every stg_ and fct_ tab with the expected row counts'
     stg_grants: 18, stg_organisations: 18, stg_outcome_progress: 18, stg_support: 18,
     stg_decisions: 18, stg_dividends: 4, stg_disbursements: 18, stg_maturity: 18,
     fct1_grant_portfolio: 18, fct2_outcome_progress: 72, fct3_support_activity: 18,
-    fct4_budget_year: 4, fct5_maturity_rag: 18,
+    fct4_budget_year: 4, fct5_maturity_rag: 18, fct6_grantee_annual_info: 144,
   };
   Object.entries(expected).forEach(([tab, n]) => assert.equal(h.tab(tab).length, n, tab));
   const failed = h.tab('Cardinality Test Results').filter((r) => r.status !== 'PASS');
@@ -286,7 +286,7 @@ test('a failing appendRow on the Pipeline Log never stops a run; entries go thro
   const rowsBefore = h.tab('Pipeline Log').length;
   assert.doesNotThrow(() => h.ctx.runCompletePipeline());
   const log = h.tab('Pipeline Log');
-  assert.equal(log.length - rowsBefore, 15); // 8 staging + 5 fact + cardinality tests + run summary
+  assert.equal(log.length - rowsBefore, 16); // 8 staging + 6 fact + cardinality tests + run summary
   assert.equal(log.filter((r) => r.status === 'ERROR').length, 0);
   assert.equal(log.pop().function, 'runCompletePipeline');
 });
@@ -405,4 +405,72 @@ test('helper rules', () => {
 
   assert.equal(ctx.mapDecisionStatus("Anagha's Recommendation"), 'Pending');
   assert.equal(ctx.mapDecisionStatus('Decision Locked'), 'Decided');
+});
+
+test('fct6 puts each metric on its own row with the selected and previous year side by side', () => {
+  const h = runFull();
+  const rows = h.tab('fct6_grantee_annual_info');
+  const mine = rows.filter((r) => r.grant_id === 'SAKHI_02_202627_302');
+  assert.deepEqual(mine.map((r) => r.metric), ['Financial year', 'Annual budget', '% Annual Budget funded by APFP', 'Team size', 'Attrition', 'Core policies', 'FCRA registration', 'Foreign contribution share']);
+  const v = Object.fromEntries(mine.map((r) => [r.metric, r.current_value]));
+  assert.equal(v['Financial year'], 'FY 2026-27');
+  assert.equal(v['Annual budget'], '\u20B954,00,000');
+  assert.equal(v['% Annual Budget funded by APFP'], '24%'); // 1275000 / 5400000
+  assert.equal(v['Team size'], '13');
+  assert.equal(v['Attrition'], '11%');
+  assert.equal(v['Core policies'], '4 / 4');
+  assert.equal(v['FCRA registration'], 'Application in Process');
+  assert.equal(v['Foreign contribution share'], '5%');
+  assert.ok(mine.every((r) => r.previous_financial_year === '2025-26' && r.previous_value === '\u2013')); // no 2025-26 grant in the sample data
+});
+
+test('fct6 previous_value comes from the same organisation in the year before', () => {
+  const h = runFull();
+  const fct1 = h.pipeline.getSheetByName('fct1_grant_portfolio');
+  const hdr = fct1.data[0];
+  const col = (n) => hdr.indexOf(n);
+  const row = fct1.data[1].slice();
+  row[col('grant_id')] = 'TEST_PREV'; row[col('financial_year')] = '2025-26'; row[col('annual_budget')] = 3600000; row[col('team_size')] = 67;
+  fct1.data.push(row); // an earlier-year grant of the same organisation as data row 1
+  h.ctx.buildFct6GranteeAnnualInfo(h.pipeline, h.ctx.getSheetIndex(h.pipeline));
+  const rows = h.tab('fct6_grantee_annual_info').filter((r) => r.grant_id === fct1.data[1][col('grant_id')]);
+  const v = Object.fromEntries(rows.map((r) => [r.metric, r]));
+  assert.equal(v['Annual budget'].previous_value, '\u20B936,00,000');
+  assert.equal(v['Team size'].previous_value, '67');
+  assert.equal(v['Financial year'].previous_value, 'FY 2025-26');
+});
+
+test('fct5 aspect_display shows the aspect once per block and keeps blanks after it', () => {
+  const h = runFull();
+  const rows = h.tab('fct5_maturity_rag');
+  rows.forEach((r, i) => {
+    const sameBlock = i > 0 && rows[i - 1].grant_id === r.grant_id && rows[i - 1].aspect === r.aspect;
+    assert.equal(r.aspect_display, sameBlock ? '' : r.aspect);
+  });
+  assert.equal(rows.filter((r) => r.aspect_display !== '').length > 0, true);
+});
+
+test('formatInr groups digits the Indian way', () => {
+  const h = loadPipeline();
+  const f = h.ctx.formatInr;
+  assert.equal(f(960), '\u20B9960');
+  assert.equal(f(96000), '\u20B996,000');
+  assert.equal(f(750000), '\u20B97,50,000');
+  assert.equal(f(86000000), '\u20B98,60,00,000');
+  assert.equal(f(-9675000), '-\u20B996,75,000');
+  assert.equal(f('x'), '');
+});
+
+test('an Index tab from an older release gets the new rows appended and keeps renamed tabs', () => {
+  const h = runFull();
+  const index = h.pipeline.getSheetByName('Index');
+  const hdr = index.data[0];
+  const keyCol = hdr.indexOf('key'), nameCol = hdr.indexOf('sheet_name');
+  index.data = index.data.filter((r) => r[keyCol] !== 'FCT6_GRANTEE_ANNUAL_INFO'); // as it was before this release
+  index.data.find((r) => r[keyCol] === 'FCT1_GRANT_PORTFOLIO')[nameCol] = 'my_fct1';
+  const idx = h.ctx.getSheetIndex(h.pipeline);
+  assert.equal(idx.FCT6_GRANTEE_ANNUAL_INFO, 'fct6_grantee_annual_info');
+  assert.equal(idx.FCT1_GRANT_PORTFOLIO, 'my_fct1');
+  const keys = h.tab('Index').map((r) => r.key);
+  assert.equal(keys.filter((k) => k === 'FCT6_GRANTEE_ANNUAL_INFO').length, 1);
 });

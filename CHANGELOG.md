@@ -3,6 +3,29 @@
 All notable changes to the APFP data pipeline. Newest first.
 Each entry lists what changed, which files, and why.
 
+## [0.1.7] — 2026-10-01
+
+### Added — `fct6_grantee_annual_info` (chart 4.02) and `fct5.aspect_display` (chart 4.04)
+- **What:**
+  - New table `fct6_grantee_annual_info`: one row per grant × metric (annual budget, % funded by
+    APFP, team size, attrition, core policies, FCRA registration, foreign contribution share, plus
+    a `Financial year` label row). Each row holds the value for the grant's year and for the
+    **same organisation's previous year** side by side, as display text (rupees in Indian
+    grouping). This is the mockup's 4.02 layout, which Looker Studio cannot build from `fct1`.
+  - `fct5_maturity_rag.aspect_display` (new last column): the aspect on the first row of each
+    block and blank after it, for the merged-Aspect look of 4.04. `fct5` rows are now ordered
+    grant › aspect › indicator.
+  - `getSheetIndex` appends rows for new tabs to an older Index tab (existing rows and renamed
+    tabs are kept), so the new table needs no manual Index edit.
+  - New helpers `previousFinancialYear` and `formatInr`; `buildFct6GranteeAnnualInfo` runs
+    after `buildFct5MaturityRag` in `runFinalLayer`, with cardinality tests (31 tests in total).
+- **Files:** `Final.js`, `Utilities.js`, `Index.js`, `Pipeline.js`, `Tests.js`,
+  `tests/pipeline.test.js`, `tests/column_formats.js`, `tests/generate_table_formats.js`,
+  `docs/TABLE_FORMATS.md`, `PIPELINE_LOGIC.md`, `docs/COWORK_FIX_PROMPT.md`, review document.
+- **Why:** Product owner approved both after the dashboard review. **After deploying:** run
+  `runCompletePipeline`; the new tab `fct6_grantee_annual_info` appears (convert it to a Table
+  if you want, like the others) and `fct5` gets its extra column (drag its Table one column wider).
+
 ## [0.1.6] — 2026-10-01
 
 ### Added — dashboard review and Cowork fix prompt (docs only)

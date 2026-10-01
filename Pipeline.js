@@ -68,6 +68,7 @@ function runFinalLayer(ss, idx) {
   runLogged(ss, idx, 'buildFct3SupportActivity', function () { return buildFct3SupportActivity(ss, idx); });
   runLogged(ss, idx, 'buildFct4BudgetYear', function () { return buildFct4BudgetYear(ss, idx); });
   runLogged(ss, idx, 'buildFct5MaturityRag', function () { return buildFct5MaturityRag(ss, idx); });
+  runLogged(ss, idx, 'buildFct6GranteeAnnualInfo', function () { return buildFct6GranteeAnnualInfo(ss, idx); });
 }
 
 // Zero-argument wrappers so each layer can be run from the Apps Script editor

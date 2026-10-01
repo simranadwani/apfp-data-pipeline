@@ -119,7 +119,13 @@ Every output tab is a native Google Sheets **Table**, and the Table owns the for
 | `annual_disbursed_funding` | Indian rupee |
 | `unallocated_balance` | Indian rupee |
 
-Tabs not listed here (`stg_outcome_progress`, `stg_support`, `stg_maturity`, `fct3_support_activity`, `fct5_maturity_rag`, and the log / audit tabs) have no number or date columns to format.
+### `fct6_grantee_annual_info`
+
+| Column | Format |
+|---|---|
+| `metric_order` | Indian number (no ₹) |
+
+Tabs not listed here (`stg_outcome_progress`, `stg_support`, `stg_maturity`, `fct3_support_activity`, `fct5_maturity_rag`, `fct6_grantee_annual_info` (its values are already display text), and the log / audit tabs) have no number or date columns to format.
 
 ## Things to know about Tables
 
