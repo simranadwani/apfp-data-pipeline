@@ -237,9 +237,9 @@ function buildFct3SupportActivity(ss, idx) {
       request_description: s.support_required,
       support_status: status,
       is_open_support_need: String(status).trim().toLowerCase() === 'open',
-      response_category: '', // not captured in the source yet
+      response_category: s.support_provided, // "Support Provided" dropdown in the source, value kept as entered
       response_notes: s.notes,
-      response_date: '', // not captured in the source yet
+      response_date: '', // the source has no response date yet
       evidence_link: s.evidence_link,
     };
   });

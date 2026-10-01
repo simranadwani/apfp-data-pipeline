@@ -3,6 +3,24 @@
 All notable changes to the APFP data pipeline. Newest first.
 Each entry lists what changed, which files, and why.
 
+## [0.1.5] — 2026-10-01
+
+### Added — "Support Provided" from the source Support tab
+- **What:** The source `3. Support` tab has a new column M, **Support Provided** (a dropdown). It
+  is now staged (`stg_support.support_provided`) and becomes `fct3_support_activity.response_category`,
+  with the value kept exactly as entered. This fills the gap that left dashboard chart 1.15
+  (Support Provided to Grantees) empty and gives 4.07 its "APFP response". `response_date`
+  stays blank (the source has no date). The column is required, so a rename is caught by the
+  source header check.
+  - 3 new tests (25 in total); the test fixture was refreshed from the current source (only the
+    Support tab changed).
+- **Files:** `Staging.js`, `Final.js`, `tests/pipeline.test.js`,
+  `tests/fixtures/source_dummy.json`, `PIPELINE_LOGIC.md`.
+- **Why:** Product owner added the column to close the known data gap. **After deploying, run
+  `setupSourceHeaderBaseline` once** (otherwise the header audit shows a harmless "New Header
+  Added" warning), then `runCompletePipeline`. The dropdown currently holds placeholders
+  (`Support 1`, `Support 2`); change them in the source when the real list is final.
+
 ## [0.1.4] — 2026-09-30
 
 ### Fixed — pipeline failed once the output tabs were converted to Google Sheets Tables

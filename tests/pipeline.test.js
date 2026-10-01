@@ -129,6 +129,39 @@ test('fct3 generates support ids and treats In Progress as Open', () => {
   assert.equal(rows.filter((r) => r.support_status === 'In Progress').length, 0);
 });
 
+test('fct3 response_category comes from the source "Support Provided" column, values untouched', () => {
+  const h = runFull();
+  const src = require('./fixtures/source_dummy.json')['3. Support'];
+  const hdr = src[1];
+  const gi = hdr.indexOf('Grant ID'), pi = hdr.indexOf('Support Provided');
+  const expected = src.slice(2).filter((r) => r[gi] !== '').map((r) => r[pi]);
+  assert.equal(expected.length, 18);
+  assert.deepEqual(h.tab('stg_support').map((r) => r.support_provided), expected);
+  assert.deepEqual(h.tab('fct3_support_activity').map((r) => r.response_category), expected);
+  assert.ok(expected.every((v) => v !== ''), 'the fixture should have a value on every request');
+  assert.ok(h.tab('fct3_support_activity').every((r) => r.response_date === '')); // the source still has no response date
+});
+
+test('a request with no "Support Provided" yet has a blank response_category (not counted as a response)', () => {
+  const src = clone(require('./fixtures/source_dummy.json'));
+  const hdr = src['3. Support'][1];
+  src['3. Support'][2][hdr.indexOf('Support Provided')] = ''; // first request: nothing provided yet
+  const h = runFull(src);
+  const rows = h.tab('fct3_support_activity');
+  assert.equal(rows[0].response_category, '');
+  assert.equal(rows.filter((r) => r.response_category !== '').length, 17);
+});
+
+test('the staging header requirement catches a renamed "Support Provided" column', () => {
+  const h = loadPipeline();
+  h.ctx.runCompletePipeline(); // records the header baseline
+  const hdr = h.source.getSheetByName('3. Support').data[1];
+  hdr[hdr.indexOf('Support Provided')] = 'Support Given';
+  assert.throws(() => h.ctx.runCompletePipeline(), /critical source header issue/);
+  const issue = h.pipeline.getSheetByName('Source_Header_Audit').toObjects().find((r) => r.severity === 'CRITICAL');
+  assert.equal(issue.header, 'Support Provided');
+});
+
 test('fct4 rolls the carry-forward and reserves next year Q1 commitments', () => {
   const h = runFull();
   const rows = h.tab('fct4_budget_year');

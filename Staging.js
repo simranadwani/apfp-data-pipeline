@@ -103,6 +103,7 @@ const STAGING_SPECS = {
       ['evidence_link', 'Evidence Link', 'text'],
       ['status', 'Status', 'text'],
       ['notes', 'Anagha Notes', 'text'],
+      ['support_provided', 'Support Provided', 'text'],
     ],
   },
   STG_DECISIONS: {

@@ -189,9 +189,9 @@ Built by unpivoting Q1–Q4 in `stg_outcome_progress`. A quarter gets a row only
 | request_description | text | Support › Support Required | As source |
 | support_status | text | Support › Status | `In Progress` → `Open`; `Open` / `Closed` as source |
 | is_open_support_need | boolean | derived | TRUE when `support_status = Open` |
-| response_category | text | — | Blank: not captured in the source yet |
+| response_category | text | Support › Support Provided | The dropdown value as entered (currently the placeholders `Support 1` / `Support 2`). Blank until APFP fills it in |
 | response_notes | text | Support › Anagha Notes | As source |
-| response_date | date | — | Blank: not captured in the source yet |
+| response_date | date | — | Blank: the source has no response date yet |
 | evidence_link | text | Support › Evidence Link | As source |
 
 ### fct4_budget_year — one row per financial year (T4)
@@ -255,7 +255,7 @@ The mockup's *Dashboard Metric* columns are aggregates. They are **not stored** 
 | 1 | Category values | Kept exactly as in the source (agreed). Looker labels will show source spellings, e.g. `Alternate School Support`, `NA`. | Standardise dropdowns in the source if labels need to change |
 | 2 | Returning organisations | In the dummy data every "Returning Organisation" has a **new** Organisation ID, so `funding_year` is `Year 1` for everyone. | Make sure a returning organisation keeps its original Organisation ID |
 | 3 | Support ID | Generated (`SUP-<grant>-<quarter>-<n>`), so it changes if support rows are reordered. | Add a Support ID column to `3. Support` |
-| 4 | Support response | `response_category` and `response_date` are blank: the source has only free-text Anagha Notes. | Add Response Type (4 approved categories) and Response Date to `3. Support` |
+| 4 | Support response | `response_category` now comes from the source column **Support Provided**; `response_date` is still blank (no date in the source). The dropdown currently holds placeholders (`Support 1`, `Support 2`), not the four approved categories (Connected to other partners · Additional funding raised · Provided expert advice · Other). | Replace the dropdown values in the source when final (no pipeline change); add a Response Date column if the date is needed |
 | 5 | Outcome values | Targets and progress are free text; only the first number is read. | Keep entries in the `NN% …` pattern, or split value and unit into two columns |
 | 6 | Due window | Computed against the run date. Without a trigger it is only as fresh as the last manual run (`as_of_date`). | Add the daily trigger when ready (SoP 4.2) |
 | 7 | Budget sample data | Dummy dividends (₹25–34 L/yr) are far below dummy commitments (₹1.3 Cr in 2026-27), so `fct4` shows negative balances. The logic is correct; the numbers are dummy. | — |
