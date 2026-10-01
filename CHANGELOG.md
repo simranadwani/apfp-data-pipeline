@@ -3,6 +3,17 @@
 All notable changes to the APFP data pipeline. Newest first.
 Each entry lists what changed, which files, and why.
 
+## [0.1.6] — 2026-10-01
+
+### Added — dashboard review and Cowork fix prompt (docs only)
+- **What:** Page-by-page comparison of the built Looker Studio dashboard (PDF export) against the
+  mockup, with severity and the exact Looker fix per finding, the charts that cannot be copied
+  exactly (with workarounds), and a ready-to-paste fix prompt for Cowork. Pipeline validated
+  against the live sheets: the 30 Sep run succeeded (Table-safe code) and a local run on the
+  1 Oct source gives the same rows and columns, plus the new Support Provided column.
+- **Files:** `docs/APFP_Dashboard_Review_and_Cowork_Fixes.docx`, `docs/COWORK_FIX_PROMPT.md`.
+- **Why:** Product owner asked for the comparison and feedback for Cowork. No script changes.
+
 ## [0.1.5] — 2026-10-01
 
 ### Added — "Support Provided" from the source Support tab

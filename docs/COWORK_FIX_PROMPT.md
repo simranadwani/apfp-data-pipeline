@@ -1,0 +1,19 @@
+You are fixing the existing Looker Studio report "APFP Grant Portfolio Dashboard" (https://datastudio.google.com/reporting/dba82e50-a6d6-4ef3-a273-ff3b0b827046). Work in the browser signed in as the report owner. Edit mode only.
+
+RULES
+- Do NOT edit the Data Pipeline sheet or the mockup sheet. Do NOT run Apps Script. Do NOT change sharing or link settings (except the one report setting named below).
+- Do not rename source category values. Fonts Raleway. Colours: #0E4A5C deep teal, #167C88 teal, #245563 bands, #F4F6F7 page, #FFFFFF cards, #1E2838 text, #5F6C77 muted.
+- After each fix, view the page in View mode and compare with the mockup. Report what you changed and anything you could not do.
+
+FIXES (in this order)
+1. GUIDE PAGE: rebuild navigation cards: equal size, aligned on a grid, no overlap, no overflow; heading text linked to its page; description box below; section bands #245563 with white text.
+2. ALL PAGES, CONTROLS: label every control (Financial Year, Status, Thematic Area, Decision Status, Organisation, Grant Status) instead of field IDs; align in one row with no overlap (pages 4 and 5 especially). Keep FY as the report-level control; the others page-level.
+3. COUNT AXES: decimal places 0 on every count axis and data label. Widen charts so category labels are not truncated.
+4. PAGE 1: 1.02 percent format, 0 decimals, and check the value against the build spec QA table. 1.08: metric m_grantees (COUNT_DISTINCT organization_id), title "Distinct education grantees", chart filter thematic_area = Education, no Record Count. 1.13: sort as in the mockup, labels with 0 decimals.
+5. DUAL AXES: 2.05, 2.06, 2.08 and 4.03 must use ONE value axis. Remove the right-hand axis; split into two charts if the units differ.
+6. PAGE 4: 3.05 chart filter recommendation IN (Renew, Close); Renew #167C88, Close #0E4A5C. 3.06 all four recommendations, single series, every bar #0E4A5C, no breakdown dimension. 3.07 column order as in the mockup using dimension-level calculated fields; percentages shown as percent text, not 0/1.
+7. CLICK HERE (3.07): File → Report settings → enable "Enable viewer filters in report link". In view mode select an organisation in the Grantee 360 control, copy the page URL, read the df<N> parameter. Then change link_360 to HYPERLINK(CONCAT("<page URL>?params=%7B%22df<N>%22:%22include%EE%80%800%EE%80%80IN%EE%80%80", REGEXP_REPLACE(organisation," ","%20"), "%22%7D"), "Click here"). Test it opens Grantee 360 filtered. Report the exact URL pattern you ended with.
+8. PAGE 5: 4.01 and 4.08 label blocks (left side) fill #0E4A5C with white text; add amount and grant period to 4.01. 4.04 show performance status (On Track / Off Track), not "Active". 4.05 column headers: Target, Q1, Q2, Q3, Q4, Annual, Notes (as the build spec). 4.07 remove Record Count, add "Support provided" (field response_category). 4.08 recommendation row must show the recommendation; rationale in a separate tile.
+9. 4.02: do NOT restructure for now. Leave as is and write "pending pipeline table" in your report.
+
+When finished, send a short report: each item number, done / partly / not done, and a screenshot or note for each page.
