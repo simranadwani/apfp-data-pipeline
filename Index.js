@@ -32,6 +32,7 @@ const INDEX_DEFAULTS = [
   ['FCT3_SUPPORT_ACTIVITY', 'fct3_support_activity', 'fct', 'One row per support_id', 'Support needs raised and APFP responses'],
   ['FCT4_BUDGET_YEAR', 'fct4_budget_year', 'fct', 'One row per financial_year', 'Dividends, carry-forward, commitments, disbursements and unallocated balance'],
   ['FCT5_MATURITY_RAG', 'fct5_maturity_rag', 'fct', 'One row per grant_id x aspect x indicator', 'Maturity RAG at indicator level for portfolio and Grantee 360 views'],
+  ['FCT6_GRANTEE_ANNUAL_INFO', 'fct6_grantee_annual_info', 'fct', 'One row per grant_id x metric', 'Annual organisational information as metric rows with the selected and previous financial year side by side (Grantee 360)'],
 
   ['REF_SOURCE_HEADER_BASELINE', 'ref_source_header_baseline', 'ref', 'One row per source tab x column', 'Expected source headers used by the Source Header Check'],
   ['UTIL_SOURCE_HEADER_AUDIT', 'Source_Header_Audit', 'util', 'One row per header issue per run', 'Result of the latest Source Header Check'],
@@ -55,9 +56,12 @@ function getSheetIndex(ss) {
   rows.forEach(function (r) {
     if (r.key) idx[r.key] = r.sheet_name;
   });
-  const missing = INDEX_DEFAULTS.map(function (r) { return r[0]; }).filter(function (k) { return !idx[k]; });
+  const missing = INDEX_DEFAULTS.filter(function (r) { return !idx[r[0]]; });
   if (missing.length) {
-    throw new Error('Index tab is missing keys: ' + missing.join(', ') + '. Add them to the Index tab or run setupIndex().');
+    // A release added tabs: append their default rows, keep every existing row (and any renamed tab) as it is.
+    const kept = rows.map(function (r) { return INDEX_HEADERS.map(function (h) { return r[h]; }); });
+    writeSheet(ss, INDEX_SHEET_NAME, INDEX_HEADERS, kept.concat(missing.map(function (r) { return r.slice(); })));
+    missing.forEach(function (r) { idx[r[0]] = r[1]; });
   }
   return idx;
 }

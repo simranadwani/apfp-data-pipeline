@@ -45,6 +45,7 @@ The `System - *` tabs are not read.
 | `fct3_support_activity` | fct | One row per `support_id` |
 | `fct4_budget_year` | fct | One row per `financial_year` |
 | `fct5_maturity_rag` | fct | One row per `grant_id` × `aspect` × `indicator` |
+| `fct6_grantee_annual_info` | fct | One row per `grant_id` × metric (8 metrics) |
 | `ref_source_header_baseline` | ref | One row per source tab × column |
 | `Source_Header_Audit` | util | Result of the latest header check |
 | `Pipeline Log` | util | One row per build function per run |
@@ -189,10 +190,10 @@ Built by unpivoting Q1–Q4 in `stg_outcome_progress`. A quarter gets a row only
 | request_description | text | Support › Support Required | As source |
 | support_status | text | Support › Status | `In Progress` → `Open`; `Open` / `Closed` as source |
 | is_open_support_need | boolean | derived | TRUE when `support_status = Open` |
-| response_category | text | — | Blank: not captured in the source yet |
 | response_notes | text | Support › Anagha Notes | As source |
-| response_date | date | — | Blank: not captured in the source yet |
+| response_date | date | — | Blank: the source has no response date yet |
 | evidence_link | text | Support › Evidence Link | As source |
+| response_category | text | Support › Support Provided | The dropdown value as entered (currently the placeholders `Support 1` / `Support 2`). Blank until APFP fills it in. Last column of the table (added in 0.1.5, appended so the existing columns keep their positions) |
 
 ### fct4_budget_year — one row per financial year (T4)
 
@@ -221,6 +222,23 @@ The next-year Q1 amount is only a reserve: it is subtracted from this year's una
 | aspect | text | Organisation Maturity › Aspect | As source (`Clarity` / `Capacity` / `Compliance`) |
 | indicator | text | Organisation Maturity › Indicator | As source (the 11 source indicators, not the mockup's 6) |
 | status | text | Organisation Maturity › Status | As source (`Red` / `Amber` / `Green`) |
+| aspect_display | text | derived | The aspect on the first row of each aspect block per grant, blank on the other rows (rows are ordered grant › aspect › indicator). A Looker table cannot merge cells, so this column gives the mockup's merged-Aspect look (chart 4.04). Last column |
+
+### fct6_grantee_annual_info — one row per grant × metric (chart 4.02)
+
+Looker Studio cannot transpose a table. The mockup shows metrics down the side with the selected year and the previous year beside it, so this table is stored that way. Source: `fct1_grant_portfolio` only. All values are display text.
+
+| Column | Type | Logic |
+|---|---|---|
+| financial_year | text | The grant's financial year (the page's Financial Year control filters on this) |
+| previous_financial_year | text | One year earlier (`2026-27` → `2025-26`) |
+| grant_id, organization_id, organisation, grant_status | text | From the fct1 row |
+| metric_order | number | 1–8; sort by it |
+| metric | text | `Financial year`, `Annual budget`, `% Annual Budget funded by APFP`, `Team size`, `Attrition`, `Core policies`, `FCRA registration`, `Foreign contribution share` |
+| current_value | text | The metric for this grant's year: rupees with Indian grouping (`₹54,00,000`), percentages rounded to whole % (`approved_amount ÷ annual_budget` for the funded share), `n / 4` for core policies, `FY 2026-27` for the Financial year row. `–` when blank |
+| previous_value | text | Same, taken from the **same `organization_id`'s fct1 row in the previous financial year**. `–` when that organisation has no grant in the previous year |
+
+The `Financial year` row (metric_order 1) carries the two column labels (`FY 2026-27`, `FY 2025-26`), because a table header cannot show a value. Dashboard: table on `fct6`, dimensions `metric`, `current_value`, `previous_value`, sorted by `metric_order`; Financial Year, Organisation and Grant Status controls apply. If the same organisation has a different `organization_id` in different years, the previous year shows `–` (the ID must be stable across years).
 
 ## 6. Looker Studio calculated fields
 
@@ -255,7 +273,7 @@ The mockup's *Dashboard Metric* columns are aggregates. They are **not stored** 
 | 1 | Category values | Kept exactly as in the source (agreed). Looker labels will show source spellings, e.g. `Alternate School Support`, `NA`. | Standardise dropdowns in the source if labels need to change |
 | 2 | Returning organisations | In the dummy data every "Returning Organisation" has a **new** Organisation ID, so `funding_year` is `Year 1` for everyone. | Make sure a returning organisation keeps its original Organisation ID |
 | 3 | Support ID | Generated (`SUP-<grant>-<quarter>-<n>`), so it changes if support rows are reordered. | Add a Support ID column to `3. Support` |
-| 4 | Support response | `response_category` and `response_date` are blank: the source has only free-text Anagha Notes. | Add Response Type (4 approved categories) and Response Date to `3. Support` |
+| 4 | Support response | `response_category` now comes from the source column **Support Provided**; `response_date` is still blank (no date in the source). The dropdown currently holds placeholders (`Support 1`, `Support 2`), not the four approved categories (Connected to other partners · Additional funding raised · Provided expert advice · Other). | Replace the dropdown values in the source when final (no pipeline change); add a Response Date column if the date is needed |
 | 5 | Outcome values | Targets and progress are free text; only the first number is read. | Keep entries in the `NN% …` pattern, or split value and unit into two columns |
 | 6 | Due window | Computed against the run date. Without a trigger it is only as fresh as the last manual run (`as_of_date`). | Add the daily trigger when ready (SoP 4.2) |
 | 7 | Budget sample data | Dummy dividends (₹25–34 L/yr) are far below dummy commitments (₹1.3 Cr in 2026-27), so `fct4` shows negative balances. The logic is correct; the numbers are dummy. | — |

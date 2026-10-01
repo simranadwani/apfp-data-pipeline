@@ -20,6 +20,7 @@ const CARDINALITY_SPECS = [
   { key: 'FCT3_SUPPORT_ACTIVITY', pk: ['support_id'], grantFk: true },
   { key: 'FCT4_BUDGET_YEAR', pk: ['financial_year'] },
   { key: 'FCT5_MATURITY_RAG', pk: ['grant_id', 'aspect', 'indicator'], grantFk: true },
+  { key: 'FCT6_GRANTEE_ANNUAL_INFO', pk: ['grant_id', 'metric'], grantFk: true },
 ];
 
 /** Menu / editor entry point. Returns the number of failed tests. */

@@ -37,7 +37,7 @@ const FCT2_HEADERS = [
 const FCT3_HEADERS = [
   'financial_year', 'grant_id', 'organization_id', 'organisation', 'thematic_area', 'grant_status', 'support_id',
   'quarter', 'support_category', 'request_description', 'support_status', 'is_open_support_need',
-  'response_category', 'response_notes', 'response_date', 'evidence_link',
+  'response_notes', 'response_date', 'evidence_link', 'response_category',
 ];
 
 const FCT4_HEADERS = [
@@ -48,7 +48,12 @@ const FCT4_HEADERS = [
 
 const FCT5_HEADERS = [
   'financial_year', 'grant_id', 'organization_id', 'organisation', 'thematic_area', 'grant_status', 'aspect',
-  'indicator', 'status',
+  'indicator', 'status', 'aspect_display',
+];
+
+const FCT6_HEADERS = [
+  'financial_year', 'previous_financial_year', 'grant_id', 'organization_id', 'organisation', 'grant_status',
+  'metric_order', 'metric', 'current_value', 'previous_value',
 ];
 
 // ---------------------------------------------------------------------------
@@ -237,10 +242,10 @@ function buildFct3SupportActivity(ss, idx) {
       request_description: s.support_required,
       support_status: status,
       is_open_support_need: String(status).trim().toLowerCase() === 'open',
-      response_category: '', // not captured in the source yet
       response_notes: s.notes,
-      response_date: '', // not captured in the source yet
+      response_date: '', // the source has no response date yet
       evidence_link: s.evidence_link,
+      response_category: s.support_provided, // "Support Provided" dropdown in the source, value kept as entered
     };
   });
   return writeSheet(ss, idx.FCT3_SUPPORT_ACTIVITY, FCT3_HEADERS, rows);
@@ -309,9 +314,71 @@ function buildFct5MaturityRag(ss, idx) {
       aspect: m.aspect,
       indicator: m.indicator,
       status: m.status,
+      aspect_display: '',
     };
   });
+  // aspect_display: the aspect on the first row of each aspect block, blank on the rest (a Looker
+  // table cannot merge cells). Rows are ordered by grant, aspect, indicator, so a block is contiguous.
+  rows.sort(function (a, b) {
+    return String(a.grant_id).localeCompare(String(b.grant_id)) || String(a.aspect).localeCompare(String(b.aspect)) || String(a.indicator).localeCompare(String(b.indicator));
+  });
+  rows.forEach(function (r, i) {
+    const prev = rows[i - 1];
+    r.aspect_display = (prev && prev.grant_id === r.grant_id && prev.aspect === r.aspect) ? '' : r.aspect;
+  });
   return writeSheet(ss, idx.FCT5_MATURITY_RAG, FCT5_HEADERS, rows);
+}
+
+// ---------------------------------------------------------------------------
+// fct6_grantee_annual_info — one row per grant_id x metric (Grantee 360, chart 4.02)
+// Looker Studio cannot transpose a table, so the metrics-down-the-side layout of the mockup is
+// built here: each row holds the metric's value for the grant's financial year and for the
+// previous financial year of the same organisation, both as display text.
+// ---------------------------------------------------------------------------
+const FCT6_METRICS = [
+  ['Financial year', function (g) { return g.financial_year ? 'FY ' + g.financial_year : ''; }],
+  ['Annual budget', function (g) { return formatInr(g.annual_budget); }],
+  ['% Annual Budget funded by APFP', function (g) {
+    return (typeof g.approved_amount === 'number' && typeof g.annual_budget === 'number' && g.annual_budget > 0)
+      ? Math.round(g.approved_amount / g.annual_budget * 100) + '%' : '';
+  }],
+  ['Team size', function (g) { return typeof g.team_size === 'number' ? String(g.team_size) : ''; }],
+  ['Attrition', function (g) { return typeof g.attrition_rate === 'number' ? Math.round(g.attrition_rate * 100) + '%' : ''; }],
+  ['Core policies', function (g) {
+    return (typeof g.core_policies_met_count === 'number' && typeof g.core_policies_total_count === 'number')
+      ? g.core_policies_met_count + ' / ' + g.core_policies_total_count : '';
+  }],
+  ['FCRA registration', function (g) { return isBlank(g.fcra_registration) ? '' : String(g.fcra_registration); }],
+  ['Foreign contribution share', function (g) { return typeof g.foreign_contribution_rate === 'number' ? Math.round(g.foreign_contribution_rate * 100) + '%' : ''; }],
+];
+
+function buildFct6GranteeAnnualInfo(ss, idx) {
+  const portfolio = readSheet(ss, idx.FCT1_GRANT_PORTFOLIO);
+  const byOrgYear = {};
+  portfolio.forEach(function (g) { byOrgYear[key(g.organization_id, g.financial_year)] = g; });
+
+  const rows = [];
+  portfolio.forEach(function (g) {
+    const prevFy = previousFinancialYear(g.financial_year);
+    const prev = byOrgYear[key(g.organization_id, prevFy)];
+    FCT6_METRICS.forEach(function (metric, i) {
+      const current = metric[1](g);
+      const previous = prev ? metric[1](prev) : '';
+      rows.push({
+        financial_year: g.financial_year,
+        previous_financial_year: prevFy,
+        grant_id: g.grant_id,
+        organization_id: g.organization_id,
+        organisation: g.organisation,
+        grant_status: g.grant_status,
+        metric_order: i + 1,
+        metric: metric[0],
+        current_value: current === '' ? '\u2013' : current,
+        previous_value: previous === '' ? '\u2013' : previous,
+      });
+    });
+  });
+  return writeSheet(ss, idx.FCT6_GRANTEE_ANNUAL_INFO, FCT6_HEADERS, rows);
 }
 
 // ---------------------------------------------------------------------------

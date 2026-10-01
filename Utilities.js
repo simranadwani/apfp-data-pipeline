@@ -174,3 +174,21 @@ function nextFinancialYear(fy) {
   const start = Number(m[1]) + 1;
   return start + '-' + String((start + 1) % 100).padStart(2, '0');
 }
+
+/** Source FY "2026-27" → previous FY "2025-26". Returns '' for anything else. */
+function previousFinancialYear(fy) {
+  const m = /^(\d{4})-(\d{2})$/.exec(String(fy || '').trim());
+  if (!m) return '';
+  const start = Number(m[1]) - 1;
+  return start + '-' + String((start + 1) % 100).padStart(2, '0');
+}
+
+/** 8600000 → "₹86,00,000" (Indian digit grouping). Non-numbers → ''. */
+function formatInr(value) {
+  if (typeof value !== 'number' || isNaN(value)) return '';
+  const whole = String(Math.round(Math.abs(value)));
+  const last3 = whole.slice(-3);
+  const rest = whole.slice(0, -3);
+  const grouped = rest ? rest.replace(/\B(?=(\d{2})+(?!\d))/g, ',') + ',' + last3 : last3;
+  return (value < 0 ? '-' : '') + '\u20B9' + grouped;
+}

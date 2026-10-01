@@ -39,6 +39,7 @@ const FORMATS = {
     rupee: ['dividend_income', 'prior_year_carry_forward', 'available_budget', 'annual_committed_funding', 'next_year_q1_committed_funding', 'annual_disbursed_funding', 'unallocated_balance'],
   },
   fct5_maturity_rag: {},
+  fct6_grantee_annual_info: { count: ['metric_order'] },
 };
 
 // Google Sheets custom number formats (Format → Number → Custom number format).

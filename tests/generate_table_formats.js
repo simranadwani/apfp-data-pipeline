@@ -45,7 +45,7 @@ Object.entries(FORMATS).forEach(([tab, groups]) => {
   cols.forEach((k) => groups[k].forEach((c) => add(`| \`${c}\` | ${LABEL[k]} |`)));
   add('');
 });
-add('Tabs not listed here (`stg_outcome_progress`, `stg_support`, `stg_maturity`, `fct3_support_activity`, `fct5_maturity_rag`, and the log / audit tabs) have no number or date columns to format.', '',
+add('Tabs not listed here (`stg_outcome_progress`, `stg_support`, `stg_maturity`, `fct3_support_activity`, `fct5_maturity_rag`, `fct6_grantee_annual_info` (its values are already display text), and the log / audit tabs) have no number or date columns to format.', '',
   '## Things to know about Tables', '',
   '- **Column types:** when a Table is created, Sheets guesses each column\'s type from its data. If a column that should hold dates or numbers was guessed as Text (for example because it was empty), change its type.',
   '- **New columns from time to time** (for example the ones added in pipeline v0.1.2: `fct2` +5, `fct3` +1, `fct5` +1) are written just to the right of an existing Table. Drag the Table\'s edge to include them; Looker Studio reads them either way.',

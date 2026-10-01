@@ -3,6 +3,59 @@
 All notable changes to the APFP data pipeline. Newest first.
 Each entry lists what changed, which files, and why.
 
+## [0.1.7] — 2026-10-01
+
+### Added — `fct6_grantee_annual_info` (chart 4.02) and `fct5.aspect_display` (chart 4.04)
+- **What:**
+  - New table `fct6_grantee_annual_info`: one row per grant × metric (annual budget, % funded by
+    APFP, team size, attrition, core policies, FCRA registration, foreign contribution share, plus
+    a `Financial year` label row). Each row holds the value for the grant's year and for the
+    **same organisation's previous year** side by side, as display text (rupees in Indian
+    grouping). This is the mockup's 4.02 layout, which Looker Studio cannot build from `fct1`.
+  - `fct5_maturity_rag.aspect_display` (new last column): the aspect on the first row of each
+    block and blank after it, for the merged-Aspect look of 4.04. `fct5` rows are now ordered
+    grant › aspect › indicator.
+  - `getSheetIndex` appends rows for new tabs to an older Index tab (existing rows and renamed
+    tabs are kept), so the new table needs no manual Index edit.
+  - New helpers `previousFinancialYear` and `formatInr`; `buildFct6GranteeAnnualInfo` runs
+    after `buildFct5MaturityRag` in `runFinalLayer`, with cardinality tests (31 tests in total).
+- **Files:** `Final.js`, `Utilities.js`, `Index.js`, `Pipeline.js`, `Tests.js`,
+  `tests/pipeline.test.js`, `tests/column_formats.js`, `tests/generate_table_formats.js`,
+  `docs/TABLE_FORMATS.md`, `PIPELINE_LOGIC.md`, `docs/COWORK_FIX_PROMPT.md`, review document.
+- **Why:** Product owner approved both after the dashboard review. **After deploying:** run
+  `runCompletePipeline`; the new tab `fct6_grantee_annual_info` appears (convert it to a Table
+  if you want, like the others) and `fct5` gets its extra column (drag its Table one column wider).
+
+## [0.1.6] — 2026-10-01
+
+### Added — dashboard review and Cowork fix prompt (docs only)
+- **What:** Page-by-page comparison of the built Looker Studio dashboard (PDF export) against the
+  mockup, with severity and the exact Looker fix per finding, the charts that cannot be copied
+  exactly (with workarounds), and a ready-to-paste fix prompt for Cowork. Pipeline validated
+  against the live sheets: the 30 Sep run succeeded (Table-safe code) and a local run on the
+  1 Oct source gives the same rows and columns, plus the new Support Provided column.
+- **Files:** `docs/APFP_Dashboard_Review_and_Cowork_Fixes.docx`, `docs/COWORK_FIX_PROMPT.md`.
+- **Why:** Product owner asked for the comparison and feedback for Cowork. No script changes.
+
+## [0.1.5] — 2026-10-01
+
+### Added — "Support Provided" from the source Support tab
+- **What:** The source `3. Support` tab has a new column M, **Support Provided** (a dropdown). It
+  is now staged (`stg_support.support_provided`) and becomes `fct3_support_activity.response_category`,
+  with the value kept exactly as entered. This fills the gap that left dashboard chart 1.15
+  (Support Provided to Grantees) empty and gives 4.07 its "APFP response". `response_date`
+  stays blank (the source has no date). The new column is the **last column** in `stg_support` and
+  `fct3_support_activity`; existing columns keep their positions. The column is required, so a rename is caught by the
+  source header check.
+  - 4 new tests (26 in total); the test fixture was refreshed from the current source (only the
+    Support tab changed).
+- **Files:** `Staging.js`, `Final.js`, `tests/pipeline.test.js`,
+  `tests/fixtures/source_dummy.json`, `PIPELINE_LOGIC.md`.
+- **Why:** Product owner added the column to close the known data gap. **After deploying, run
+  `setupSourceHeaderBaseline` once** (otherwise the header audit shows a harmless "New Header
+  Added" warning), then `runCompletePipeline`. The dropdown currently holds placeholders
+  (`Support 1`, `Support 2`); change them in the source when the real list is final.
+
 ## [0.1.4] — 2026-09-30
 
 ### Fixed — pipeline failed once the output tabs were converted to Google Sheets Tables
