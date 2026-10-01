@@ -3,6 +3,18 @@
 All notable changes to the APFP data pipeline. Newest first.
 Each entry lists what changed, which files, and why.
 
+## [0.1.9] — 2026-10-01
+
+### Added — Cowork round 2 fix prompt (docs only)
+- **What:** Review of Cowork's progress export (fixes 1–7 and part of 8 done) and a second
+  prompt for the remaining and new findings. Confirms against the live sheet that the pipeline
+  update is deployed (`fct6_grantee_annual_info` 144 rows, `fct5.aspect_display`, fct3/stg_support
+  last column, last run SUCCESS), so Cowork's "blocked" items only need the Looker Studio data
+  source fields refreshed and `fct6` added as a data source.
+- **Files:** `docs/COWORK_FIX_PROMPT_ROUND2.md`.
+- **Why:** Cowork reported the pipeline "does not look deployed"; 1.15 and 4.07 show a Data Set
+  Configuration Error until the fct3 field list is refreshed.
+
 ## [0.1.8] — 2026-10-01
 
 ### Added — exact `link_360` formula so "Click here" opens a pre-filtered Grantee 360 (docs only)
