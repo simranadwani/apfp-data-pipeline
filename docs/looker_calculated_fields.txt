@@ -215,6 +215,12 @@ Display    : Grantee 360 link
 Used by    : 3.07. Opens Grantee 360 (page p_0lm6sfxw7d) with the organisation preselected through the Organisation control's filter parameter df232 (needs File > Report settings > Enable viewer filters in report link). If that control is deleted or recreated its ID changes: select an organisation in view mode, copy the page URL and replace df232 and the page ID. The name is double-encoded (space = %2520, & = %2526).
 Formula    : HYPERLINK(CONCAT("https://datastudio.google.com/reporting/dba82e50-a6d6-4ef3-a273-ff3b0b827046/page/p_0lm6sfxw7d?params=%7B%22df232%22:%22include%25EE%2580%25800%25EE%2580%2580IN%25EE%2580%2580", REGEXP_REPLACE(REGEXP_REPLACE(REGEXP_REPLACE(REGEXP_REPLACE(REGEXP_REPLACE(REGEXP_REPLACE(REGEXP_REPLACE(REGEXP_REPLACE(organisation, "%", "%2525"), " ", "%2520"), "&", "%2526"), ",", "%252C"), "/", "%252F"), "\+", "%252B"), "#", "%2523"), "'", "%2527"), "%22%7D"), "Click here")
 
+Field name : grant_period_text
+Type       : Text (dimension)  [fct1_grant_portfolio]
+Display    : Grant period
+Used by    : 4.01 (GRANT PERIOD). The pipeline column grant_period is text ("2026-04-01 - 2027-03-31") but Looker Studio types it as a Date and shows only the start; this field shows both dates.
+Formula    : CONCAT(FORMAT_DATETIME("%d %b %Y", grant_start_date), " – ", FORMAT_DATETIME("%d %b %Y", grant_end_date))
+
 Field name : grant_status_line
 Type       : Text (dimension)
 Display    : Current grant

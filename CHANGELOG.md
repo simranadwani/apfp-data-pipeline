@@ -3,6 +3,24 @@
 All notable changes to the APFP data pipeline. Newest first.
 Each entry lists what changed, which files, and why.
 
+## [0.1.10] — 2026-10-02
+
+### Changed — Cowork round 2 prompt rewritten after auditing it against the mockup (docs only)
+- **What:** The "final" dashboard export was byte-identical to the previous one, so it showed none of
+  round 2's edits; the prompt itself was re-audited against the mockup (re-rendered) and the live data.
+  - **Corrected my errors:** the instruction to reword the Guide "Grantee Comparison" line is removed
+    (text stays verbatim); series colours now follow the mockup (Disbursed and Close light `#B8D8DD`;
+    1.14 Closed `#167C88`, Open `#D6E8EF`; 1.08 `#167C88 / #E16E3F / #67A6AB / #D9E8ED`) instead of my
+    earlier values.
+  - **Added:** 4.01 grant period (typed as Date by Looker; new field `grant_period_text`), 1.11 column
+    order, 1.13 legend order, 3.05 diagnosis checklist and expected result (one "61+ days" bar = 3),
+    row numbers and pagination off, table header styles, single-select Financial Year and Organisation,
+    4.08 recommendation highlight, 2.05 labels and error bars, 4.03 blank point, field-refresh
+    fallback, expected values for FY 2026-27, a hard-refresh/new-filename export instruction and
+    the deliberate deviations Cowork must not undo. 42 numbered items.
+- **Files:** `docs/COWORK_FIX_PROMPT_ROUND2.md`, `docs/looker_calculated_fields.txt`.
+- **Why:** Close every remaining gap in one pass. No pipeline changes.
+
 ## [0.1.9] — 2026-10-01
 
 ### Added — Cowork round 2 fix prompt (docs only)
