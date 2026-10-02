@@ -10,7 +10,7 @@
  *   number → number ('' when blank; commas, ₹ and spaces are stripped)
  *   rate   → number; "8%" becomes 0.08, numbers are kept as they are
  *   date   → Date at midnight ('' when blank or unparseable)
- *   fy     → financial year in the source format YYYY-YY ("April 25-March 26" → "2025-26")
+ *   fy     → financial year as "FY yy-yy" ("2026-27" → "FY 26-27", "April 25-March 26" → "FY 25-26")
  */
 
 const STAGING_SPECS = {
@@ -267,20 +267,20 @@ function parseDateValue(v, tz) {
 }
 
 /**
- * Normalises financial-year labels to the source format "YYYY-YY".
+ * Normalises financial-year labels to the one format used everywhere: "FY 26-27".
  * Accepts "2026-27", "2026-2027", "FY 26-27", "FY26-27" and the Dividends
  * format "April 25-March 26". Returns '' when the label is not recognised.
  */
 function normaliseFinancialYear(v) {
   const s = String(v).trim();
   let m = /^(\d{4})\s*-\s*(\d{2}|\d{4})$/.exec(s);
-  if (m) return m[1] + '-' + m[2].slice(-2);
+  if (m) return formatFinancialYear(Number(m[1]), m[2].slice(-2));
   m = /^FY\s*(\d{2})\s*-\s*(\d{2})$/i.exec(s);
-  if (m) return '20' + m[1] + '-' + m[2];
+  if (m) return formatFinancialYear(2000 + Number(m[1]), m[2]);
   m = /^April\s*(\d{2}|\d{4})\s*-\s*March\s*(\d{2}|\d{4})$/i.exec(s);
   if (m) {
     const start = m[1].length === 2 ? 2000 + Number(m[1]) : Number(m[1]);
-    return start + '-' + m[2].slice(-2);
+    return formatFinancialYear(start, m[2].slice(-2));
   }
   return '';
 }

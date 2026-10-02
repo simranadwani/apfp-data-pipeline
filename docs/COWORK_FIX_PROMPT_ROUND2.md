@@ -1,0 +1,93 @@
+*** SUPERSEDED by docs/COWORK_FIX_PROMPT_ROUND3.md. Do not use this file. ***
+
+ROUND 2 (v2, supersedes the earlier round-2 text) for the report "APFP Grant Portfolio Dashboard"
+https://datastudio.google.com/reporting/dba82e50-a6d6-4ef3-a273-ff3b0b827046
+
+READ FIRST
+- The PDF you exported at the end of the last round is byte-for-byte identical to the one before it (same checksum), so it shows none of your round-2 edits. Before you export again: save every edit, reload the report with a hard refresh (Ctrl+Shift+R), switch to View mode, and name the file with a new suffix (for example "..._round2_final.pdf").
+- Same rules as before: do NOT edit the Data Pipeline sheet or the mockup sheet, do NOT run Apps Script, do NOT change sharing or link settings, do NOT commit anything to the repository. Font Raleway. Do not rename source category values.
+- Keep the built-in browser pane visible while you edit (hidden pane = stalled edits).
+- Work in the order below. After each item write DONE / PARTLY / NOT DONE and what you saw. Where an item says "check", do the check in View mode, not Edit mode.
+- Deliberate deviations from the mockup that you must LEAVE as they are: title tags (1.11 T1, 1.13 T5, 2.02/2.03/2.11 T4); Financial Year control first on every page; Guide page text exactly as written; Amber cells with dark text; text-based rupee fields.
+- Colours below were sampled from the mockup. Palette: #0E4A5C deep teal, #167C88 teal, #245563 Guide bands, #F4F6F7 page, #FFFFFF cards, #F4F6F9 light table header, #E2F2F4 light teal tile, #1E2838 text, #5F6C77 muted, RAG #C6695E (Red) / #D39F3A (Amber, dark text #1E2838) / #3A8969 (Green), On Track fill #D4EEDD text #1D5F33, Off Track fill #F4CCCC text #991717, light series colour #B8D8DD.
+
+=====================================================================
+A. DATA CONNECTIONS (do this first; it unblocks 1.15, 4.02, 4.04, 4.07)
+=====================================================================
+The pipeline update IS deployed. Verified in the live sheet: fct6_grantee_annual_info exists (144 rows); fct5_maturity_rag has the new LAST column aspect_display; fct3_support_activity has the new LAST column response_category; last run succeeded. Looker Studio just has stale field lists.
+1. Resource > Manage added data sources. For fct3_support_activity and fct5_maturity_rag: Edit > Reconnect (or Refresh fields) > apply. Confirm response_category (fct3) and aspect_display (fct5) are in the field list. If a field is still missing: open the connection, confirm the right tab is selected, "Use first row as headers" is on and no custom cell range is set; if it still fails, remove and re-add that data source with the same name (keep field IDs).
+2. Add data source: Google Sheets > Data Pipeline > fct6_grantee_annual_info, first row as headers. All fields text except metric_order (Number). Name it exactly fct6_grantee_annual_info.
+3. Check 1.15 and 4.07 no longer show "Data Set Configuration Error". If they still do, open "See details" and tell me the field named.
+
+=====================================================================
+B. GLOBAL FIXES (apply to every page, then re-check each page)
+=====================================================================
+4. CONTROLS. Financial Year and Organisation show "(1)", meaning multi-select. Make Financial Year and Organisation SINGLE-select (no "Select all", no "All" option on Organisation). Widen every Financial Year control to 220 px so it reads "Financial Year: 2026-27" with no truncation. Defaults: Financial Year 2026-27 on all pages, Decision Status Pending, Organisation BrightSteps Learning Trust, Grant Status and Thematic Area blank (all). Controls on one row, equal gaps, nothing overlapping, labels clean (no field IDs).
+5. TABLE ROW NUMBERS. Turn OFF "Show row numbers" on every table (1.11, 1.12, 3.07, 4.02, 4.04, 4.06, 4.07 currently show a leading 1, 2, 3...). The mockup has none.
+6. PAGINATION. Turn off pagination or set rows per page so every row shows with no footer "1 - 1 / 1" on 4.02, 4.04, 4.05, 4.06, 4.07. Tables with more rows: 1.11 and 1.12 and 3.07 keep 10 per page only if there are more than 10 rows; otherwise show all rows with no footer.
+7. TABLE HEADER STYLE as in the mockup: header row fill #167C88 with white bold text on 3.07, 4.02, 4.04, 4.05, 4.07; light header #F4F6F9 with #1E2838 bold text on 1.11 and 4.06; 1.12 header light. Cell text 11-12 px #1E2838. Thin #E3E8EC row separators.
+8. COUNT AXES AND LABELS. Decimal places 0 on every count axis AND every count data label (1.05, 1.06, 1.07, 1.08, 1.09, 1.10, 1.13 axis in %, 1.14, 1.16, 2.07, 3.05, 3.06). Axis maximum auto, but no fractional ticks (0.2, 0.4 ...). Category labels must not be truncated: widen the category axis area or enlarge the chart so full labels fit (currently cut on 1.05, 1.06, 1.07, 1.09, 1.10, 1.13, 1.14, 2.05 and 3.06, e.g. "Transa...", "Educat...", "Compl...", "Public Leader..."). Do not shorten the values.
+9. ONE VALUE AXIS on 2.05, 2.06, 2.08, 4.03 (2.06 and 2.08 are done; do 2.05 check and 4.03).
+
+=====================================================================
+C. PAGE 1: DASHBOARD GUIDE
+=====================================================================
+10. Keep ALL text exactly as it is, including the HOW TO USE line "2 Apply the financial-year and view-level filters | use Grantee Comparison for subcategory analysis." Do NOT reword it (the earlier instruction to replace it was wrong; the owner wants the mockup wording; I will flag the wording to the owner separately).
+11. Check only layout: the four cards are equal size, aligned, no overlap; every card heading is a link to its page (test all four in View mode); the numbered HOW TO USE lines have a little space between them; the bullets under IMPORTANT TO KNOW are separated. Footer line "For data or dashboard questions, contact the dashboard owner." is small italic #5F6C77.
+
+=====================================================================
+D. PAGE 2: PORTFOLIO OVERVIEW
+=====================================================================
+12. 1.08 colours. Use the mockup colours: Direct School Support #167C88; After-School Support #E16E3F; Alternative / Alternate School Support #67A6AB; Ecosystem Capacity Building #D9E8ED; any other value (for example NA) #9AA7B0. (My earlier "teal ramp" instruction was wrong; ignore it.) Metric stays m_grantees "Distinct education grantees", filter thematic_area = Education. Legend top-left. Axis decimals 0 (item 8).
+13. 1.11 COLUMN ORDER. Required: Organisation, Category, Subcategory, Intervention model, Annual budget, APFP approved, Beneficiaries, Cost / beneficiary, Clarity, Capacity, Compliance. Currently the three RAG columns sit before the money columns because Looker puts metrics after dimensions. Use the same technique you used for 3.07: create ROW-LEVEL (non-aggregated) text fields from annual_budget, approved_amount, primary_beneficiary_count and cost_per_beneficiary (Indian grouping, no decimals except cost per beneficiary which keeps paise as in the mockup, for example 336) and use them as DIMENSIONS in that order. Each organisation has one row per financial year, so row-level is correct. Keep RAG cell colours (Green #3A8969 white text, Amber #D39F3A dark text, Red #C6695E white text). Card title row: teal band #167C88 with white title text, as in the mockup. Sort by organisation ascending.
+14. 1.12: remove the empty area under the table (the card is much taller than the 9 rows). Reduce the card height and move the sections below (03/04/05) up so no empty block remains. The "% outcomes on track" scorecard sits in a light-teal box (#E2F2F4) at the right of the teal title band.
+15. 1.13: legend order must be Red, Amber, Green (currently Amber, Red, Green); bar segments in that order; data labels as percent. A single colour per bar is CORRECT for the current sample data (each aspect has only one rating); do not chase it.
+16. 1.14 colours as in the mockup: Closed #167C88 (dark), Open #D6E8EF (light). Legend order Closed, Open. (This reverses my earlier spec; the mockup is the reference.)
+17. 1.15: after item A.1 it must render a bar chart of response_category counts (values Support 1, Support 2 for now: placeholders, correct). Single colour #167C88. If empty, check the metric is m_responses and the chart filter does not exclude blanks wrongly.
+18. 1.16: three FY series in the teal ramp, legend at the bottom, count labels with 0 decimals. Check the axis shows whole numbers only.
+19. 1.02 scorecard: shows 100% correctly (9 of 9 active grants on track). Keep.
+
+=====================================================================
+E. PAGE 3: FUNDING ALLOCATION
+=====================================================================
+20. 2.05, 2.06, 2.08 series colours as in the mockup: Committed #167C88, Disbursed #B8D8DD (light). Data labels on the bars, dark #1E2838 on the light bars, white on the dark. 2.05 has none now: add them (1 decimal). Remove the small whiskers / error bars on 2.05 (Style: turn off any error bars, trend or reference lines). Number format 1 decimal, axis title "₹ lakh" (or a subtitle as it already says).
+21. 2.07: bars keep one colour #167C88; bands ordered <₹1 lakh, ₹1-10 lakh, ₹11-20 lakh, ₹21-50 lakh, >₹50 lakh by funding_range_order (only bands with data show, that is correct); y axis whole numbers.
+22. 2.09-2.12 sub-tile captions are clipped (the table tag "T4" is cut). Make the caption boxes wide enough for one line: exactly "2.09 | Dividends | T4", "2.10 | Carry Forward | T4", "2.11 | Current FY | T4", "2.12 | Next FY Q1 | T4" (font 11-12 px, widths about 140 px).
+23. Check the tile values for FY 2026-27: 2.01 ₹52,50,000; 2.02 ₹1,49,25,000; 2.03 ₹96,00,000; 2.04 -₹96,75,000 (negative is correct for this sample data: commitments exceed budget); 2.09 ₹27,50,000; 2.10 ₹25,00,000; 2.11 ₹1,28,25,000; 2.12 ₹21,00,000.
+
+=====================================================================
+F. PAGE 4: DECISION QUEUE
+=====================================================================
+24. 3.05 is EMPTY (axis 0 to 1, no bars). It must show ONE bar for FY 2026-27 with Decision Status = Pending: due window "61+ days" with 3 (Renew). (All pending Renew grants are due 31 Mar 2027, more than 60 days away; Defer is excluded by the Renew/Close filter; Close decisions are all "Decided", so they cannot appear under the default Pending control. That is expected.) Diagnose in this order and tell me which was wrong: (a) the chart filter must be "recommendation IN (Renew, Close)" as ONE condition with two values, not one value "Renew, Close"; (b) the filter field must be recommendation (not recommendation_copy or reason_for_recommendation); (c) dimension must be due_window, sorted by due_window_order ascending (Overdue, 0-30 days, 31-60 days, 61+ days); (d) breakdown dimension recommendation; (e) metric m_pending (Distinct pending grants), not Record Count; (f) a leftover chart-level filter on is_pending_decision or a stale field reference after the data source was edited. Colours: Renew #167C88, Close #B8D8DD (mockup). Legend Renew, Close. Whole-number axis.
+25. 3.06: leave as is (single colour #0E4A5C). It shows Renew 3 and Defer 3 only because the Decision Status control is on Pending and there are no pending Modify or Close decisions; that is correct. Check labels are not truncated.
+26. 3.07: give "Reason for recommendation" the widest column (header must not wrap), shorten Organisation and Grant type widths; header style per item 7 (teal, white). Subtitle line under the title: leave empty. "Click here" links: see section H.
+27. Check values for FY 2026-27, Decision Status Pending: 3.01 = 6; 3.02 = 0; 3.03 = 0; 3.04 = ₹58,27,500; 3.07 lists 3 rows (Nyaya Setu Foundation, Sehat Saathi Foundation, BrightSteps Learning Trust, all Renew). 3.01 shows 6 but the list shows 3 because the other 3 pending decisions are Transactional grants (Defer), which the list excludes by design. LEAVE this; the owner decides separately.
+
+=====================================================================
+G. PAGE 5: GRANTEE 360
+=====================================================================
+28. 4.01: GRANT PERIOD shows "Apr 1, 2026" only, because Looker typed the text column grant_period as a Date. Required: "01 Apr 2026 - 31 Mar 2027" (use an en dash). In fct1_grant_portfolio create a calculated field grant_period_text exactly:
+CONCAT(FORMAT_DATETIME("%d %b %Y", grant_start_date), " – ", FORMAT_DATETIME("%d %b %Y", grant_end_date))
+and use it for the GRANT PERIOD row. (Fallback if grant_start_date/grant_end_date are not Date type: set them to Date in the data source.) CURRENT GRANT row: separators "Active · Restricted · ₹7,50,000" with the middle dot. Label column #0E4A5C white text (done); make the label column exactly as tall as the rows (the dark block currently runs below the last row); thin separators between rows as in the mockup.
+29. 4.02 (needs A.2): delete the current table and rebuild it on fct6_grantee_annual_info. Dimensions in this order: metric, current_value, previous_value. No metrics. Sort metric_order ascending. All 8 rows visible, no row numbers, no pagination. Column headers: "Metric", "Selected year", "Previous year". Style per item 7 (teal header, white bold). Conditional format: row where metric = "Financial year" bold with fill #F4F6F9 (this row holds the year labels FY 2026-27 / FY 2025-26). Controls Financial Year (financial_year), Organisation (organisation) and Grant Status (grant_status) must filter it: change the Organisation control and confirm the table changes. Expected for BrightSteps FY 2026-27: Financial year FY 2026-27; Annual budget ₹50,00,000; % funded by APFP 15%; Team size 12; Attrition 8%; Core policies 3 / 4; FCRA registration Registered; Foreign contribution share 0%; the Previous year column shows "–" in every row (sample data has one year per organisation; correct).
+30. 4.03: still two axes. Use ONE axis in ₹ lakh. Approved as columns #167C88 with data labels; "Disbursed (where different)" as a line with markers #0E4A5C on the same axis. The line currently draws a point at 0 where the value is blank: make the blank not plot (use the field that returns NULL, not 0, and set "show missing data as" gaps/nothing), or hide the series if it cannot be made blank-safe.
+31. 4.04 (needs A.1): dimensions aspect_display, indicator, status, in that order; sort by aspect ascending then indicator ascending (keep aspect as a hidden sort field if needed) so the aspect shows once per block. Status cell colours: Green #3A8969 white text, Amber #D39F3A dark text #1E2838, Red #C6695E white text (currently plain text "Green"). Header style per item 7. The sample data has one maturity row per grant, so one row is expected.
+32. 4.05: replace raw names. Row dimension header "Primary beneficiary group"; column group header = the financial year only ("FY 26-27") spanning two sub-columns "Reach" and "Cost per Beneficiary". No "fy_label / Reach / ..." text anywhere. Header style per item 7. Reach as whole number with Indian grouping, cost as ₹ with Indian grouping.
+33. 4.06: column order Outcome / indicator, Target, Q1, Q2, Q3, Q4, Annual, Notes (Notes currently sits before Q1). Notes is the widest column (about 35%). Q cells: On Track fill #D4EEDD text #1D5F33; Off Track fill #F4CCCC text #991717; Annual as percent, 0 decimals. Header light #F4F6F9.
+34. 4.07 (needs A.1): columns Quarter, Support category, Request, Status, APFP response (response_notes), Support provided (response_category, header "Support provided"). No Record Count. Header style per item 7. Must render a table, not an error.
+35. 4.08: the RECOMMENDATION row shows the rationale text. Point it to the field recommendation and give "Renew" fill #D4EEDD, text #1D5F33 bold (conditional format; other values no fill). RATIONALE stays on reason_for_recommendation. EVIDENCE: the "Annual Report link" blue underlined. Make the label column exactly as tall as the rows (as 4.01). Row separators thin.
+36. Controls row: Financial Year, Organisation, Grant Status in one tidy row (same widths and gaps as the other pages); Organisation single-select (item 4).
+
+=====================================================================
+H. CLICK HERE (3.07) AND link_360
+=====================================================================
+37. Your current link works for Nyaya Setu. Make it robust: names with "&" must be double-encoded. The formula that is verified byte-for-byte against the real report URL (host datastudio.google.com, page p_0lm6sfxw7d, parameter df232) is in docs/looker_calculated_fields.txt under field link_360. If your formula is not that one, replace it with that one. Do NOT delete or recreate the Organisation control on Grantee 360 (its ID df232 would change).
+38. Test from "Click here" in View mode and report each result: Paws & Care Trust (contains &), Jan Neta Fellowship Trust, Sakhi Youth Collective, Civic Leadership Forum. Each must open Grantee 360 with that organisation selected and the 4.01 panel showing it. (Test with Financial Year 2026-27: Sakhi, Jan Neta and Paws & Care all have 2026-27 grants; Civic is also 2026-27. If a year with no grant for that organisation is selected, panels are empty, which is expected.)
+
+=====================================================================
+I. FINAL CHECK AND EXPORT
+=====================================================================
+39. In View mode, with defaults (Financial Year 2026-27), step through all 5 pages and confirm: no "Data Set Configuration Error"; no empty chart (3.05 shows one bar); no raw field names anywhere; no truncated category labels; no row numbers; no overlapping controls; every count axis is whole numbers; colours as listed above. Expected headline values: 1.01 = 9; 1.02 = 100%; 1.03 = 0; 1.04 = 8; 3.01 = 6; 3.04 = ₹58,27,500.
+40. Then set Financial Year to 2027-28 and check no page breaks or shows an error (values will differ).
+41. Export: hard refresh, View mode, all pages, default filters (2026-27): save as a NEW file name. Also export a second PDF with Financial Year 2027-28. Send both PDFs and a short report: item number, DONE / PARTLY / NOT DONE, one line on what you saw.
+42. Update claude/looker_build_log.md with the results (do not commit anything to the repository).

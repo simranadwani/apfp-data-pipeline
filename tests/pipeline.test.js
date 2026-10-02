@@ -44,7 +44,7 @@ test('fct1 derives decision, funding, maturity and outcome fields', () => {
   const byId = Object.fromEntries(h.tab('fct1_grant_portfolio').map((r) => [r.grant_id, r]));
 
   const brigh = byId.BRIGH_01_202627_301;
-  assert.equal(brigh.financial_year, '2026-27');
+  assert.equal(brigh.financial_year, 'FY 26-27');
   assert.equal(brigh.funding_year, 'Year 1');
   assert.equal(brigh.duration_of_support_bucket, 'Year 1');
   assert.equal(brigh.decision_type, 'Renewal');
@@ -172,7 +172,7 @@ test('the staging header requirement catches a renamed "Support Provided" column
 test('fct4 rolls the carry-forward and reserves next year Q1 commitments', () => {
   const h = runFull();
   const rows = h.tab('fct4_budget_year');
-  assert.deepEqual(rows.map((r) => r.financial_year), ['2025-26', '2026-27', '2027-28', '2028-29']);
+  assert.deepEqual(rows.map((r) => r.financial_year), ['FY 25-26', 'FY 26-27', 'FY 27-28', 'FY 28-29']);
   const [y1, y2] = rows;
   assert.equal(y1.dividend_income, 2500000);
   assert.equal(y1.prior_year_carry_forward, 0);
@@ -362,13 +362,15 @@ test('every numeric and date output column has a format in tests/column_formats.
 
 test('helper rules', () => {
   const { ctx } = loadPipeline();
-  assert.equal(ctx.normaliseFinancialYear('April 25-March 26'), '2025-26');
-  assert.equal(ctx.normaliseFinancialYear('2026-27'), '2026-27');
-  assert.equal(ctx.normaliseFinancialYear('FY 26-27'), '2026-27');
-  assert.equal(ctx.normaliseFinancialYear('2026-2027'), '2026-27');
+  // every accepted input gives the one format, "FY 26-27"
+  ['April 25-March 26', '2025-26', 'FY 25-26', 'FY25-26', '2025-2026'].forEach((v) => assert.equal(ctx.normaliseFinancialYear(v), 'FY 25-26', v));
   assert.equal(ctx.normaliseFinancialYear('next year'), '');
-  assert.equal(ctx.nextFinancialYear('2026-27'), '2027-28');
-  assert.equal(ctx.nextFinancialYear('2099-00'), '2100-01');
+  assert.equal(ctx.nextFinancialYear('FY 26-27'), 'FY 27-28');
+  assert.equal(ctx.nextFinancialYear('FY 99-00'), 'FY 00-01');
+  assert.equal(ctx.previousFinancialYear('FY 26-27'), 'FY 25-26');
+  assert.equal(ctx.previousFinancialYear('FY 00-01'), 'FY 99-00');
+  assert.equal(ctx.previousFinancialYear('2026-27'), ''); // only the one format is accepted here
+  assert.equal(ctx.nextFinancialYear(''), '');
 
   assert.equal(ctx.parseMeasure('70% of annual target'), 0.7);
   assert.equal(ctx.parseMeasure('732 learners'), 732);
@@ -413,7 +415,7 @@ test('fct6 puts each metric on its own row with the selected and previous year s
   const mine = rows.filter((r) => r.grant_id === 'SAKHI_02_202627_302');
   assert.deepEqual(mine.map((r) => r.metric), ['Financial year', 'Annual budget', '% Annual Budget funded by APFP', 'Team size', 'Attrition', 'Core policies', 'FCRA registration', 'Foreign contribution share']);
   const v = Object.fromEntries(mine.map((r) => [r.metric, r.current_value]));
-  assert.equal(v['Financial year'], 'FY 2026-27');
+  assert.equal(v['Financial year'], 'FY 26-27');
   assert.equal(v['Annual budget'], '\u20B954,00,000');
   assert.equal(v['% Annual Budget funded by APFP'], '24%'); // 1275000 / 5400000
   assert.equal(v['Team size'], '13');
@@ -421,7 +423,11 @@ test('fct6 puts each metric on its own row with the selected and previous year s
   assert.equal(v['Core policies'], '4 / 4');
   assert.equal(v['FCRA registration'], 'Application in Process');
   assert.equal(v['Foreign contribution share'], '5%');
-  assert.ok(mine.every((r) => r.previous_financial_year === '2025-26' && r.previous_value === '\u2013')); // no 2025-26 grant in the sample data
+  assert.ok(mine.every((r) => r.previous_financial_year === 'FY 25-26'));
+  // no FY 25-26 grant in the sample data: the label row still names the previous year, the rest are dashes
+  const prev = Object.fromEntries(mine.map((r) => [r.metric, r.previous_value]));
+  assert.equal(prev['Financial year'], 'FY 25-26');
+  assert.ok(mine.filter((r) => r.metric !== 'Financial year').every((r) => r.previous_value === '\u2013'));
 });
 
 test('fct6 previous_value comes from the same organisation in the year before', () => {
@@ -430,14 +436,14 @@ test('fct6 previous_value comes from the same organisation in the year before', 
   const hdr = fct1.data[0];
   const col = (n) => hdr.indexOf(n);
   const row = fct1.data[1].slice();
-  row[col('grant_id')] = 'TEST_PREV'; row[col('financial_year')] = '2025-26'; row[col('annual_budget')] = 3600000; row[col('team_size')] = 67;
+  row[col('grant_id')] = 'TEST_PREV'; row[col('financial_year')] = 'FY 25-26'; row[col('annual_budget')] = 3600000; row[col('team_size')] = 67;
   fct1.data.push(row); // an earlier-year grant of the same organisation as data row 1
   h.ctx.buildFct6GranteeAnnualInfo(h.pipeline, h.ctx.getSheetIndex(h.pipeline));
   const rows = h.tab('fct6_grantee_annual_info').filter((r) => r.grant_id === fct1.data[1][col('grant_id')]);
   const v = Object.fromEntries(rows.map((r) => [r.metric, r]));
   assert.equal(v['Annual budget'].previous_value, '\u20B936,00,000');
   assert.equal(v['Team size'].previous_value, '67');
-  assert.equal(v['Financial year'].previous_value, 'FY 2025-26');
+  assert.equal(v['Financial year'].previous_value, 'FY 25-26');
 });
 
 test('fct5 aspect_display shows the aspect once per block and keeps blanks after it', () => {
@@ -473,4 +479,24 @@ test('an Index tab from an older release gets the new rows appended and keeps re
   assert.equal(idx.FCT1_GRANT_PORTFOLIO, 'my_fct1');
   const keys = h.tab('Index').map((r) => r.key);
   assert.equal(keys.filter((k) => k === 'FCT6_GRANTEE_ANNUAL_INFO').length, 1);
+});
+
+test('every financial_year value in every stg_ and fct_ tab uses the one format "FY yy-yy"', () => {
+  const h = runFull();
+  let checked = 0;
+  Object.keys(h.pipeline.sheets).filter((n) => /^(stg|fct)/.test(n)).forEach((n) => {
+    h.tab(n).forEach((r) => ['financial_year', 'previous_financial_year', 'decision_for_fy', 'previous_grant_fy'].forEach((c) => {
+      if (c in r && r[c] !== '') { assert.match(r[c], /^FY \d{2}-\d{2}$/, n + '.' + c + ' = ' + r[c]); checked++; }
+    }));
+  });
+  assert.ok(checked > 100);
+});
+
+test('fct6 filtered to one financial year shows exactly that year and the year before it', () => {
+  const h = runFull();
+  const rows = h.tab('fct6_grantee_annual_info').filter((r) => r.financial_year === 'FY 27-28');
+  assert.ok(rows.length > 0);
+  assert.ok(rows.every((r) => r.previous_financial_year === 'FY 26-27'));
+  const labels = rows.filter((r) => r.metric === 'Financial year');
+  assert.ok(labels.every((r) => r.current_value === 'FY 27-28' && r.previous_value === 'FY 26-27'));
 });

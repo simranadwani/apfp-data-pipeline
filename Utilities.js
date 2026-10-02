@@ -167,20 +167,27 @@ function runLogged(ss, idx, fnName, fn) {
   }
 }
 
-/** Source FY "2026-27" → next FY "2027-28". Returns '' for anything else. */
-function nextFinancialYear(fy) {
-  const m = /^(\d{4})-(\d{2})$/.exec(String(fy || '').trim());
-  if (!m) return '';
-  const start = Number(m[1]) + 1;
-  return start + '-' + String((start + 1) % 100).padStart(2, '0');
+/** (2026, "27") → "FY 26-27". The one financial-year format of the pipeline and the dashboard. */
+function formatFinancialYear(startYear, endYY) {
+  return 'FY ' + String(startYear % 100).padStart(2, '0') + '-' + endYY;
 }
 
-/** Source FY "2026-27" → previous FY "2025-26". Returns '' for anything else. */
+/** "FY 26-27" → [2026, 27]; null for anything else. */
+function parseFinancialYear(fy) {
+  const m = /^FY (\d{2})-(\d{2})$/.exec(String(fy || '').trim());
+  return m ? [2000 + Number(m[1]), Number(m[2])] : null;
+}
+
+/** "FY 26-27" → next FY "FY 27-28". Returns '' for anything else. */
+function nextFinancialYear(fy) {
+  const p = parseFinancialYear(fy);
+  return p ? formatFinancialYear(p[0] + 1, String((p[1] + 1) % 100).padStart(2, '0')) : '';
+}
+
+/** "FY 26-27" → previous FY "FY 25-26". Returns '' for anything else. */
 function previousFinancialYear(fy) {
-  const m = /^(\d{4})-(\d{2})$/.exec(String(fy || '').trim());
-  if (!m) return '';
-  const start = Number(m[1]) - 1;
-  return start + '-' + String((start + 1) % 100).padStart(2, '0');
+  const p = parseFinancialYear(fy);
+  return p ? formatFinancialYear(p[0] - 1, String((p[1] + 99) % 100).padStart(2, '0')) : '';
 }
 
 /** 8600000 → "₹86,00,000" (Indian digit grouping). Non-numbers → ''. */
