@@ -12,7 +12,7 @@ HOW TO WORK
 2. Do the checks in Section 2 first. If any check fails, stop and report it.
 3. Follow the build order in Section 9, one step at a time: theme -> data sources -> field IDs -> calculated fields -> shared Financial Year control -> pages 0, 1, 2, 3, 4 -> navigation and links -> final QA.
 4. Type titles, captions, field names, formulas, display headers and hex colours exactly as the document gives them. Do not paraphrase, re-order or "improve" them.
-5. After each page, run that page's checks in Section 9 and compare the numbers on screen with the expected values (Financial Year 2026-27 selected unless a row says otherwise). Fix mismatches before moving on. If a number still differs after you have checked the filters and formulas, do not change any data: report the difference.
+5. After each page, run that page's checks in Section 9 and compare the numbers on screen with the expected values (Financial Year FY 26-27 selected unless a row says otherwise). Fix mismatches before moving on. If a number still differs after you have checked the filters and formulas, do not change any data: report the difference.
 6. Keep a running log of what you built, what you skipped and why, and every place you had to deviate from the document.
 
 RULES YOU MUST NOT BREAK

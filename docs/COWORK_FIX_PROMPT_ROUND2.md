@@ -1,3 +1,5 @@
+*** SUPERSEDED by docs/COWORK_FIX_PROMPT_ROUND3.md. Do not use this file. ***
+
 ROUND 2 (v2, supersedes the earlier round-2 text) for the report "APFP Grant Portfolio Dashboard"
 https://datastudio.google.com/reporting/dba82e50-a6d6-4ef3-a273-ff3b0b827046
 

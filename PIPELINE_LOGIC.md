@@ -86,7 +86,7 @@ Every run fully rebuilds each tab (`clearContents` then write), so running twice
 | Numbers | Stored as numbers. `₹`, commas and spaces are stripped. Unparseable values are blanked and logged as WARN. |
 | Rates | `attrition_rate` and `foreign_contribution_rate` are kept as fractions (0.08). Text like `8%` becomes 0.08. |
 | Dates | Stored as real dates at midnight. A date cell is read as the calendar day **shown in the source**, using the source workbook's time zone. Text `yyyy-mm-dd` and `dd/mm/yyyy` are parsed. The pipeline writes real dates only and **never sets a format**: date, number and percent display is owned by the sheet (the tabs are native Google Sheets Tables; see [docs/TABLE_FORMATS.md](docs/TABLE_FORMATS.md)). |
-| Financial year | Source format `YYYY-YY` (e.g. `2026-27`) everywhere. Dividends `April 25-March 26` → `2025-26`. `FY 26-27` and `2026-2027` are also accepted. |
+| Financial year | One format everywhere, in the pipeline and the dashboard: **`FY 26-27`**. Staging converts the source's `2026-27`, `2026-2027`, `FY 26-27` and the Dividends label `April 25-March 26` (→ `FY 25-26`). The source tabs are not changed. |
 | Writing to Tables | Each tab is overwritten in place: header and rows go out in one `setValues`, so a Table keeps its columns and types. The header row is never cleared. Rows left over from a bigger previous run are deleted (or blanked if the sheet refuses); columns left over are blanked. A run with no data keeps the header and one blank row. Cosmetic steps and logging can never stop a run. |
 | Blank keys | Rows whose key (`grant_id`, `organization_id`, `outcome_id`, `disbursement_id` or `financial_year`) is blank are skipped and logged as WARN. |
 
@@ -101,7 +101,7 @@ Source for every row: `stg_grants`. Joins: `stg_organisations` on `organization_
 
 | Column | Type | Source | Logic |
 |---|---|---|---|
-| financial_year | text | Grant Registry › Financial Year | As source (`2026-27`) |
+| financial_year | text | Grant Registry › Financial Year | Normalised to `FY 26-27` |
 | grant_id | text | Grant Registry › Grant ID | Primary key |
 | organization_id | text | Grant Registry › Organisation ID | — |
 | organisation | text | Grant Registry › Organisation Name | — |
@@ -201,7 +201,7 @@ Years = every FY in Dividends or the Committed & Spent tracker, in order.
 
 | Column | Type | Source | Logic |
 |---|---|---|---|
-| financial_year | text | Dividends › FY, Committed & Spent › Financial Year | Normalised to `YYYY-YY` |
+| financial_year | text | Dividends › FY, Committed & Spent › Financial Year | Normalised to `FY 26-27` |
 | dividend_income | number | Dividends › Dividends | Sum for the FY |
 | prior_year_carry_forward | number | derived | Previous FY's `available_budget − annual_committed_funding`. 0 for the first FY. **Can be negative** when a year was over-committed |
 | available_budget | number | derived | `dividend_income + prior_year_carry_forward` |
@@ -231,14 +231,14 @@ Looker Studio cannot transpose a table. The mockup shows metrics down the side w
 | Column | Type | Logic |
 |---|---|---|
 | financial_year | text | The grant's financial year (the page's Financial Year control filters on this) |
-| previous_financial_year | text | One year earlier (`2026-27` → `2025-26`) |
+| previous_financial_year | text | One year earlier (`FY 26-27` → `FY 25-26`) |
 | grant_id, organization_id, organisation, grant_status | text | From the fct1 row |
 | metric_order | number | 1–8; sort by it |
 | metric | text | `Financial year`, `Annual budget`, `% Annual Budget funded by APFP`, `Team size`, `Attrition`, `Core policies`, `FCRA registration`, `Foreign contribution share` |
 | current_value | text | The metric for this grant's year: rupees with Indian grouping (`₹54,00,000`), percentages rounded to whole % (`approved_amount ÷ annual_budget` for the funded share), `n / 4` for core policies, `FY 2026-27` for the Financial year row. `–` when blank |
 | previous_value | text | Same, taken from the **same `organization_id`'s fct1 row in the previous financial year**. `–` when that organisation has no grant in the previous year |
 
-The `Financial year` row (metric_order 1) carries the two column labels (`FY 2026-27`, `FY 2025-26`), because a table header cannot show a value. Dashboard: table on `fct6`, dimensions `metric`, `current_value`, `previous_value`, sorted by `metric_order`; Financial Year, Organisation and Grant Status controls apply. If the same organisation has a different `organization_id` in different years, the previous year shows `–` (the ID must be stable across years).
+The `Financial year` row (metric_order 1) carries the two column labels (`FY 26-27`, `FY 25-26`), because a table header cannot show a value. `previous_value` of this row is **always** the previous year's label, even when the organisation had no grant that year (the other rows show `–` then). Dashboard: table on `fct6`, dimensions `metric`, `current_value`, `previous_value`, sorted by `metric_order`; Financial Year, Organisation and Grant Status controls apply. If the same organisation has a different `organization_id` in different years, the previous year shows `–` (the ID must be stable across years).
 
 ## 6. Looker Studio calculated fields
 
@@ -276,7 +276,7 @@ The mockup's *Dashboard Metric* columns are aggregates. They are **not stored** 
 | 4 | Support response | `response_category` now comes from the source column **Support Provided**; `response_date` is still blank (no date in the source). The dropdown currently holds placeholders (`Support 1`, `Support 2`), not the four approved categories (Connected to other partners · Additional funding raised · Provided expert advice · Other). | Replace the dropdown values in the source when final (no pipeline change); add a Response Date column if the date is needed |
 | 5 | Outcome values | Targets and progress are free text; only the first number is read. | Keep entries in the `NN% …` pattern, or split value and unit into two columns |
 | 6 | Due window | Computed against the run date. Without a trigger it is only as fresh as the last manual run (`as_of_date`). | Add the daily trigger when ready (SoP 4.2) |
-| 7 | Budget sample data | Dummy dividends (₹25–34 L/yr) are far below dummy commitments (₹1.3 Cr in 2026-27), so `fct4` shows negative balances. The logic is correct; the numbers are dummy. | — |
+| 7 | Budget sample data | Dummy dividends (₹25–34 L/yr) are far below dummy commitments (₹1.3 Cr in FY 26-27), so `fct4` shows negative balances. The logic is correct; the numbers are dummy. | — |
 | 8 | Grantee 360 link | Blank until the Looker report URL is known. | Share the report URL and filter parameter |
 | 9 | Record Status | Rows are not filtered on Record Status (all dummy rows are `Active`). | Say if archived records should be excluded |
 | 10 | Dummy outcome data | The dummy data fills Q1–Q4 of FY 26-27, including quarters still in the future, and every Q4 is On Track. So all 18 grants are `On Track` and the off-track charts are empty. Real data only has reported quarters. | — |

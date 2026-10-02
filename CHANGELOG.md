@@ -3,6 +3,39 @@
 All notable changes to the APFP data pipeline. Newest first.
 Each entry lists what changed, which files, and why.
 
+## [0.1.11] — 2026-10-02
+
+### Changed — one financial-year format, `FY 26-27`, in the pipeline and the dashboard (**values change**)
+- **What:** Every `financial_year` (and `previous_financial_year`, `decision_for_fy`, `previous_grant_fy`) in every
+  `stg_` and `fct_` tab is now written as `FY 26-27` instead of `2026-27`. Staging converts the source's
+  `2026-27`, `2026-2027`, `FY 26-27` and the Dividends label `April 25-March 26` (to `FY 25-26`); the source
+  tabs are untouched. `nextFinancialYear` / `previousFinancialYear` use the same format (century wrap
+  `FY 99-00`). Grant and organisation IDs (they contain `202627`) are unchanged.
+  - `fct6_grantee_annual_info`: the "Financial year" row now always names the previous year in
+    `previous_value` (for example `FY 25-26`), even when the organisation had no grant that year; other
+    rows still show `–`. Filtered by the Financial Year control the table shows exactly the selected
+    year and the one before it.
+  - 3 new tests, 33 in total (one-format check over every stg/fct tab, helper rules, fct6 by year).
+- **Files:** `Staging.js`, `Utilities.js`, `Final.js`, `tests/pipeline.test.js`, `PIPELINE_LOGIC.md`.
+- **Why:** Product owner wants `FY 26-27` everywhere (as in the mockup). **Looker Studio:** after the next
+  `runCompletePipeline` the Financial Year control default and any filter or colour that names
+  `2026-27` must be re-picked as `FY 26-27`; the calculated field `fy_label` is no longer needed.
+
+### Changed — calculated fields named by type; unused fields removed (docs only)
+- **What:** `docs/LOOKER_FIELD_NAMING.md` (new) gives the convention (`distinct_`, `sum_`, `max_`, `avg_`, `pct_`,
+  `inr_`, `txt_`, `ord_`, `link_`) and the old-to-new map. `docs/looker_calculated_fields.txt` uses the new
+  names and no longer lists ten unused fields (`m_committed`, `m_disbursed`, `m_apfp_share`, `m_team_size`,
+  `m_attrition`, `m_foreign_share`, `core_policies_text`, `fy_label`, `recommendation_copy`,
+  `m_support_grantees`). `docs/COWORK_FIX_PROMPT_ROUND3.md` (new, supersedes round 2) drives the Looker side:
+  data refresh, FY switch-over, delete unused fields, rename, uniform controls (240 x 40, fixed slots),
+  4.02 following the Financial Year control with five acceptance tests, and the leftovers.
+  Column order and widths are left to the owner.
+- **Files:** `docs/LOOKER_FIELD_NAMING.md`, `docs/looker_calculated_fields.txt`,
+  `docs/COWORK_FIX_PROMPT_ROUND3.md`, `docs/COWORK_FIX_PROMPT_ROUND2.md` (marked superseded),
+  `docs/COWORK_PROMPT.md`. The older build spec `.docx` still uses the old names and `2026-27`; the text
+  files are the source of truth.
+- **Why:** Product owner asked for self-explanatory field names, removal of unused fields and consistency.
+
 ## [0.1.10] — 2026-10-02
 
 ### Changed — Cowork round 2 prompt rewritten after auditing it against the mockup (docs only)

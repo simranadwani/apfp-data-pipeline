@@ -333,10 +333,11 @@ function buildFct5MaturityRag(ss, idx) {
 // fct6_grantee_annual_info — one row per grant_id x metric (Grantee 360, chart 4.02)
 // Looker Studio cannot transpose a table, so the metrics-down-the-side layout of the mockup is
 // built here: each row holds the metric's value for the grant's financial year and for the
-// previous financial year of the same organisation, both as display text.
+// previous financial year of the same organisation, both as display text. Filter the table by the
+// Financial Year control (financial_year): it then shows exactly that year and the one before it.
 // ---------------------------------------------------------------------------
 const FCT6_METRICS = [
-  ['Financial year', function (g) { return g.financial_year ? 'FY ' + g.financial_year : ''; }],
+  ['Financial year', function (g) { return g.financial_year || ''; }],
   ['Annual budget', function (g) { return formatInr(g.annual_budget); }],
   ['% Annual Budget funded by APFP', function (g) {
     return (typeof g.approved_amount === 'number' && typeof g.annual_budget === 'number' && g.annual_budget > 0)
@@ -363,7 +364,9 @@ function buildFct6GranteeAnnualInfo(ss, idx) {
     const prev = byOrgYear[key(g.organization_id, prevFy)];
     FCT6_METRICS.forEach(function (metric, i) {
       const current = metric[1](g);
-      const previous = prev ? metric[1](prev) : '';
+      // The Financial year row always names the previous year, so the column header is right even
+      // when the organisation had no grant that year; every other row is blank (a dash) then.
+      const previous = i === 0 ? prevFy : (prev ? metric[1](prev) : '');
       rows.push({
         financial_year: g.financial_year,
         previous_financial_year: prevFy,
