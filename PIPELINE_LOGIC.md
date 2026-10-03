@@ -223,6 +223,8 @@ The next-year Q1 amount is only a reserve: it is subtracted from this year's una
 | indicator | text | Organisation Maturity › Indicator | As source (the 11 source indicators, not the mockup's 6) |
 | status | text | Organisation Maturity › Status | As source (`Red` / `Amber` / `Green`) |
 | aspect_display | text | derived | The aspect on the first row of each aspect block per grant, blank on the other rows (rows are ordered grant › aspect › indicator). A Looker table cannot merge cells, so this column gives the mockup's merged-Aspect look (chart 4.04). Last column |
+| aspect_order | number | derived | `Clarity` 1, `Capacity` 2, `Compliance` 3. Sort helper for the dashboard (replaces a calculated field). Appended after `aspect_display` |
+| status_order | number | derived | `Red` 1, `Amber` 2, `Green` 3. Sort helper for the 1.13 legend. Last column |
 
 ### fct6_grantee_annual_info — one row per grant × metric (chart 4.02)
 

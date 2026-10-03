@@ -500,3 +500,12 @@ test('fct6 filtered to one financial year shows exactly that year and the year b
   const labels = rows.filter((r) => r.metric === 'Financial year');
   assert.ok(labels.every((r) => r.current_value === 'FY 27-28' && r.previous_value === 'FY 26-27'));
 });
+
+test('fct5 aspect_order and status_order give the dashboard its sort order', () => {
+  const h = runFull();
+  const rows = h.tab('fct5_maturity_rag');
+  const A = { Clarity: 1, Capacity: 2, Compliance: 3 }, S = { Red: 1, Amber: 2, Green: 3 };
+  rows.forEach((r) => { assert.equal(r.aspect_order, A[r.aspect]); assert.equal(r.status_order, S[r.status]); });
+  const hdr = h.pipeline.getSheetByName('fct5_maturity_rag').data[0];
+  assert.deepEqual(hdr.slice(-3), ['aspect_display', 'aspect_order', 'status_order']); // appended: earlier columns keep their place
+});

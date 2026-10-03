@@ -1,102 +1,84 @@
-# Looker Studio calculated-field naming (v0.1.11)
+# Looker Studio calculated fields: naming and the "one metric per meaning" rule (v0.1.12)
 
-The field name says what the field is. One prefix per kind, then plain words, `snake_case`.
+## The rule
+
+1. **One metric per meaning.** A count of grantees is `distinct_grantees` everywhere, in every data source that has `organization_id`. A count of grants is `distinct_grants`; a count of support requests is `distinct_needs`.
+2. **Context is a chart-level filter, not a new field.** "Active grantees" = `distinct_grantees` + filter `is_active_grant`. "Pending decisions" = `distinct_grants` + filter `is_pending_decision`. "Open support needs" = `distinct_needs` + filter `is_open_support_need`.
+3. **Plain sums and maxima need no calculated field.** Use the column with the built-in Sum or Max aggregation and rename it in the chart.
+4. **A calculated field is only for:** ratios (`pct_*`, `avg_*`), text formatting (`inr_*`, `txt_*`, `link_*`), formulas with several terms (`sum_*_lakh`), and sort helpers (`ord_*`).
+5. Before creating a field, look at the list below. Same meaning means same field.
+
+## Prefixes
 
 | Prefix | Meaning | Example |
 |---|---|---|
 | `distinct_` | `COUNT_DISTINCT(...)` | `distinct_grantees` |
-| `sum_` | `SUM(...)` | `sum_approved` |
-| `max_` | `MAX(...)` (one value per organisation / year) | `max_annual_budget` |
-| `avg_` | average or per-unit ratio of sums | `avg_cost_per_beneficiary` |
-| `pct_` | percentage (stored as a fraction, formatted as %) | `pct_active_grants_on_track` |
-| `inr_` | rupee amount as text, Indian digit grouping (unchanged) | `inr_approved` |
-| `txt_` | other text built in Looker | `txt_due_date` |
-| `ord_` | helper used only to sort a text dimension | `ord_due_window` |
+| `sum_` | `SUM(...)` with a unit conversion | `sum_committed_lakh` |
+| `avg_` | per-unit ratio of sums | `avg_cost_per_beneficiary` |
+| `pct_` | percentage (a fraction shown as %) | `pct_active_grants_on_track` |
+| `inr_` | rupee amount as text, Indian digit grouping | `inr_approved` |
+| `txt_` | other text | `txt_due_date` |
+| `ord_` | sort helper for a text dimension | `ord_due_window` |
 | `link_` | hyperlink | `link_grantee_360` |
 
-Rules for any new field: pick the prefix from the formula (not from where it is used); add the unit when it is not rupees (`_lakh`); a field that appears in the all-years data source keeps the same name there. Pipeline columns (the Google Sheet headers, e.g. `financial_year`) are never renamed in Looker Studio.
+Pipeline columns (Google Sheet headers, for example `financial_year`) are never renamed in Looker Studio.
 
-## Old name to new name
+## The complete list of calculated fields
 
-**fct1_grant_portfolio  (and its "all years" copy where the field exists there)**
+**fct1_grant_portfolio** (the "all years" copy gets only what its charts use: `distinct_grantees`, `sum_committed_lakh`, `sum_disbursed_lakh`, `sum_approved_lakh`, `inr_cost_per_beneficiary` and `avg_cost_per_beneficiary`)
 
-| Old name | New name |
-|---|---|
-| `m_active_orgs` | `distinct_active_orgs` |
-| `m_active_grants` | `distinct_active_grants` |
-| `m_on_track_grants` | `distinct_on_track_grants` |
-| `m_off_track_grants` | `distinct_off_track_grants` |
-| `m_pct_on_track` | `pct_active_grants_on_track` |
-| `m_grantees` | `distinct_grantees` |
-| `m_beneficiaries` | `sum_beneficiaries` |
-| `m_funded_grantees` | `distinct_funded_grantees` |
-| `m_approved` | `sum_approved` |
-| `m_proposed` | `sum_proposed` |
-| `m_annual_budget` | `max_annual_budget` |
-| `m_cost_per_beneficiary` | `avg_cost_per_beneficiary` |
-| `m_pending` | `distinct_pending_grants` |
-| `m_overdue` | `distinct_overdue_grants` |
-| `m_due30` | `distinct_due_30_days_grants` |
-| `m_proposed_renewal` | `sum_proposed_renewal` |
-| `m_pct_achieved` | `pct_outcomes_achieved` |
-| `m_disbursed_if_different` | `sum_disbursed_lakh_if_different` |
-| `m_approved_lakh` | `sum_approved_lakh` |
-| `m_disbursed_lakh` | `sum_disbursed_lakh` |
-| `m_committed_lakh` | `sum_committed_lakh` |
-| `due_date_text` | `txt_due_date` |
-| `annual_report_link_text` | `link_annual_report` |
-| `link_360` | `link_grantee_360` |
-| `grant_period_text` | `txt_grant_period` |
-| `grant_status_line` | `txt_grant_status_line` |
-| `sub_category_line` | `txt_sub_category_line` |
-| `funding_range_order` | `ord_funding_range` |
-| `due_window_order` | `ord_due_window` |
+| Field | What it is | Used by |
+|---|---|---|
+| `distinct_grantees` | COUNT_DISTINCT(organization_id) | 1.01, 1.07, 1.08, 1.10, 1.16, 2.07 (+ filters) |
+| `distinct_grants` | COUNT_DISTINCT(grant_id) | 1.03, 1.05, 1.06, 3.01, 3.02, 3.03, 3.05, 3.06 (+ filters) |
+| `pct_active_grants_on_track` | on-track active grants / active grants | 1.02 |
+| `pct_outcomes_achieved` | achieved outcomes / total outcomes | 3.07 |
+| `avg_cost_per_beneficiary` | approved amount / beneficiaries | feeds `inr_cost_per_beneficiary` |
+| `sum_approved_lakh`, `sum_committed_lakh`, `sum_disbursed_lakh` | amounts in rupee lakh | 2.05, 2.06, 2.08, 4.03 |
+| `inr_annual_budget`, `inr_approved`, `inr_cost_per_beneficiary`, `inr_proposed` | rupee text | 1.11, 3.04 (`inr_proposed` + filters), 3.07, 4.01, 4.05, 4.08 |
+| `txt_due_date`, `txt_grant_period`, `txt_grant_status_line`, `txt_sub_category_line` | text for tables / panels | 3.07, 4.01, 4.08 |
+| `link_annual_report`, `link_grantee_360` | hyperlinks | 4.08, 3.07 |
+| `ord_due_window`, `ord_funding_range` | sort helpers | 3.05, 2.07 |
 
-**fct2_outcome_progress**
+**fct2_outcome_progress:** `pct_outcomes_on_track` (1.12), `txt_status_q1` to `txt_status_q4` (4.06).
+**fct3_support_activity:** `distinct_needs` (1.04, 1.14, 1.15 + filters).
+**fct4_budget_year:** `inr_available`, `inr_dividends`, `inr_carry_forward`, `inr_committed_total`, `inr_committed_current`, `inr_next_q1`, `inr_disbursed`, `inr_unallocated` (tiles 2.01 to 2.04 and 2.09 to 2.12), each with `SUM(column)` written inside the formula.
+**fct5_maturity_rag:** `distinct_grantees` (1.13). Sort helpers are pipeline columns now (`aspect_order`, `status_order`).
+**fct6_grantee_annual_info:** none.
 
-| Old name | New name |
-|---|---|
-| `m_outcomes_latest` | `distinct_latest_outcomes` |
-| `m_outcomes_latest_on_track` | `distinct_latest_outcomes_on_track` |
-| `m_pct_outcomes_on_track` | `pct_outcomes_on_track` |
-| `status_q1` | `txt_status_q1` |
-| `status_q2` | `txt_status_q2` |
-| `status_q3` | `txt_status_q3` |
-| `status_q4` | `txt_status_q4` |
-| `m_annual_pct` | `pct_annual_achievement` |
+## Chart and tile map (metric + chart-level filters)
 
-**fct3_support_activity**
+| Chart | Metric | Chart-level filters |
+|---|---|---|
+| 1.01 Grantees | `distinct_grantees` | `is_active_grant` is TRUE |
+| 1.02 On track | `pct_active_grants_on_track` | none |
+| 1.03 Off-track | `distinct_grants` | `is_off_track_active_grant` is TRUE |
+| 1.04 Open support needs | `distinct_needs` (fct3) | `is_open_support_need` is TRUE |
+| 1.05, 1.06 | `distinct_grants` | `is_active_grant` is TRUE |
+| 1.07 | `distinct_grantees` | `is_active_grant` is TRUE |
+| 1.08 | `distinct_grantees` | `thematic_area` = Education |
+| 1.09, 1.11, 4.05 reach | built-in Sum of `primary_beneficiary_count` | none |
+| 1.10 | `distinct_grantees` | none |
+| 1.13 | `distinct_grantees` (fct5) | `status` in Red, Amber, Green |
+| 1.14 | `distinct_needs` | none |
+| 1.15 | `distinct_needs` | `response_category` is not empty |
+| 1.16 | `distinct_grantees` (all years) | `is_active_grant` is TRUE |
+| 2.05, 2.06, 2.08 | `sum_committed_lakh`, `sum_disbursed_lakh` | none |
+| 2.07 | `distinct_grantees` | `is_funded_grantee` is TRUE, `funding_range` is not empty |
+| 3.01 | `distinct_grants` | `is_pending_decision` is TRUE |
+| 3.02 | `distinct_grants` | `is_overdue_decision` is TRUE |
+| 3.03 | `distinct_grants` | `is_due_within_30_days` is TRUE |
+| 3.04 | `inr_proposed` | `is_pending_decision` is TRUE, `recommendation` = Renew |
+| 3.05, 3.06 | `distinct_grants` | `is_pending_decision` is TRUE (3.05 also `recommendation` in Renew, Close) |
+| 3.07 | `pct_outcomes_achieved`, `inr_proposed` | existing |
+| 4.03 | `sum_approved_lakh`, `sum_disbursed_lakh` | none |
+| 4.06 Annual | built-in Max of `annual_achievement_pct` (percent) | none |
 
-| Old name | New name |
-|---|---|
-| `m_open_needs` | `distinct_open_needs` |
-| `m_needs` | `distinct_needs` |
-| `m_responses` | `distinct_responses` |
+## Deleted (replaced by the rule above)
 
-**fct4_budget_year**
-
-| Old name | New name |
-|---|---|
-| `n_available` | `sum_available_budget` |
-| `n_dividends` | `sum_dividends` |
-| `n_carry_forward` | `sum_carry_forward` |
-| `n_committed_current` | `sum_committed_current_fy` |
-| `n_next_q1` | `sum_committed_next_fy_q1` |
-| `n_committed_total` | `sum_committed_total` |
-| `n_disbursed` | `sum_disbursed_funding` |
-| `n_unallocated` | `sum_unallocated_balance` |
-
-**fct5_maturity_rag**
-
-| Old name | New name |
-|---|---|
-| `m_assessed` | `distinct_assessed_grantees` |
-| `aspect_order` | `ord_aspect` |
-
-## Deleted (not used by any chart)
-
-`m_committed`, `m_disbursed` (charts use the `_lakh` fields), `m_apfp_share`, `m_team_size`, `m_attrition`, `m_foreign_share`, `core_policies_text` (4.02 now reads `fct6_grantee_annual_info`), `fy_label` (the pipeline's `financial_year` is already `FY 26-27`), `recommendation_copy` (3.06 is single-series), `m_support_grantees`. Any other field that no chart, filter, sort, conditional format, control or other formula uses is also deleted. Formulas of everything are kept in `docs/looker_calculated_fields.txt`.
+v0.1.11: `m_committed`, `m_disbursed`, `m_apfp_share`, `m_team_size`, `m_attrition`, `m_foreign_share`, `core_policies_text`, `fy_label`, `recommendation_copy`, `m_support_grantees`.
+v0.1.12: `distinct_active_orgs`, `distinct_active_grants`, `distinct_on_track_grants`, `distinct_off_track_grants`, `distinct_funded_grantees`, `distinct_pending_grants`, `distinct_overdue_grants`, `distinct_due_30_days_grants`, `sum_beneficiaries`, `sum_approved`, `sum_proposed`, `max_annual_budget`, `sum_proposed_renewal`, `sum_disbursed_lakh_if_different`, `distinct_latest_outcomes`, `distinct_latest_outcomes_on_track`, `pct_annual_achievement`, `txt_notes_last` (the pipeline column `latest_notes` does this), `distinct_open_needs`, `distinct_responses`, the eight fct4 `sum_*` helpers, `distinct_assessed_grantees`, `inr_proposed_renewal`, `ord_aspect`.
 
 ## Financial year
 
-One format everywhere: `FY 26-27`. The pipeline writes it (`financial_year`, `previous_financial_year`); the dashboard shows the value as it is. All-years charts use `financial_year_all`.
+One format everywhere: `FY 26-27`. The pipeline writes it; the dashboard shows it as it is. All-years charts use `financial_year_all`.

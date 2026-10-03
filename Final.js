@@ -9,6 +9,9 @@ const CORE_POLICY_COLUMNS = ['has_code_of_conduct_policy', 'has_posh_policy', 'h
 const COMMITTED_DISBURSEMENT_STATUSES = ['committed', 'disbursed'];
 const QUARTERS = ['Q1', 'Q2', 'Q3', 'Q4'];
 const RAG_SEVERITY = { green: 1, amber: 2, red: 3 };
+// Sort helpers for the dashboard (legend / axis order): Clarity, Capacity, Compliance and Red, Amber, Green.
+const ASPECT_ORDER = { clarity: 1, capacity: 2, compliance: 3 };
+const STATUS_ORDER = { red: 1, amber: 2, green: 3 };
 
 const FCT1_HEADERS = [
   'financial_year', 'grant_id', 'organization_id', 'organisation', 'mission', 'thematic_area',
@@ -48,7 +51,7 @@ const FCT4_HEADERS = [
 
 const FCT5_HEADERS = [
   'financial_year', 'grant_id', 'organization_id', 'organisation', 'thematic_area', 'grant_status', 'aspect',
-  'indicator', 'status', 'aspect_display',
+  'indicator', 'status', 'aspect_display', 'aspect_order', 'status_order',
 ];
 
 const FCT6_HEADERS = [
@@ -315,6 +318,8 @@ function buildFct5MaturityRag(ss, idx) {
       indicator: m.indicator,
       status: m.status,
       aspect_display: '',
+      aspect_order: ASPECT_ORDER[String(m.aspect).trim().toLowerCase()] || '',
+      status_order: STATUS_ORDER[String(m.status).trim().toLowerCase()] || '',
     };
   });
   // aspect_display: the aspect on the first row of each aspect block, blank on the rest (a Looker

@@ -3,6 +3,27 @@
 All notable changes to the APFP data pipeline. Newest first.
 Each entry lists what changed, which files, and why.
 
+## [0.1.12] — 2026-10-03
+
+### Changed — one metric per meaning in Looker Studio; fct5 sort helpers
+- **What:**
+  - **Pipeline:** `fct5_maturity_rag` gets two helper columns at the end, `aspect_order` (Clarity 1, Capacity 2,
+    Compliance 3) and `status_order` (Red 1, Amber 2, Green 3), so the 1.13 legend can sort Red, Amber, Green and
+    the calculated field `ord_aspect` is not needed. 34 tests.
+  - **Dashboard fields (docs):** the owner found too many metrics, a different one per table. The rule is now
+    written down: one metric per meaning, context comes from a chart-level filter, plain sums use the built-in Sum.
+    `distinct_grantees`, `distinct_grants` and `distinct_needs` replace about 20 single-purpose counts; the eight fct4
+    `n_*` helpers are gone (the `inr_*` formulas hold `SUM(column)` inside); about 35 different calculated fields
+    remain instead of about 54. `docs/LOOKER_FIELD_NAMING.md` has the full list, the deleted list and a chart-by-chart
+    metric and filter map; `docs/looker_calculated_fields.txt` matches. `docs/COWORK_FIX_PROMPT_ROUND4.md` (new,
+    supersedes round 3) re-points every chart first, then deletes the rest. Round 4 also asks for 4.03 as grouped
+    Approved / Disbursed columns (no phantom point), 1.13 legend order and the 4.04 status colours.
+- **Files:** `Final.js`, `tests/pipeline.test.js`, `tests/column_formats.js`, `docs/TABLE_FORMATS.md`,
+  `PIPELINE_LOGIC.md`, `docs/LOOKER_FIELD_NAMING.md`, `docs/looker_calculated_fields.txt`,
+  `docs/COWORK_FIX_PROMPT_ROUND4.md`, `docs/COWORK_FIX_PROMPT_ROUND3.md` (marked superseded).
+- **Why:** Product owner feedback after the round 3 review. **After deploying:** run `runCompletePipeline` and
+  drag the `fct5_maturity_rag` Table two columns wider.
+
 ## [0.1.11] — 2026-10-02
 
 ### Changed — one financial-year format, `FY 26-27`, in the pipeline and the dashboard (**values change**)
