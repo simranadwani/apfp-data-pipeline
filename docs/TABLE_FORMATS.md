@@ -119,6 +119,13 @@ Every output tab is a native Google Sheets **Table**, and the Table owns the for
 | `annual_disbursed_funding` | Indian rupee |
 | `unallocated_balance` | Indian rupee |
 
+### `fct5_maturity_rag`
+
+| Column | Format |
+|---|---|
+| `aspect_order` | Indian number (no ₹) |
+| `status_order` | Indian number (no ₹) |
+
 ### `fct6_grantee_annual_info`
 
 | Column | Format |
