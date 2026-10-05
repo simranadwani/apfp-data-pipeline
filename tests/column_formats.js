@@ -28,7 +28,7 @@ const FORMATS = {
     rupee: ['annual_budget', 'approved_amount', 'committed_amount', 'disbursed_amount', 'proposed_amount'],
     rupee_paise: ['cost_per_beneficiary'],
     percent: ['attrition_rate', 'foreign_contribution_rate'],
-    count: ['primary_beneficiary_count', 'team_size', 'core_policies_met_count', 'core_policies_total_count', 'total_outcomes_count', 'achieved_outcomes_count'],
+    count: ['due_window_order', 'funding_range_order', 'primary_beneficiary_count', 'team_size', 'core_policies_met_count', 'core_policies_total_count', 'total_outcomes_count', 'achieved_outcomes_count'],
   },
   fct2_outcome_progress: {
     percent: ['outcome_achievement_pct', 'annual_achievement_pct'],

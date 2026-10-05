@@ -3,6 +3,28 @@
 All notable changes to the APFP data pipeline. Newest first.
 Each entry lists what changed, which files, and why.
 
+## [0.1.14] — 2026-10-06
+
+### Changed — five derived Looker fields now come from the pipeline (`fct1_grant_portfolio`)
+- **What:**
+  - `grant_period` is now display text `01 Apr 2026 – 31 Mar 2027` (it was `2026-04-01 - 2027-03-31`, which Looker
+    typed as a Date and showed as only the start date).
+  - `grant_status_type_amount` is now `Active · Restricted · ₹7,50,000` (it was `Active - Restricted - 750000`):
+    status, type and the approved amount in Indian grouping; a missing part is left out.
+  - New last columns: `sub_category_line` (`Academics · Direct School Support`), `due_window_order` (1 to 4) and
+    `funding_range_order` (1 to 5). Existing columns keep their positions.
+  - New helper `formatDisplayDate` (`dd MMM yyyy`). 36 tests (3 new, 3 updated).
+  - Looker calculated fields `txt_grant_period`, `txt_grant_status_line`, `txt_sub_category_line`, `ord_due_window` and
+    `ord_funding_range` are no longer needed and are removed from the docs (about 30 calculated fields remain). Rule
+    recorded: a value derived per row is a pipeline column, not a Looker field.
+  - `docs/COWORK_FIX_PROMPT_ROUND6.md` (new, supersedes round 5): refresh fct1, re-point 4.01 / 3.05 / 2.07, delete the
+    five fields, plus the five round 5 findings.
+- **Files:** `Final.js`, `Utilities.js`, `tests/pipeline.test.js`, `tests/harness.js`, `tests/column_formats.js`,
+  `docs/TABLE_FORMATS.md`, `PIPELINE_LOGIC.md`, `docs/looker_calculated_fields.txt`, `docs/LOOKER_FIELD_NAMING.md`,
+  `docs/COWORK_FIX_PROMPT_ROUND6.md`, `docs/COWORK_FIX_PROMPT_ROUND5.md` (marked superseded).
+- **Why:** Product owner asked to keep derived values in the pipeline (single source of truth, fewer Looker fields).
+  **After deploying:** run `runCompletePipeline` and drag the `fct1_grant_portfolio` Table three columns wider.
+
 ## [0.1.13] — 2026-10-05
 
 ### Changed — Looker formulas file matches what works in the live report; Cowork round 5 (docs only)

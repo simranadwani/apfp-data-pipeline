@@ -57,8 +57,8 @@ test('fct1 derives decision, funding, maturity and outcome fields', () => {
   assert.equal(brigh.core_policies_total_count, 4);
   assert.equal(brigh.clarity_status, 'Green');
   assert.equal(brigh.cost_per_beneficiary, 1500); // 7,50,000 / 500
-  assert.equal(brigh.grant_period, '2026-04-01 - 2027-03-31');
-  assert.equal(brigh.grant_status_type_amount, 'Active - Restricted - 750000');
+  assert.equal(brigh.grant_period, '01 Apr 2026 \u2013 31 Mar 2027');
+  assert.equal(brigh.grant_status_type_amount, 'Active \u00B7 Restricted \u00B7 \u20B97,50,000');
   assert.equal(brigh.is_active_grant, true);
   assert.ok(isDate(brigh.grant_start_date));
 
@@ -244,7 +244,7 @@ test('source workbook in another time zone is reported, not changed, and dates k
   h.ctx.runCompletePipeline();
   assert.equal(h.source.getSpreadsheetTimeZone(), 'Pacific/Auckland');
   const brigh = h.pipeline.getSheetByName('fct1_grant_portfolio').toObjects().find((r) => r.grant_id === 'BRIGH_01_202627_301');
-  assert.match(brigh.grant_period, /^2026-04-01 - /);
+  assert.match(brigh.grant_period, /^01 Apr 2026 \u2013 /);
   assert.ok(h.pipeline.getSheetByName('Pipeline Log').toObjects().some((r) => /Source workbook time zone is Pacific\/Auckland/.test(r.message)));
 });
 
@@ -508,4 +508,31 @@ test('fct5 aspect_order and status_order give the dashboard its sort order', () 
   rows.forEach((r) => { assert.equal(r.aspect_order, A[r.aspect]); assert.equal(r.status_order, S[r.status]); });
   const hdr = h.pipeline.getSheetByName('fct5_maturity_rag').data[0];
   assert.deepEqual(hdr.slice(-3), ['aspect_display', 'aspect_order', 'status_order']); // appended: earlier columns keep their place
+});
+
+test('fct1 display text and sort helpers: sub_category_line, due_window_order, funding_range_order', () => {
+  const h = runFull();
+  const rows = h.tab('fct1_grant_portfolio');
+  const brigh = rows.find((r) => r.grant_id === 'BRIGH_01_202627_301');
+  assert.equal(brigh.sub_category_line, 'Academics \u00B7 Direct School Support');
+  const DW = { 'Overdue': 1, '0\u201330 days': 2, '31\u201360 days': 3, '61+ days': 4 };
+  const FR = { '<\u20B91 lakh': 1, '\u20B91\u201310 lakh': 2, '\u20B911\u201320 lakh': 3, '\u20B921\u201350 lakh': 4, '>\u20B950 lakh': 5 };
+  rows.forEach((r) => {
+    assert.equal(r.due_window_order, r.due_window === '' ? '' : DW[r.due_window], r.grant_id);
+    assert.equal(r.funding_range_order, r.funding_range === '' ? '' : FR[r.funding_range], r.grant_id);
+  });
+  assert.ok(rows.some((r) => r.due_window_order === 4) && rows.some((r) => r.funding_range_order !== ''));
+  const hdr = h.pipeline.getSheetByName('fct1_grant_portfolio').data[0];
+  assert.deepEqual(hdr.slice(-4), ['as_of_date', 'sub_category_line', 'due_window_order', 'funding_range_order']); // appended
+});
+
+test('grant_status_type_amount drops a missing amount instead of printing a blank part', () => {
+  const src = clone(require('./fixtures/source_dummy.json'));
+  const reg = src['8. Grant Registry'];
+  const col = reg[0].indexOf('Amount Approved');
+  assert.ok(col >= 0, 'Amount Approved column in the fixture');
+  reg[1][col] = '';
+  const h = runFull(src);
+  const r = h.tab('fct1_grant_portfolio').find((x) => x.grant_id === 'BRIGH_01_202627_301');
+  assert.equal(r.grant_status_type_amount, 'Active \u00B7 Restricted');
 });
