@@ -1,0 +1,13 @@
+ROUND 5 (short) for the report "APFP Grant Portfolio Dashboard" (supersedes round 4)
+https://datastudio.google.com/reporting/dba82e50-a6d6-4ef3-a273-ff3b0b827046
+
+I reviewed the PDF the owner exported after round 4. The metric consolidation worked: every headline value is unchanged and the field list is clean. Thank you. Re-pointing the charts to the core metrics cost a few settings that were right in round 3, and there are two small leftovers. Only the five items below. Do not create or delete fields, and do not touch anything else (column order, column widths, the 1.12 height and the 4.01 / 4.08 label-block heights stay with the owner). Do not export a PDF; the owner does.
+
+1. WHOLE-NUMBER AXES (regression). 1.06, 1.07 and 3.06 now show 0.5, 1.5, 2.5 on the count axis. Set decimal places to 0 on the axis and on the data labels of these three charts, and make sure no fractional tick remains (axis minimum 0, maximum automatic; if fractions still appear, set the tick interval to 1). Then check the same on 1.05, 1.08, 1.10, 1.13, 1.14, 1.16, 2.07 and 3.05: all whole numbers.
+2. 1.09 AXIS (regression). The axis shows "1K, 1.5K, 2K, 3K". It must show full numbers (500, 1,000, 1,500 ... 3,500): switch the axis number format from Compact to Number, 0 decimals.
+3. 4.04 FILL. The whole row is filled green. Only the Status cell must be filled. Apply the conditional-format rules to the Status column only (Status equals Green: fill #3A8969, text #FFFFFF; Amber: fill #D39F3A, text #1E2838; Red: fill #C6695E, text #FFFFFF). The Aspect and Indicator cells have no fill. If the rule type applies to a whole row, rebuild it as a column rule.
+4. 1.13 DATA LABELS. The bars show counts (4). They must show the share, as a percentage (the chart is 100% stacked). Set the label to show percent of total, 0 decimals. If percent labels are not available on this chart type, hide the labels (the axis already reads 0% to 100%).
+5. SCORECARD LABELS. The scorecards 1.01, 1.03 and 1.04 now carry raw field names as their metric label. Set the metric display names to "Grantees", "Off-track active grants" and "Open support needs". Do the same for any other scorecard or chart metric label that shows a field name (for example distinct_grants, distinct_needs, sum_committed_lakh).
+
+CHECK (View mode, FY 26-27, default filters): 1.01 = 9; 1.02 = 100%; 1.03 = 0; 1.04 = 8; 3.01 = 6; 3.04 = Rs 58,27,500; 3.05 one bar "61+ days" = 3; 3.06 Defer 3 and Renew 3; 4.02 FY 26-27 | FY 25-26. Nothing else may change.
+REPORT: for each item DONE / PARTLY / NOT DONE and one line on what you saw. Update claude/looker_build_log.md (do not commit anything to the repository).
