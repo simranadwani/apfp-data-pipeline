@@ -8,6 +8,10 @@
 4. **A calculated field is only for:** ratios (`pct_*`, `avg_*`), text formatting (`inr_*`, `txt_*`, `link_*`), formulas with several terms (`sum_*_lakh`), and sort helpers (`ord_*`).
 5. Before creating a field, look at the list below. Same meaning means same field.
 
+## Syntax in this report
+
+The `is_*` flags are text in Looker Studio: compare them as `is_active_grant = "TRUE"` (chart filters: *equals TRUE*). `ROUND` takes two arguments: `ROUND(x, 0)`. `docs/looker_calculated_fields.txt` already uses both.
+
 ## Prefixes
 
 | Prefix | Meaning | Example |

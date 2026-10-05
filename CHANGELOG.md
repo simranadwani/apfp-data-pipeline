@@ -3,6 +3,19 @@
 All notable changes to the APFP data pipeline. Newest first.
 Each entry lists what changed, which files, and why.
 
+## [0.1.13] — 2026-10-05
+
+### Changed — Looker formulas file matches what works in the live report; Cowork round 5 (docs only)
+- **What:** Cowork found two syntax differences when it rebuilt the fields: the `is_*` flags are text in Looker
+  Studio (compare as `is_x = "TRUE"`), and `ROUND` needs two arguments. `docs/looker_calculated_fields.txt` now uses
+  both (12 rupee-text formulas and the two ratio formulas that use flags). All 12 rupee formulas were re-run through the
+  local evaluator for seven amounts each (84 cases, 0 differences). `docs/COWORK_FIX_PROMPT_ROUND5.md` (new, short,
+  supersedes round 4) covers the five findings of the round 4 review: whole-number axes on 1.06, 1.07, 3.06 and the
+  1.09 axis format, the 4.04 fill on the Status cell only, 1.13 percent labels, scorecard metric labels.
+- **Files:** `docs/looker_calculated_fields.txt`, `docs/LOOKER_FIELD_NAMING.md`, `docs/COWORK_FIX_PROMPT_ROUND5.md`,
+  `docs/COWORK_FIX_PROMPT_ROUND4.md` (marked superseded). No script change, nothing to deploy.
+- **Why:** The formulas file is the rebuild reference and must not contain formulas that fail in the report.
+
 ## [0.1.12] — 2026-10-03
 
 ### Changed — one metric per meaning in Looker Studio; fct5 sort helpers
