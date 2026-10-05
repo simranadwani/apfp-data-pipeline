@@ -10,6 +10,8 @@ NAMING AND CONSOLIDATION (v0.1.12, see docs/LOOKER_FIELD_NAMING.md)
   Removed in v0.1.12 because a core metric + chart filter or the built-in Sum replaces them: all other distinct_* counts, sum_beneficiaries, sum_approved,
   sum_proposed, max_annual_budget, sum_proposed_renewal, sum_disbursed_lakh_if_different, pct_annual_achievement, the fct4 sum_* helpers,
   inr_proposed_renewal, ord_aspect (the pipeline now provides aspect_order and status_order in fct5).
+  Removed in v0.1.14 because the pipeline now provides them as columns: txt_grant_period (grant_period), txt_grant_status_line (grant_status_type_amount),
+  txt_sub_category_line (sub_category_line), ord_due_window (due_window_order), ord_funding_range (funding_range_order).
   Removed in v0.1.11: m_committed, m_disbursed, m_apfp_share, m_team_size, m_attrition, m_foreign_share, core_policies_text, fy_label, recommendation_copy, m_support_grantees.
   Looker Studio syntax in THIS report (v0.1.13, matches the live fields): the is_* flags are text, so compare them as is_x = "TRUE";
   ROUND takes two arguments, ROUND(x, 0). The rupee formulas were re-tested for 0, 960, 96000, 750000, 8600000, 98000000 and -9675000.
@@ -67,18 +69,6 @@ Display    : Committed (₹ lakh)
 Used by    : 2.05, 2.06, 2.08 (all-years copy too)
 Formula    : SUM(committed_amount) / 100000
 
-Field name : ord_funding_range
-Type       : Number (dimension)
-Display    : (sort key, hidden)
-Used by    : 2.07 sort
-Formula    : CASE WHEN funding_range = "<₹1 lakh" THEN 1 WHEN funding_range = "₹1–10 lakh" THEN 2 WHEN funding_range = "₹11–20 lakh" THEN 3 WHEN funding_range = "₹21–50 lakh" THEN 4 WHEN funding_range = ">₹50 lakh" THEN 5 ELSE 6 END
-
-Field name : ord_due_window
-Type       : Number (dimension)
-Display    : (sort key, hidden)
-Used by    : 3.05 sort
-Formula    : CASE WHEN due_window = "Overdue" THEN 1 WHEN due_window = "0–30 days" THEN 2 WHEN due_window = "31–60 days" THEN 3 WHEN due_window = "61+ days" THEN 4 ELSE 5 END
-
 Field name : txt_due_date
 Type       : Text (dimension)
 Display    : Due date
@@ -96,24 +86,6 @@ Type       : Text (dimension)
 Display    : Grantee 360 link
 Used by    : 3.07. Opens Grantee 360 (page p_0lm6sfxw7d) with the organisation preselected through the Organisation control's filter parameter df232 (needs File > Report settings > Enable viewer filters in report link). If that control is deleted or recreated its ID changes: select an organisation in view mode, copy the page URL and replace df232 and the page ID. The name is double-encoded (space = %2520, & = %2526).
 Formula    : HYPERLINK(CONCAT("https://datastudio.google.com/reporting/dba82e50-a6d6-4ef3-a273-ff3b0b827046/page/p_0lm6sfxw7d?params=%7B%22df232%22:%22include%25EE%2580%25800%25EE%2580%2580IN%25EE%2580%2580", REGEXP_REPLACE(REGEXP_REPLACE(REGEXP_REPLACE(REGEXP_REPLACE(REGEXP_REPLACE(REGEXP_REPLACE(REGEXP_REPLACE(REGEXP_REPLACE(organisation, "%", "%2525"), " ", "%2520"), "&", "%2526"), ",", "%252C"), "/", "%252F"), "\+", "%252B"), "#", "%2523"), "'", "%2527"), "%22%7D"), "Click here")
-
-Field name : txt_grant_period
-Type       : Text (dimension)  [fct1_grant_portfolio]
-Display    : Grant period
-Used by    : 4.01 (GRANT PERIOD). The pipeline column grant_period is text ("2026-04-01 - 2027-03-31") but Looker Studio types it as a Date and shows only the start; this field shows both dates.
-Formula    : CONCAT(FORMAT_DATETIME("%d %b %Y", grant_start_date), " – ", FORMAT_DATETIME("%d %b %Y", grant_end_date))
-
-Field name : txt_grant_status_line
-Type       : Text (dimension)
-Display    : Current grant
-Used by    : 4.01 (the ₹ amount is a separate cell)
-Formula    : CONCAT(grant_status, " • ", grant_type)
-
-Field name : txt_sub_category_line
-Type       : Text (dimension)
-Display    : Sub-category
-Used by    : 4.01
-Formula    : CONCAT(education_sub_category, " • ", proximity_to_children_beneficiary)
 
 Field name : inr_approved
 Type       : Text

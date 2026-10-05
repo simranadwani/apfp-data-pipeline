@@ -141,8 +141,8 @@ Source for every row: `stg_grants`. Joins: `stg_organisations` on `organization_
 | total_outcomes_count | number | Outcome Progress › Outcome ID | Distinct outcomes for the grant |
 | achieved_outcomes_count | number | Outcome Progress › Final Actual vs End-of-Program Cycle Target | Outcomes where the number in Final Actual ≥ the number in the target (`80% achieved` vs `70% of annual target` → achieved) |
 | annual_report_link | text | Decision Tracker › Annual Report Link | Falls back to Org Registry › Latest Annual Report Link |
-| grant_period | text | derived | `yyyy-MM-dd - yyyy-MM-dd` from start/end dates |
-| grant_status_type_amount | text | derived | `grant_status - grant_type - approved_amount` |
+| grant_period | text | derived | Display text `01 Apr 2026 – 31 Mar 2027` from the start and end dates (en dash). Read by the dashboard as it is |
+| grant_status_type_amount | text | derived | Display text `Active · Restricted · ₹7,50,000`: status, type and the approved amount in Indian grouping; a missing part is left out |
 | cost_per_beneficiary | number | derived | `approved_amount ÷ primary_beneficiary_count`, rounded to 2 decimals. Blank if count is 0 |
 | is_active_grant | boolean | Grant Status | TRUE when `Active` |
 | is_funded_grantee | boolean | derived | TRUE when `disbursed_amount > 0` |
@@ -152,6 +152,9 @@ Source for every row: `stg_grants`. Joins: `stg_organisations` on `organization_
 | is_on_track_active_grant | boolean | derived | `is_active_grant` and `grant_performance_status = On Track` |
 | is_off_track_active_grant | boolean | derived | `is_active_grant` and `grant_performance_status = Off Track` |
 | as_of_date | date | run date | Date the pipeline ran. `due_window` and the due flags are relative to it |
+| sub_category_line | text | derived | `education_sub_category · proximity_to_children_beneficiary` (for example `Academics · Direct School Support`; `NA` kept as in the source). Appended after `as_of_date` |
+| due_window_order | number | derived | Sort helper for `due_window`: Overdue 1, 0–30 days 2, 31–60 days 3, 61+ days 4; blank when there is no window |
+| funding_range_order | number | derived | Sort helper for `funding_range`: <₹1 lakh 1, ₹1–10 lakh 2, ₹11–20 lakh 3, ₹21–50 lakh 4, >₹50 lakh 5; blank when there is no range. Last column |
 
 ### fct2_outcome_progress — one row per grant × outcome × reported quarter (T2)
 

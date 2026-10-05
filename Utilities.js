@@ -130,6 +130,11 @@ function formatIsoDate(date) {
   return Utilities.formatDate(date, Session.getScriptTimeZone(), 'yyyy-MM-dd');
 }
 
+/** Date → "01 Apr 2026" (the display form used in the dashboard text columns). */
+function formatDisplayDate(date) {
+  return Utilities.formatDate(date, Session.getScriptTimeZone(), 'dd MMM yyyy');
+}
+
 /**
  * Appends one entry to the Pipeline Log tab (SoP 5.1). Logging must never break a run, so this
  * never throws: appendRow, else setValues on the next free row, else the Apps Script log only.

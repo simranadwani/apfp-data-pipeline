@@ -86,6 +86,8 @@ Every output tab is a native Google Sheets **Table**, and the Table owns the for
 | `cost_per_beneficiary` | Indian rupee, 2 decimals |
 | `attrition_rate` | Percent |
 | `foreign_contribution_rate` | Percent |
+| `due_window_order` | Indian number (no ₹) |
+| `funding_range_order` | Indian number (no ₹) |
 | `primary_beneficiary_count` | Indian number (no ₹) |
 | `team_size` | Indian number (no ₹) |
 | `core_policies_met_count` | Indian number (no ₹) |

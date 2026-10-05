@@ -150,8 +150,9 @@ function formatDate(date, tz, fmt) {
     timeZone: tz, year: 'numeric', month: '2-digit', day: '2-digit',
     hour: '2-digit', minute: '2-digit', second: '2-digit', hourCycle: 'h23',
   }).formatToParts(date).map((p) => [p.type, p.value]));
-  const map = { yyyy: parts.year, MM: parts.month, dd: parts.day, HH: parts.hour, mm: parts.minute, ss: parts.second };
-  return fmt.replace(/yyyy|MM|dd|HH|mm|ss/g, (t) => map[t]);
+  const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+  const map = { yyyy: parts.year, MMM: MONTHS[Number(parts.month) - 1], MM: parts.month, dd: parts.day, HH: parts.hour, mm: parts.minute, ss: parts.second };
+  return fmt.replace(/yyyy|MMM|MM|dd|HH|mm|ss/g, (t) => map[t]);
 }
 
 /**

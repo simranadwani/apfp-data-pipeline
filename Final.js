@@ -8,6 +8,9 @@
 const CORE_POLICY_COLUMNS = ['has_code_of_conduct_policy', 'has_posh_policy', 'has_child_protection_policy', 'has_data_protection_policy'];
 const COMMITTED_DISBURSEMENT_STATUSES = ['committed', 'disbursed'];
 const QUARTERS = ['Q1', 'Q2', 'Q3', 'Q4'];
+// Sort helpers for the dashboard (the text bands do not sort in the right order by themselves).
+const DUE_WINDOW_ORDER = { 'Overdue': 1, '0\u201330 days': 2, '31\u201360 days': 3, '61+ days': 4 };
+const FUNDING_RANGE_ORDER = { '<\u20B91 lakh': 1, '\u20B91\u201310 lakh': 2, '\u20B911\u201320 lakh': 3, '\u20B921\u201350 lakh': 4, '>\u20B950 lakh': 5 };
 const RAG_SEVERITY = { green: 1, amber: 2, red: 3 };
 // Sort helpers for the dashboard (legend / axis order): Clarity, Capacity, Compliance and Red, Amber, Green.
 const ASPECT_ORDER = { clarity: 1, capacity: 2, compliance: 3 };
@@ -27,7 +30,7 @@ const FCT1_HEADERS = [
   'achieved_outcomes_count', 'annual_report_link', 'grant_period', 'grant_status_type_amount',
   'cost_per_beneficiary', 'is_active_grant', 'is_funded_grantee', 'is_pending_decision',
   'is_overdue_decision', 'is_due_within_30_days', 'is_on_track_active_grant',
-  'is_off_track_active_grant', 'as_of_date',
+  'is_off_track_active_grant', 'as_of_date', 'sub_category_line', 'due_window_order', 'funding_range_order',
 ];
 
 const FCT2_HEADERS = [
@@ -141,9 +144,10 @@ function buildFct1GrantPortfolio(ss, idx) {
       total_outcomes_count: countDistinct(outcomes, 'outcome_id'),
       achieved_outcomes_count: countAchievedOutcomes(outcomes),
       annual_report_link: !isBlank(dec.annual_report_link) ? dec.annual_report_link : org.latest_annual_report_link,
+      // Display text for the dashboard (one source of truth): "01 Apr 2026 – 31 Mar 2027" and "Active · Restricted · ₹7,50,000".
       grant_period: (g.grant_start_date instanceof Date && g.grant_end_date instanceof Date)
-        ? formatIsoDate(g.grant_start_date) + ' - ' + formatIsoDate(g.grant_end_date) : '',
-      grant_status_type_amount: [g.grant_status, g.grant_type, g.approved_amount].join(' - '),
+        ? formatDisplayDate(g.grant_start_date) + ' \u2013 ' + formatDisplayDate(g.grant_end_date) : '',
+      grant_status_type_amount: [g.grant_status, g.grant_type, formatInr(g.approved_amount)].filter(function (v) { return !isBlank(v); }).join(' \u00B7 '),
       cost_per_beneficiary: (typeof g.approved_amount === 'number' && typeof g.primary_beneficiary_count === 'number' && g.primary_beneficiary_count > 0)
         ? Math.round((g.approved_amount / g.primary_beneficiary_count) * 100) / 100 : '',
       is_active_grant: isActive,
@@ -154,6 +158,9 @@ function buildFct1GrantPortfolio(ss, idx) {
       is_on_track_active_grant: isActive && performance === 'On Track',
       is_off_track_active_grant: isActive && performance === 'Off Track',
       as_of_date: today,
+      sub_category_line: [g.thematic_sub_area, g.proximity_to_children_beneficiary].filter(function (v) { return !isBlank(v); }).join(' \u00B7 '),
+      due_window_order: '',
+      funding_range_order: '',
     };
   });
 
@@ -165,6 +172,8 @@ function buildFct1GrantPortfolio(ss, idx) {
   });
   rows.forEach(function (r) {
     r.funding_range = fundingRange(disbursedByOrgFy[key(r.organization_id, r.financial_year)]);
+    r.funding_range_order = FUNDING_RANGE_ORDER[r.funding_range] || '';
+    r.due_window_order = DUE_WINDOW_ORDER[r.due_window] || '';
   });
 
   return writeSheet(ss, idx.FCT1_GRANT_PORTFOLIO, FCT1_HEADERS, rows);
