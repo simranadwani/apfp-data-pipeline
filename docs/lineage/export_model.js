@@ -4,7 +4,7 @@ const fs = require('fs');
 const path = require('path');
 const vm = require('vm');
 const ROOT = path.join(__dirname, '..', '..');
-const FILES = ['Utilities.js', 'Index.js', 'Staging.js', 'Final.js', 'SourceHeaderCheck.js', 'Tests.js', 'Pipeline.js'];
+const FILES = ['Utilities.js', 'Index.js', 'Staging.js', 'Final.js', 'LineageData.js', 'Lineage.js', 'SourceHeaderCheck.js', 'Tests.js', 'Pipeline.js'];
 const ctx = { Utilities: {}, Session: {}, SpreadsheetApp: {}, MailApp: {}, Logger: {}, console };
 vm.createContext(ctx);
 const code = FILES.map((f) => fs.readFileSync(path.join(ROOT, f), 'utf8')).join('\n;\n');

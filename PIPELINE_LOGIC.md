@@ -38,6 +38,7 @@ The `System - *` tabs are not read.
 
 | Tab | Layer | Grain |
 |---|---|---|
+| `Data_Dictionary`, `Chart_Passport` | doc | Plain-language lineage: every dashboard-table column and every chart, with source tabs (written by `Lineage.js`) |
 | `Index` | util | One row per tab. Scripts read every tab name from here (SoP 1.2) |
 | `stg_*` (8 tabs) | stg | Same grain as the source tab |
 | `fct1_grant_portfolio` | fct | One row per `grant_id` |

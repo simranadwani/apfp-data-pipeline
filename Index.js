@@ -37,6 +37,8 @@ const INDEX_DEFAULTS = [
   ['REF_SOURCE_HEADER_BASELINE', 'ref_source_header_baseline', 'ref', 'One row per source tab x column', 'Expected source headers used by the Source Header Check'],
   ['UTIL_SOURCE_HEADER_AUDIT', 'Source_Header_Audit', 'util', 'One row per header issue per run', 'Result of the latest Source Header Check'],
   ['UTIL_PIPELINE_LOG', 'Pipeline Log', 'util', 'One row per log entry', 'Execution log for every build function'],
+  ['DOC_DATA_DICTIONARY', 'Data_Dictionary', 'doc', 'One row per dashboard-table column', 'Plain-language dictionary: what each column holds, how it is made, which source tab and column it comes from, which charts use it'],
+  ['DOC_CHART_PASSPORT', 'Chart_Passport', 'doc', 'One row per dashboard chart or tile', 'Where each dashboard number comes from: what it shows, filter, table, columns and source tabs'],
   ['UTIL_CARDINALITY_TESTS', 'Cardinality Test Results', 'util', 'One row per test', 'Result of the latest runCardinalityTests()'],
 ];
 

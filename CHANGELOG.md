@@ -3,6 +3,31 @@
 All notable changes to the APFP data pipeline. Newest first.
 Each entry lists what changed, which files, and why.
 
+## [0.1.17] — 2026-10-14
+
+### Added — plain-language lineage for clients: one-page picture plus two lookup tabs
+- **What:**
+  - `Data_Dictionary` tab (pipeline workbook): one row per dashboard-ready column (123 rows) with what it holds, how it is
+    made (copied / looked up / calculated / fixed), the source tab and source column it comes from, and the charts that use it.
+  - `Chart_Passport` tab: one row per dashboard chart or tile (43 rows) with the page, what it shows, the filter in
+    plain words, the table, the columns used and the source tabs behind it.
+  - Both are written by the pipeline on every run (`buildDataDictionary`, `buildChartPassport`, at the end of the final
+    layer), so they list exactly the columns that exist. Source tabs are traced through `lineage_model.py`, including
+    fct6 back through fct1 to the source.
+  - One-page picture `docs/lineage/story/APFP_Data_Story.drawio` (+ `.svg`, `.png`): source tabs, six dashboard-ready
+    tables, four dashboard pages, 27 arrows, table level only, plain words.
+- **Files:** `Lineage.js`, `LineageData.js` (generated), `Index.js` (two rows, layer `doc`), `Pipeline.js`,
+  `docs/lineage/chart_passport.py`, `docs/lineage/export_catalog.py`, `docs/lineage/make_story.py`, `tests/harness.js`,
+  `tests/pipeline.test.js` (3 new tests; the log-count assertion 16 to 18), README, DATA_LINEAGE.md.
+- **Why:** the 16-page column-level diagram is right for the data team but cumbersome for clients. Clients ask "where does
+  this number come from?": a filterable table answers that faster than arrows, and the picture gives the big idea on one
+  page. The column-level diagram stays as a technical appendix.
+- **Keeping it current:** a new final column needs one line in `docs/lineage/lineage_model.py`, then
+  `python3 docs/lineage/export_catalog.py`; a new chart needs one line in `chart_passport.py`. `npm test` fails if
+  `LineageData.js` is stale or a column has no description.
+- **After merging:** `clasp push` and run `runCompletePipeline` (the Index tab self-heals with the two new rows).
+  Share the two tabs view-only, or publish them as a Looker Studio data source page if clients should not see the workbook.
+
 ## [0.1.16] — 2026-10-14
 
 ### Added — column-level, client-readable lineage in draw.io (docs and tooling only)

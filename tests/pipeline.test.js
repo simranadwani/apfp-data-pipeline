@@ -286,7 +286,7 @@ test('a failing appendRow on the Pipeline Log never stops a run; entries go thro
   const rowsBefore = h.tab('Pipeline Log').length;
   assert.doesNotThrow(() => h.ctx.runCompletePipeline());
   const log = h.tab('Pipeline Log');
-  assert.equal(log.length - rowsBefore, 16); // 8 staging + 6 fact + cardinality tests + run summary
+  assert.equal(log.length - rowsBefore, 18); // 8 staging + 6 fact + dictionary + passport + cardinality tests + run summary
   assert.equal(log.filter((r) => r.status === 'ERROR').length, 0);
   assert.equal(log.pop().function, 'runCompletePipeline');
 });
@@ -535,4 +535,52 @@ test('grant_status_type_amount drops a missing amount instead of printing a blan
   const h = runFull(src);
   const r = h.tab('fct1_grant_portfolio').find((x) => x.grant_id === 'BRIGH_01_202627_301');
   assert.equal(r.grant_status_type_amount, 'Active \u00B7 Restricted');
+});
+
+test('Data_Dictionary has one row per final column, each described, with source tabs where the data comes from a source', () => {
+  const h = runFull();
+  const rows = h.tab('Data_Dictionary');
+  const tables = ['fct1_grant_portfolio', 'fct2_outcome_progress', 'fct3_support_activity', 'fct4_budget_year', 'fct5_maturity_rag', 'fct6_grantee_annual_info'];
+  let expected = 0;
+  tables.forEach((t) => {
+    const hdr = h.pipeline.getSheetByName(t).data[0];
+    expected += hdr.length;
+    hdr.forEach((col) => {
+      const r = rows.find((x) => x.table_tab === t && x.column === col);
+      assert.ok(r, t + '.' + col + ' has no Data_Dictionary row (add it to docs/lineage/lineage_model.py and re-run export_catalog.py)');
+      assert.ok(r.what_it_holds && r.how_it_is_made, t + '.' + col + ' has no description');
+    });
+  });
+  assert.equal(rows.length, expected);
+  const fy = rows.find((x) => x.table_tab === 'fct1_grant_portfolio' && x.column === 'financial_year');
+  assert.equal(fy.source_tabs, '8. Grant Registry');
+  assert.match(fy.source_columns, /8\. Grant Registry > /);
+  const cf = rows.find((x) => x.table_tab === 'fct4_budget_year' && x.column === 'unallocated_balance');
+  assert.match(cf.source_tabs, /5\. Dividends/);
+  assert.match(cf.used_in_charts, /2\.04 Unallocated balance/);
+  const fy6 = rows.find((x) => x.table_tab === 'fct6_grantee_annual_info' && x.column === 'previous_value');
+  assert.match(fy6.source_tabs, /8\. Grant Registry/); // traced through fct1 to the source
+});
+
+test('Chart_Passport has every chart, and every column it names exists in its table', () => {
+  const h = runFull();
+  const rows = h.tab('Chart_Passport');
+  assert.equal(rows.length, 43);
+  assert.equal(new Set(rows.map((r) => r.chart)).size, 43);
+  rows.forEach((r) => {
+    assert.ok(r.what_it_shows && r.source_tabs && r.dashboard_page, r.chart);
+    const hdr = h.pipeline.getSheetByName(r.table_tab).data[0];
+    r.columns_used.split(', ').forEach((c) => assert.ok(hdr.includes(c), r.chart + ' names ' + c + ', not a column of ' + r.table_tab));
+  });
+  assert.equal(rows.find((r) => r.chart === '1.01').source_tabs, '8. Grant Registry');
+});
+
+test('LineageData.js is up to date with the model files', () => {
+  const { execFileSync } = require('node:child_process');
+  const fs = require('node:fs');
+  const path = require('node:path');
+  const file = path.join(__dirname, '..', 'LineageData.js');
+  const before = fs.readFileSync(file, 'utf8');
+  execFileSync('python3', [path.join(__dirname, '..', 'docs', 'lineage', 'export_catalog.py')]);
+  assert.equal(fs.readFileSync(file, 'utf8'), before, 'LineageData.js was stale: run python3 docs/lineage/export_catalog.py and commit it');
 });

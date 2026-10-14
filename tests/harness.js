@@ -10,7 +10,7 @@ const ROOT = path.join(__dirname, '..');
 let RealmDate = Date;
 const isDate = (v) => Object.prototype.toString.call(v) === '[object Date]';
 
-const SCRIPT_FILES = ['Utilities.js', 'Index.js', 'Staging.js', 'Final.js', 'SourceHeaderCheck.js', 'Tests.js', 'Pipeline.js'];
+const SCRIPT_FILES = ['Utilities.js', 'Index.js', 'Staging.js', 'Final.js', 'LineageData.js', 'Lineage.js', 'SourceHeaderCheck.js', 'Tests.js', 'Pipeline.js'];
 
 class FakeRange {
   constructor(sheet, row, col, numRows, numCols) {
