@@ -7,16 +7,18 @@ Each entry lists what changed, which files, and why.
 
 ### Added — lineage v2: native draw.io tables on one grid, and an Excel spec to build it elsewhere (docs and tooling only)
 - **What:**
-  - `docs/lineage/APFP_Data_Lineage_v2.drawio` (12 pages): Map; src to stg (3 pages, rows aligned, straight arrows); one
-    page per fct table (stg tables on the left, one fct table on the right arranged by source, copied columns with an arrow,
-    calculated columns marked with the f sign and their inputs written under "built from"); fct to dashboard metrics;
-    glossary and key. Every src / stg / fct table is ONE native draw.io table (rows are columns), exact names only.
+  - `docs/lineage/APFP_Data_Lineage_v2.drawio` (10 pages): Map; src to stg for ALL 8 tabs on one page (src table and stg table side by
+    side, name and type, straight arrows); fct: all 6 final tables with every column on one page; then one page per fct table
+    (stg tables on the left, the fct table arranged by source with an arrow for copied columns and calculated columns marked
+    with the f sign, then a band "Dashboard fields and charts built from this table": fct columns, dashboard field, charts, and
+    the charts that read columns directly); glossary and key. Every src / stg / fct table is ONE native draw.io table, exact names only.
+    Fix: cells after the first in a row now carry their x offset (without it draw.io piles all cells of a row on top of each other).
   - Fixed colours: lilac = key column (cardinality tests and every `*_id`), yellow = number, green = true / false,
     blue = dashboard metric; header colour = layer (src grey, stg teal, fct dark teal, dashboard blue); one arrow colour.
   - `docs/lineage/APFP_Lineage_Spec.xlsx`: the whole diagram as data for another tool (for example ChatGPT): README and prompt,
     Style_Guide, Grid, Row_Styles (exact draw.io style strings), Pages, Tables, Columns, Edges_Column, Edges_Table, Metrics,
     Charts, Shapes (every table, row, cell, shape with coordinates), Shape_Edges (every arrow), Checks, Reference_Script,
-    Reference_Images. `rebuild_from_xlsx.py` rebuilds the .drawio from the workbook alone; verified identical to the generator's file (2,342 objects and cells).
+    Reference_Images. `rebuild_from_xlsx.py` rebuilds the .drawio from the workbook alone; verified identical to the generator's file (2,640 objects and cells).
   - `npm run lineage` now also checks the v2 diagram against the code; `export_model.js` exports the cardinality key columns.
 - **Files:** `docs/lineage/lineage_pages.py`, `export_spec_xlsx.py`, `rebuild_from_xlsx.py`, `build_v2.py` (palette, classify),
   `lineage_model.py` (blocks), `APFP_Data_Lineage_v2.drawio`, `APFP_Lineage_Spec.xlsx`, `v2_preview/`, `pilot/`, `tests/lineage_check.js`.

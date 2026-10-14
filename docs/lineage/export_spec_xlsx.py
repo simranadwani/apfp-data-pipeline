@@ -81,21 +81,21 @@ def main():
                 st = P.STYLE['swatch'].format(fill=s['fill'])
             else:
                 st = P.STYLE['text'].format(size=s['size'], color=s['color'], extra='fontStyle=1;' if s.get('bold') else '')
-            shapes.append([p.name, s['id'], '1', z, s['type'], '', '', '', s['x'], s['y'], s['w'], s['h'], None, s.get('text', ''), '', s.get('fill', ''),
+            shapes.append([p.name, s['id'], '1', z, s['type'], '', '', '', s['x'], s['y'], s['w'], s['h'], '', None, s.get('text', ''), '', s.get('fill', ''),
                            s.get('color', ''), s.get('size', ''), 'yes' if s.get('bold') else '', '', st])
         for t in p.tables:
             z += 1
             label = '<b>' + escape(t['name']) + '</b>' + ('<br><font style="font-size:10px" color="#E2F2F4">' + escape(t['sub']) + '</font>' if t['sub'] else '')
-            shapes.append([p.name, t['id'], '1', z, 'Table', t['layer'], t['name'], '', t['x'], t['y'], t['w'], t['h'], None, t['name'], label, t['fill'], '#FFFFFF', 14, 'yes', '',
+            shapes.append([p.name, t['id'], '1', z, 'Table', t['layer'], t['name'], '', t['x'], t['y'], t['w'], t['h'], '', None, t['name'], label, t['fill'], '#FFFFFF', 14, 'yes', '',
                            P.STYLE['table'].format(head=t['head'], fill=t['fill'])])
             ry = t['head']
             for r in t['rows']:
                 z += 1
-                shapes.append([p.name, r['id'], t['id'], z, 'TableRow', t['layer'], t['name'], r.get('key') or '', t['x'], r['y'], r['w'], r['h'], ry, '', '', '', '', '', '', '', P.STYLE['row']])
+                shapes.append([p.name, r['id'], t['id'], z, 'TableRow', t['layer'], t['name'], r.get('key') or '', t['x'], r['y'], r['w'], r['h'], '', ry, '', '', '', '', '', '', '', P.STYLE['row']])
                 rx = 0
                 for j, c in enumerate(r['cells']):
                     z += 1
-                    shapes.append([p.name, f'{r["id"]}_{j}', r['id'], z, 'TableCell', t['layer'], t['name'], r.get('key') or '', t['x'] + rx, r['y'], c['w'], r['h'], 0, c['text'], '',
+                    shapes.append([p.name, f'{r["id"]}_{j}', r['id'], z, 'TableCell', t['layer'], t['name'], r.get('key') or '', t['x'] + rx, r['y'], c['w'], r['h'], rx, 0, c['text'], '',
                                    c['fill'], c['color'], c.get('size') or 12, 'yes' if c['bold'] else '', 'yes' if c.get('italic') else '', P.cell_style(c, j, len(r['cells']) - 1)])
                     rx += c['w']
                 ry += r['h']
@@ -105,7 +105,7 @@ def main():
                 else P.STYLE['edge'].format(dash='dashed=1;' if e['dashed'] else '')
             wp = 'yes' if (not vertical and abs(e['sy'] - e['ty']) > 0.5) else 'no'
             sedges.append([p.name, e['id'], e['src'], e['tgt'], 'table to table' if vertical else 'row to row', P.C_EDGE, 1.5, 'yes' if e['dashed'] else 'no', wp, round(e['lane_x']), round(e['sx']), round(e['sy']), round(e['tx']), round(e['ty']), st])
-    sheet(wb, 'Shapes', ['page', 'shape_id', 'parent_id', 'z', 'type', 'layer', 'table', 'column', 'x', 'y', 'width', 'height', 'rel_y', 'text', 'label_html', 'fill', 'font_color', 'font_size', 'bold', 'italic', 'drawio_style'],
+    sheet(wb, 'Shapes', ['page', 'shape_id', 'parent_id', 'z', 'type', 'layer', 'table', 'column', 'x', 'y', 'width', 'height', 'rel_x', 'rel_y', 'text', 'label_html', 'fill', 'font_color', 'font_size', 'bold', 'italic', 'drawio_style'],
           shapes, widths={'text': 50, 'label_html': 40, 'drawio_style': 70, 'page': 34})
     ws_edges = sheet(wb, 'Shape_Edges', ['page', 'edge_id', 'source_id', 'target_id', 'kind', 'color', 'width', 'dashed', 'waypoint', 'lane_x', 'source_x', 'source_y', 'target_x', 'target_y', 'drawio_style'],
                      sedges, widths={'drawio_style': 70, 'page': 34})
@@ -115,7 +115,7 @@ def main():
     wsE = wb['Shape_Edges']
 
     # ---------------------------------------------------------------- Pages
-    template = lambda n: 'Map' if n.startswith('1.') else 'src to stg' if 'src to stg' in n else 'fct' if 'stg to fct' in n else 'metrics' if 'metrics' in n else 'glossary'
+    template = lambda n: 'Map' if n.startswith('1.') else 'src to stg (all tables)' if 'src to stg' in n else 'fct index (all final tables)' if 'all final tables' in n else 'fct table page (stg to fct + dashboard fields and charts)' if 'stg to fct' in n else 'glossary'
     prow = [[p.name, f'page{i + 1}', i + 1, template(p.name), p.title, p.subtitle or '', p.ribbon or '', p.width, p.height, len(p.tables), len(p.edges)] for i, p in enumerate(pages)]
     sheet(wb, 'Pages', ['page', 'diagram_id', 'order', 'template', 'title', 'subtitle', 'ribbon_active', 'width', 'height', 'tables', 'edges'], prow, widths={'page': 38, 'title': 40, 'subtitle': 60})
 
@@ -164,7 +164,7 @@ def main():
             k = V.hl(f, col)
             full = V.built_from(col, cat, ups, f) if ups else ''
             charts = ', '.join(DATA['columns'][f'{f}.{col}']['charts'])
-            crow.append(['fct', f, i, col, B.type_label(B.kind_of(col), cat == 'calc').replace(' ƒ', ''), KIND_BY_FILL[k], sec[col], 'yes' if cat == 'calc' else 'no',
+            crow.append(['fct', f, i, col, P.col_type(col), KIND_BY_FILL[k], sec[col], 'yes' if cat == 'calc' else 'no',
                          full or ({'const': 'fixed value', 'run': 'date of the run', 'blank': 'kept empty'}.get(cat, '')),
                          '; '.join(ups), rule, charts])
             n += 1
@@ -221,8 +221,8 @@ def main():
     sheet(wb, 'Style_Guide', ['item', 'value', 'use'], sg, widths={'item': 38, 'value': 14, 'use': 90}, fills=cf)
     grid = [['page margin', P.M], ['table header height', P.HEAD], ['row height (default)', P.ROW], ['row height when text needs 3 lines', '60'], ['gap between stacked tables', P.GAP],
             ['gutter between stg and fct (arrow lane)', P.GUT], ['stg / src table width', P.STG_W], ['stg column widths (name, type)', ', '.join(map(str, P.STG_COLS))],
-            ['fct table width', P.FCT_W], ['fct column widths (name, type, built from, rule)', ', '.join(map(str, P.FCT_COLS))], ['src to stg page: stg widths (name, type, what happens)', '260, 100, 260'],
-            ['ribbon chip size / y', '150 x 40 at y=20, step 190'], ['title y / subtitle y', '80 / 120'], ['legend row y (fct pages)', '210'], ['first table y (fct pages)', '260'],
+            ['fct table width', P.FCT_W], ['fct column widths (name, type, built from, rule)', ', '.join(map(str, P.FCT_COLS))], ['src to stg page: src and stg widths (name, type)', '260, 100 each; 100 between the two tables; two table pairs side by side, 80 apart'],
+            ['ribbon chip size / y', '150 x 40 at y=20, step 190'], ['title y / subtitle y', '80 / 120'], ['legend row y (fct pages)', '210'], ['first table y (fct pages)', '260'], ['dashboard band (fct pages)', 'starts 80 below the note under the fct table; three tables (360, 600 = 220+380, 380) with 120 gutters, rows aligned, height min 60'],
             ['snap', 'all coordinates are multiples of 10']]
     sheet(wb, 'Grid', ['constant', 'value'], grid, widths={'constant': 60, 'value': 40})
     rs = [['table', P.STYLE['table']], ['row', P.STYLE['row']], ['cell', P.STYLE['cell']], ['edge (row to row)', P.STYLE['edge']], ['edge (table to table, vertical)', 'edgeStyle=none;html=1;endArrow=block;endFill=1;strokeWidth=1.5;strokeColor=' + P.C_EDGE + ';exitX=0.5;exitY=1;entryX=0.5;entryY=0;dashed=1;'],
@@ -266,6 +266,7 @@ def main():
     sample = ('<mxCell id="T1" value="&lt;b&gt;stg_grants&lt;/b&gt;" style="shape=table;startSize=50;container=1;collapsible=0;childLayout=tableLayout;fixedRows=1;..." vertex="1" parent="1"><mxGeometry x="40" y="340" width="360" height="120" as="geometry"/></mxCell>\n'
               '<mxCell id="R1" style="shape=tableRow;horizontal=0;startSize=0;...;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="T1"><mxGeometry y="50" width="360" height="40" as="geometry"/></mxCell>\n'
               '<mxCell id="R1_0" value="grant_id" style="shape=partialRectangle;html=1;connectable=0;fillColor=#E1D5E7;..." vertex="1" parent="R1"><mxGeometry width="260" height="40" as="geometry"><mxRectangle width="260" height="40" as="alternateBounds"/></mxGeometry></mxCell>\n'
+              '<mxCell id="R1_1" value="text" style="shape=partialRectangle;..." vertex="1" parent="R1"><mxGeometry x="260" width="100" height="40" as="geometry"><mxRectangle width="100" height="40" as="alternateBounds"/></mxGeometry></mxCell>\n'
               '<mxCell id="E1" style="edgeStyle=elbowEdgeStyle;elbow=horizontal;...;exitX=1;exitY=0.5;entryX=0;entryY=0.5;" edge="1" parent="1" source="R1" target="R9"><mxGeometry relative="1" as="geometry"/></mxCell>')
     lines = [
         ('APFP data lineage: specification workbook', 'h'),
@@ -273,14 +274,14 @@ def main():
         ('', ''),
         ('SHEETS', 'h'),
         ('README_and_Prompt: this page.  Style_Guide, Grid, Row_Styles: colours, sizes, the exact draw.io style strings.', ''),
-        ('Pages: the 12 pages in order, with canvas size.  Tables, Columns, Edges_Column, Edges_Table, Metrics, Charts: what the diagram says (readable facts).', ''),
+        ('Pages: the pages in order, with canvas size.  Tables, Columns, Edges_Column, Edges_Table, Metrics, Charts: what the diagram says (readable facts).', ''),
         ('Shapes, Shape_Edges: DRAWABLE. One row per shape / table / row / cell / arrow with coordinates, text, fill and the draw.io style. Draw from these.', ''),
         ('Reference_Images: how each finished page must look.  Checks: counts to verify after drawing.  Reference_Script: a working Python converter.', ''),
         ('', ''),
         ('PROMPT TO PASTE INTO CHATGPT (attach this workbook)', 'h'),
         ('You are given a workbook that fully specifies a data-lineage diagram. Produce one draw.io file (uncompressed XML, <mxfile> with one <diagram> per row of sheet Pages, in order). Do not design, rename, move or resize anything; convert rows to XML.', ''),
         ('1. Best method: write and run a Python script that reads the workbook with openpyxl and writes the .drawio (the sheet Reference_Script contains a tested one; use it as the starting point). Do not hand-type XML for hundreds of shapes.', ''),
-        ('2. For each page, take its rows in sheet Shapes ordered by column z. type Table = a NATIVE draw.io table (style from drawio_style, geometry x, y, width, height, label from label_html). type TableRow = child of the table (parent_id), geometry y=rel_y, width, height, NO x. type TableCell = child of its row, geometry width and height plus an alternateBounds rectangle, no x or y. Other types (chip, title, subtitle, text, swatch, ...) are plain vertices with parent 1.', ''),
+        ('2. For each page, take its rows in sheet Shapes ordered by column z. type Table = a NATIVE draw.io table (style from drawio_style, geometry x, y, width, height, label from label_html). type TableRow = child of the table (parent_id), geometry y=rel_y, width, height, NO x. type TableCell = child of its row, geometry width and height plus an alternateBounds rectangle; add x=rel_x ONLY when rel_x is greater than 0 (draw.io lays cells out from these offsets; without them all cells of a row pile up at the left). No y. Other types (chip, title, subtitle, text, swatch, ...) are plain vertices with parent 1.', ''),
         ('3. Edges: every row of sheet Shape_Edges becomes an edge mxCell with source = source_id and target = target_id (these are TableRow ids, or Table ids for kind "table to table"), style = drawio_style. When waypoint = yes add <Array as="points"><mxPoint x="lane_x" y="source_y"/></Array>.', ''),
         ('4. Use the ids, text and styles exactly as written. Tables must be native tables (shape=table), never swimlanes or rectangles. Arrows are elbow connectors (no curves). Everything is on a 10 px grid.', ''),
         ('5. Verify: counts per page (tables, rows, edges) must equal sheet Checks; open the result and compare each page with the picture in Reference_Images.', ''),

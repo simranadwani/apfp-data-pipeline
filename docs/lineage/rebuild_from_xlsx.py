@@ -28,7 +28,8 @@ def main(src, dst):
             if s['type'] == 'TableRow':
                 geom = f'<mxGeometry y="{s["rel_y"]}" width="{s["width"]}" height="{s["height"]}" as="geometry"/>'
             elif s['type'] == 'TableCell':
-                geom = (f'<mxGeometry width="{s["width"]}" height="{s["height"]}" as="geometry"><mxRectangle width="{s["width"]}" '
+                xa = f' x="{s["rel_x"]}"' if s['rel_x'] else ''
+                geom = (f'<mxGeometry{xa} width="{s["width"]}" height="{s["height"]}" as="geometry"><mxRectangle width="{s["width"]}" '
                         f'height="{s["height"]}" as="alternateBounds"/></mxGeometry>')
             else:
                 geom = f'<mxGeometry x="{s["x"]}" y="{s["y"]}" width="{s["width"]}" height="{s["height"]}" as="geometry"/>'

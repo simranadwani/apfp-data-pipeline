@@ -1,6 +1,6 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1660 854" width="1660" height="854" font-family="Helvetica, Arial, sans-serif">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1660 1120" width="1660" height="1120" font-family="Helvetica, Arial, sans-serif">
 <defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#5F6C77"/></marker></defs>
-<rect width="1660" height="854" fill="#FFFFFF"/>
+<rect width="1660" height="1120" fill="#FFFFFF"/>
 <rect x="40" y="20" width="150" height="40" rx="8" fill="#FFFFFF" stroke="#B9C5CB"/>
 <text x="115.0" y="45.0" font-size="15" font-weight="700" text-anchor="middle" fill="#1E2838">src</text>
 <text x="196" y="46" font-size="22" fill="#5F6C77" font-weight="700">›</text>
@@ -24,6 +24,8 @@
 <rect x="661" y="210" width="20" height="20" fill="#DAE8FC" stroke="#B9C5CB"/>
 <text x="689" y="222" font-size="12" fill="#1E2838">Dashboard metric</text>
 <text x="40" y="782" font-size="12" fill="#5F6C77">Arrow: copied or looked up. ƒ = calculated: no arrow; its inputs are listed under "built from". Blank "built from": same name as in stg.</text>
+<text x="40" y="870" font-size="20" fill="#0E4A5C" font-weight="700">Dashboard fields and charts built from fct4_budget_year</text>
+<text x="40" y="900" font-size="12" fill="#5F6C77">Each dashboard number is one Looker Studio field, reused by every chart that needs it; the chart adds its own filter. Fields are named by type: distinct_, sum_, pct_, inr_, txt_.</text>
 <rect x="520" y="260" width="1100" height="50" fill="#0E4A5C"/>
 <text x="530" y="282" font-size="14" font-weight="700" fill="#FFFFFF">fct4_budget_year</text>
 <text x="530" y="300" font-size="10" fill="#E2F2F4">fct · 8 columns</text>
@@ -138,4 +140,30 @@
 <text x="48" y="694" font-size="12" fill="#1E2838">financial_year</text>
 <rect x="300" y="670" width="100" height="40" fill="#E1D5E7" stroke="#B9C5CB"/>
 <text x="308" y="694" font-size="11" fill="#5F6C77">text</text>
+<rect x="40" y="930" width="360" height="50" fill="#0E4A5C"/>
+<text x="50" y="952" font-size="14" font-weight="700" fill="#FFFFFF">fct columns it reads</text>
+<text x="50" y="970" font-size="10" fill="#E2F2F4">fct</text>
+<rect x="40" y="980" width="360" height="80" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="48" y="1003" font-size="11" fill="#1E2838">fct4_budget_year: available_budget, dividend_income,</text>
+<text x="48" y="1017" font-size="11" fill="#1E2838">prior_year_carry_forward, annual_committed_funding,</text>
+<text x="48" y="1031" font-size="11" fill="#1E2838">next_year_q1_committed_funding,</text>
+<text x="48" y="1045" font-size="11" fill="#1E2838">annual_disbursed_funding, unallocated_balance</text>
+<rect x="520" y="930" width="600" height="50" fill="#3B6BA5"/>
+<text x="530" y="952" font-size="14" font-weight="700" fill="#FFFFFF">dashboard field (metric)</text>
+<text x="530" y="970" font-size="10" fill="#E2F2F4">dashboard</text>
+<rect x="520" y="980" width="220" height="80" fill="#DAE8FC" stroke="#B9C5CB"/>
+<text x="528" y="1017" font-size="12" fill="#1E2838" font-weight="700">inr_available ...</text>
+<text x="528" y="1032" font-size="12" fill="#1E2838" font-weight="700">inr_unallocated (8 fields)</text>
+<rect x="740" y="980" width="380" height="80" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="748" y="1024" font-size="11" fill="#5F6C77">Budget tiles shown as text</text>
+<rect x="1240" y="930" width="380" height="50" fill="#3B6BA5"/>
+<text x="1250" y="952" font-size="14" font-weight="700" fill="#FFFFFF">charts that show it</text>
+<text x="1250" y="970" font-size="10" fill="#E2F2F4">dashboard</text>
+<rect x="1240" y="980" width="380" height="80" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="1248" y="1003" font-size="11" fill="#1E2838">2.01 Available budget, 2.02 Committed funding</text>
+<text x="1248" y="1017" font-size="11" fill="#1E2838">2.03 Disbursed funding, 2.04 Unallocated balance</text>
+<text x="1248" y="1031" font-size="11" fill="#1E2838">2.09 Dividends, 2.10 Carry forward</text>
+<text x="1248" y="1045" font-size="11" fill="#1E2838">2.11 Current year, 2.12 Next year Q1</text>
+<path d="M400,1020.0 L520,1020.0" fill="none" stroke="#5F6C77" stroke-width="1.5" marker-end="url(#a)"/>
+<path d="M1120,1020.0 L1240,1020.0" fill="none" stroke="#5F6C77" stroke-width="1.5" marker-end="url(#a)"/>
 </svg>

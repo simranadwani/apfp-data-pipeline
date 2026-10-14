@@ -15,6 +15,7 @@ sys.path.insert(0, HERE)
 import build_v2 as V  # noqa: E402  (classify, built_from, hl, palette)
 
 B, LM, CODE = V.B, V.LM, V.B.CODE
+CHARTS = json.loads(open(os.path.join(HERE, '..', '..', 'LineageData.js'), encoding='utf-8').read().split('LINEAGE_DATA = ', 1)[1].rsplit(';', 1)[0])['charts']
 
 # ------------------------------------------------------------------ grid (all multiples of 10)
 M, HEAD, ROW, GAP = 40, 50, 40, 30
@@ -190,36 +191,70 @@ def page_map():
     return p
 
 
-CHANGE = {'text': 'kept as typed', 'number': 'converted to a number', 'date': 'converted to a date', 'rate': 'converted to a number'}
+def col_type(col, calc=False):
+    t = B.type_label(B.kind_of(col), calc)
+    if col == 'aspect_display':
+        t = 'text' + (' ƒ' if calc else '')
+    return t.replace('true / false', 'true/false')
 
 
 def disp_type(kind, ctype):
     if kind == H_BOOL:
-        return 'true / false'
+        return 'true/false'
     return {'fy': 'text', 'rate': 'number'}.get(ctype, ctype)
 
 
-def page_src_stg(name, tables, num):
-    p = Page(f'{num}. src to stg ({name})', f'src to stg: {name}', None, 'stg', M + STG_W + GUT + 620 + M)
+def page_src_stg_all(num):
+    gw = STG_W + 100 + STG_W
+    p = Page(f'{num}. src to stg: all tables', 'src to stg: all tables', None, 'stg', M + gw + 80 + gw + M)
     header(p, 'stg')
-    p.text(M, 80, 1500, 30, f'src to stg: {name}', size=24, color=C_FCT, bold=True, kind='title')
-    p.text(M, 120, 1500, 24, 'Each src column is kept under a clean name in stg. Same row, same order, so every arrow is a straight line.', size=13, kind='subtitle')
+    p.text(M, 80, 1700, 30, 'src to stg: all 8 source tabs and their stg tables', size=24, color=C_FCT, bold=True, kind='title')
+    p.text(M, 120, 1700, 24, 'Each src column is kept in stg under a clean name, same row and same order, so every arrow is a straight line. Left: the source tab. Right: its stg table.', size=13, kind='subtitle')
     legend(p, 160)
-    y = 210
-    for t in tables:
-        spec = CODE['staging'][t]
-        lrows, rrows = [], []
-        for c in spec['columns']:
-            fy = c['name'] == 'financial_year'
-            kind = V.hl(t, c['name'], c['type'])
-            lrows.append({'cells': [cell(c['source_header'], fill=kind), cell(disp_type(kind, c['type']), fill=kind, color=MUTED)], 'key': c['name']})
-            ch = 'written as FY 26-27' if fy else ('converted to true / false' if kind == H_BOOL else 'renamed' if re.sub(r'[^a-z0-9]', '', c['source_header'].lower()) != re.sub(r'[^a-z0-9]', '', c['name'].lower()) else CHANGE.get(c['type'], 'kept as typed'))
-            rrows.append({'cells': [cell(c['name'], fill=kind), cell(disp_type(kind, c['type']), fill=kind, color=MUTED), cell(ch, color=MUTED, size=11)], 'key': c['name']})
-        tl = p.table(M, y, spec['source_tab'], f'src · {len(lrows)} columns read', 'src', lrows, (260, 100))
-        tr = p.table(M + STG_W + GUT, y, t, f'stg · {len(rrows)} columns', 'stg', rrows, (260, 100, 260))
-        for a, b in zip(tl['rows'], tr['rows']):
-            p.edge(a, b)
-        y += tl['h'] + GAP * 2
+    groups = [['stg_grants', 'stg_organisations', 'stg_maturity', 'stg_dividends'],
+              ['stg_outcome_progress', 'stg_support', 'stg_decisions', 'stg_disbursements']]
+    for gi, tables in enumerate(groups):
+        x0 = M + gi * (gw + 80)
+        y = 210
+        for t in tables:
+            spec = CODE['staging'][t]
+            lrows, rrows = [], []
+            for c in spec['columns']:
+                kind = V.hl(t, c['name'], c['type'])
+                ty = disp_type(kind, c['type'])
+                lrows.append({'cells': [cell(c['source_header'], fill=kind), cell(ty, fill=kind, color=MUTED, size=11)], 'key': c['name']})
+                rrows.append({'cells': [cell(c['name'], fill=kind), cell(ty, fill=kind, color=MUTED, size=11)], 'key': c['name']})
+            tl = p.table(x0, y, spec['source_tab'], f'src · {len(lrows)} columns read', 'src', lrows, STG_COLS)
+            tr = p.table(x0 + STG_W + 100, y, t, f'stg · {len(rrows)} columns', 'stg', rrows, STG_COLS)
+            for a, b in zip(tl['rows'], tr['rows']):
+                h = max(a['h'], b['h'])
+                a['h'] = b['h'] = h
+            # recompute y positions after equalising heights
+            cy = y + HEAD
+            for a, b in zip(tl['rows'], tr['rows']):
+                a['y'] = b['y'] = cy
+                cy += a['h']
+            tl['h'] = tr['h'] = cy - y
+            for a, b in zip(tl['rows'], tr['rows']):
+                p.edge(a, b)
+            y = cy + GAP * 2
+        p.height = max(p.height, y)
+    p.finish()
+    return p
+
+
+def page_fct_index(num):
+    p = Page(f'{num}. fct: all final tables', 'fct: all final tables', None, 'fct', M + 6 * 360 + 5 * 40 + M)
+    header(p, 'fct')
+    p.text(M, 80, 2000, 30, 'fct: all 6 final tables and every column', size=24, color=C_FCT, bold=True, kind='title')
+    p.text(M, 120, 2000, 24, 'One table per final table, columns in the same order as the sheet in the Data Pipeline workbook. Details of each table are on its own page.', size=13, kind='subtitle')
+    legend(p, 160)
+    for i, f in enumerate(FCT_ORDER):
+        rows = []
+        for col in CODE['final'][f]:
+            kind = V.hl(f, col)
+            rows.append({'cells': [cell(col, fill=kind), cell(col_type(col), fill=kind, color=MUTED, size=11)], 'key': col})
+        p.table(M + i * 400, 210, f, f'fct · {len(rows)} columns · {GRAIN[f]}', 'fct', rows, STG_COLS)
     p.finish()
     return p
 
@@ -233,7 +268,7 @@ def fct_rows(f):
         for col, cat, ups, rule in cols:
             kind = V.hl(f, col)
             calc = cat == 'calc'
-            typ = B.type_label(B.kind_of(col), calc)
+            typ = col_type(col, calc)
             bf = V.built_from(col, cat, ups, f)
             if len(bf) > 150 and ups:
                 bf = f'{len(ups)} columns of ' + ' + '.join(sorted({u.split('.')[0] for u in ups})) + ': ' + ', '.join(u.split('.')[1] for u in ups[:3]) + ', …'
@@ -277,10 +312,10 @@ def page_fct(f, num):
             if t.startswith('stg'):
                 ty = next(x['type'] for x in CODE['staging'][t]['columns'] if x['name'] == c)
                 kind = V.hl(t, c, ty)
-                typ = B.type_label(B.kind_of(c, ty))
+                typ = col_type(c) if not t.startswith('stg') else disp_type(kind, ty)
             else:
                 kind = V.hl(t, c)
-                typ = B.type_label(B.kind_of(c))
+                typ = col_type(c)
             rws.append({'cells': [cell(c, fill=kind), cell(typ, fill=kind, color=MUTED, size=11)], 'key': c})
         tl = p.table(M, y, t, f'{SRC_OF[t]} · {len(rws)} columns used' if t in SRC_OF else f'{len(rws)} columns used', 'stg' if t.startswith('stg') else 'fct', rws, STG_COLS)
         placed[t] = {r['key']: r for r in tl['rows']}
@@ -299,40 +334,48 @@ def page_fct(f, num):
                 if not straight:
                     k += 1
                 p.edge(src, tgt, lane_x=lane)
-    p.text(M, max(ly, tf['y'] + tf['h']) + 20, 1560, 24, 'Arrow: copied or looked up. ƒ = calculated: no arrow; its inputs are listed under "built from". Blank "built from": same name as in stg.', size=12, kind='note')
+    band_y = max(ly, tf['y'] + tf['h']) + 20
+    p.text(M, band_y, 1560, 24, 'Arrow: copied or looked up. ƒ = calculated: no arrow; its inputs are listed under "built from". Blank "built from": same name as in stg.', size=12, kind='note')
+    metrics_band(p, f, band_y + 80)
     p.finish()
     return p
 
 
-def page_metrics(num):
-    p = Page(f'{num}. fct to dashboard: metrics', 'fct to dashboard: metrics', None, 'dashboard', 1880)
-    header(p, 'dashboard')
-    p.text(M, 80, 1800, 30, 'fct columns → dashboard fields → charts', size=24, color=C_FCT, bold=True, kind='title')
-    p.text(M, 120, 1800, 40, 'Each dashboard number is one Looker Studio field, reused by every chart that needs it; the chart adds its own filter. Fields are named by type: distinct_, sum_, pct_, inr_, txt_.', size=13, kind='subtitle')
-    legend(p, 170)
-    RH = 80
-    lrows, mrows, rrows = [], [], []
+def metrics_band(p, f, y):
+    fct_charts = {c['id']: c for c in CHARTS if c['table'] == f}
+    p.text(M, y, 1500, 34, f'Dashboard fields and charts built from {f}', size=20, color=C_FCT, bold=True, kind='band_title')
+    p.text(M, y + 38, 1560, 22, 'Each dashboard number is one Looker Studio field, reused by every chart that needs it; the chart adds its own filter. Fields are named by type: distinct_, sum_, pct_, inr_, txt_.', size=12, kind='band_note')
+    y += 80
+    lrows, mrows, rrows, covered = [], [], [], set()
     for field, label, definition, ups, charts, filt in LM.METRICS:
-        by = {}
-        for u in ups:
-            t, c = u.split('.', 1)
-            by.setdefault(t, []).append(c)
-        left = '\n'.join(f'{t}: ' + ', '.join(cs) for t, cs in by.items())
-        names = [f'{c} {LM.CHART_NAMES.get(c, "")}'.strip() for c in charts]
-        right = '\n'.join(', '.join(names[i:i + 2]) for i in range(0, len(names), 2))
+        mine = [u.split('.', 1)[1] for u in ups if u.startswith(f + '.')]
+        ch = [c for c in charts if c in fct_charts]
+        if not mine or not ch:
+            continue
+        covered |= set(ch)
+        left = f'{f}: ' + ', '.join(mine)
+        right = '\n'.join(', '.join(f'{c} {LM.CHART_NAMES.get(c, "")}'.strip() for c in ch[i:i + 2]) for i in range(0, len(ch), 2))
         mid = definition + (f'\nChart filter: {filt}' if filt else '')
-        lrows.append({'cells': [cell(left, size=11)], 'key': None, 'h': RH, 'metric': field})
-        mrows.append({'cells': [cell(field, fill=C_DASH, bold=True), cell(mid, color=MUTED, size=11)], 'key': field, 'h': RH})
-        rrows.append({'cells': [cell(right, size=11)], 'key': None, 'h': RH})
-    y = 230
-    tl = p.table(M, y, 'fct columns it reads', 'fct', 'fct', lrows, (460,))
-    tm = p.table(M + 460 + GUT, y, 'dashboard field (metric)', 'dashboard', 'dashboard', mrows, (260, 340))
-    tr = p.table(M + 460 + GUT + 600 + GUT, y, 'charts that show it', 'dashboard', 'dashboard', rrows, (520,))
-    for a, b, c in zip(tl['rows'], tm['rows'], tr['rows']):
-        p.edge(a, b)
-        p.edge(b, c)
-    p.finish()
-    return p
+        cs = [[cell(left, size=11)], [cell(field, fill=C_DASH, bold=True), cell(mid, color=MUTED, size=11)], [cell(right, size=11)]]
+        h = max(60, max(row_height([dict(c, i=1, w=w) for c, w in zip(cs_, ws)], 40) for cs_, ws in zip(cs, [(360,), (220, 380), (380,)])))
+        lrows.append({'cells': cs[0], 'key': None, 'h': h})
+        mrows.append({'cells': cs[1], 'key': field, 'h': h})
+        rrows.append({'cells': cs[2], 'key': None, 'h': h})
+    if lrows:
+        tl = p.table(M, y, 'fct columns it reads', 'fct', 'fct', lrows, (360,))
+        tm = p.table(M + 360 + GUT, y, 'dashboard field (metric)', 'dashboard', 'dashboard', mrows, (220, 380))
+        tr = p.table(M + 360 + GUT + 600 + GUT, y, 'charts that show it', 'dashboard', 'dashboard', rrows, (380,))
+        for a, b, c in zip(tl['rows'], tm['rows'], tr['rows']):
+            p.edge(a, b)
+            p.edge(b, c)
+        y = tl['y'] + tl['h'] + 50
+    else:
+        p.text(M, y, 1500, 24, 'No calculated dashboard field is built from this table: its charts read the columns directly (below).', size=13, kind='band_note')
+        y += 50
+    direct = [c for cid, c in fct_charts.items() if cid not in covered]
+    if direct:
+        drows = [{'cells': [cell(f'{c["id"]} {c["name"]}', bold=True), cell(', '.join(c['columns']), color=MUTED, size=11), cell(c['filter'], color=MUTED, size=11)], 'key': None} for c in direct]
+        p.table(M, y, 'charts that read columns directly (no calculated field)', 'dashboard', 'dashboard', drows, (360, 700, 380))
 
 
 def page_glossary(num):
@@ -359,15 +402,10 @@ def page_glossary(num):
 
 
 def all_pages():
-    pages = [page_map()]
-    groups = [('1 of 3', ['stg_grants', 'stg_organisations']), ('2 of 3', ['stg_outcome_progress', 'stg_support', 'stg_decisions']),
-              ('3 of 3', ['stg_disbursements', 'stg_maturity', 'stg_dividends'])]
-    for i, (n, ts) in enumerate(groups):
-        pages.append(page_src_stg(n, ts, 2 + i))
+    pages = [page_map(), page_src_stg_all(2), page_fct_index(3)]
     for i, f in enumerate(FCT_ORDER):
-        pages.append(page_fct(f, 5 + i))
-    pages.append(page_metrics(11))
-    pages.append(page_glossary(12))
+        pages.append(page_fct(f, 4 + i))
+    pages.append(page_glossary(10))
     return pages
 
 
@@ -400,10 +438,13 @@ def drawio_page(p, idx):
         for r in t['rows']:
             props = f' layer="{t["layer"]}" table="{escape(t["name"])}"' + (f' column="{escape(r["key"])}"' if r.get('key') else '')
             out.append(f'<object label="" id="{r["id"]}"{props}><mxCell style={quoteattr(STYLE["row"])} vertex="1" parent="{t["id"]}"><mxGeometry y="{ry}" width="{t["w"]}" height="{r["h"]}" as="geometry"/></mxCell></object>')
+            rx = 0
             for j, c in enumerate(r['cells']):
                 w = c['w']
                 val = escape(c['text']).replace('\n', '<br>')
-                out.append(f'<mxCell id="{r["id"]}_{j}" value={quoteattr(val)} style={quoteattr(cell_style(c, j, len(r["cells"]) - 1))} vertex="1" parent="{r["id"]}"><mxGeometry width="{w}" height="{r["h"]}" as="geometry"><mxRectangle width="{w}" height="{r["h"]}" as="alternateBounds"/></mxGeometry></mxCell>')
+                xa = f' x="{rx}"' if rx else ''
+                out.append(f'<mxCell id="{r["id"]}_{j}" value={quoteattr(val)} style={quoteattr(cell_style(c, j, len(r["cells"]) - 1))} vertex="1" parent="{r["id"]}"><mxGeometry{xa} width="{w}" height="{r["h"]}" as="geometry"><mxRectangle width="{w}" height="{r["h"]}" as="alternateBounds"/></mxGeometry></mxCell>')
+                rx += w
             ry += r['h']
     for e in p.edges:
         st = STYLE['edge'].format(dash='dashed=1;' if e['dashed'] else '')

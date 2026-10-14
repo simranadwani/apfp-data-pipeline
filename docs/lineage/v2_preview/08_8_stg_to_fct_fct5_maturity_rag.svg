@@ -1,6 +1,6 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1660 974" width="1660" height="974" font-family="Helvetica, Arial, sans-serif">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1660 1360" width="1660" height="1360" font-family="Helvetica, Arial, sans-serif">
 <defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#5F6C77"/></marker></defs>
-<rect width="1660" height="974" fill="#FFFFFF"/>
+<rect width="1660" height="1360" fill="#FFFFFF"/>
 <rect x="40" y="20" width="150" height="40" rx="8" fill="#FFFFFF" stroke="#B9C5CB"/>
 <text x="115.0" y="45.0" font-size="15" font-weight="700" text-anchor="middle" fill="#1E2838">src</text>
 <text x="196" y="46" font-size="22" fill="#5F6C77" font-weight="700">›</text>
@@ -24,6 +24,8 @@
 <rect x="661" y="210" width="20" height="20" fill="#DAE8FC" stroke="#B9C5CB"/>
 <text x="689" y="222" font-size="12" fill="#1E2838">Dashboard metric</text>
 <text x="40" y="902" font-size="12" fill="#5F6C77">Arrow: copied or looked up. ƒ = calculated: no arrow; its inputs are listed under "built from". Blank "built from": same name as in stg.</text>
+<text x="40" y="990" font-size="20" fill="#0E4A5C" font-weight="700">Dashboard fields and charts built from fct5_maturity_rag</text>
+<text x="40" y="1020" font-size="12" fill="#5F6C77">Each dashboard number is one Looker Studio field, reused by every chart that needs it; the chart adds its own filter. Fields are named by type: distinct_, sum_, pct_, inr_, txt_.</text>
 <rect x="520" y="260" width="1100" height="50" fill="#0E4A5C"/>
 <text x="530" y="282" font-size="14" font-weight="700" fill="#FFFFFF">fct5_maturity_rag</text>
 <text x="530" y="300" font-size="10" fill="#E2F2F4">fct · 12 columns</text>
@@ -106,7 +108,7 @@
 <rect x="520" y="750" width="260" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
 <text x="528" y="774" font-size="12" fill="#1E2838">aspect_display</text>
 <rect x="780" y="750" width="100" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
-<text x="788" y="774" font-size="11" fill="#5F6C77">number ƒ</text>
+<text x="788" y="774" font-size="11" fill="#5F6C77">text ƒ</text>
 <rect x="880" y="750" width="380" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
 <text x="888" y="774" font-size="11" fill="#5F6C77">grant_id, aspect</text>
 <rect x="1260" y="750" width="360" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
@@ -170,6 +172,33 @@
 <text x="48" y="774" font-size="12" fill="#1E2838">status</text>
 <rect x="300" y="750" width="100" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
 <text x="308" y="774" font-size="11" fill="#5F6C77">text</text>
+<rect x="40" y="1050" width="360" height="50" fill="#0E4A5C"/>
+<text x="50" y="1072" font-size="14" font-weight="700" fill="#FFFFFF">fct columns it reads</text>
+<text x="50" y="1090" font-size="10" fill="#E2F2F4">fct</text>
+<rect x="40" y="1100" width="360" height="60" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="48" y="1134" font-size="11" fill="#1E2838">fct5_maturity_rag: organization_id</text>
+<rect x="520" y="1050" width="600" height="50" fill="#3B6BA5"/>
+<text x="530" y="1072" font-size="14" font-weight="700" fill="#FFFFFF">dashboard field (metric)</text>
+<text x="530" y="1090" font-size="10" fill="#E2F2F4">dashboard</text>
+<rect x="520" y="1100" width="220" height="60" fill="#DAE8FC" stroke="#B9C5CB"/>
+<text x="528" y="1134" font-size="12" fill="#1E2838" font-weight="700">distinct_grantees</text>
+<rect x="740" y="1100" width="380" height="60" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="748" y="1127" font-size="11" fill="#5F6C77">Number of different organisations</text>
+<text x="748" y="1141" font-size="11" fill="#5F6C77">Chart filter: e.g. active grants only</text>
+<rect x="1240" y="1050" width="380" height="50" fill="#3B6BA5"/>
+<text x="1250" y="1072" font-size="14" font-weight="700" fill="#FFFFFF">charts that show it</text>
+<text x="1250" y="1090" font-size="10" fill="#E2F2F4">dashboard</text>
+<rect x="1240" y="1100" width="380" height="60" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="1248" y="1134" font-size="11" fill="#1E2838">1.13 Maturity level</text>
+<rect x="40" y="1210" width="1440" height="50" fill="#3B6BA5"/>
+<text x="50" y="1232" font-size="14" font-weight="700" fill="#FFFFFF">charts that read columns directly (no calculated field)</text>
+<text x="50" y="1250" font-size="10" fill="#E2F2F4">dashboard</text>
+<rect x="40" y="1260" width="360" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="48" y="1284" font-size="12" fill="#1E2838" font-weight="700">4.04 Maturity assessment</text>
+<rect x="400" y="1260" width="700" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="408" y="1284" font-size="11" fill="#5F6C77">aspect_display, indicator, status</text>
+<rect x="1100" y="1260" width="380" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="1108" y="1284" font-size="11" fill="#5F6C77">Selected organisation</text>
 <path d="M400,370.0 L520,370.0" fill="none" stroke="#5F6C77" stroke-width="1.5" marker-end="url(#a)"/>
 <path d="M400,410.0 L520,410.0" fill="none" stroke="#5F6C77" stroke-width="1.5" marker-end="url(#a)"/>
 <path d="M400,450.0 L520,450.0" fill="none" stroke="#5F6C77" stroke-width="1.5" marker-end="url(#a)"/>
@@ -179,4 +208,6 @@
 <path d="M400,690.0 L440,690.0 L440,650.0 L520,650.0" fill="none" stroke="#5F6C77" stroke-width="1.5" marker-end="url(#a)"/>
 <path d="M400,730.0 L450,730.0 L450,690.0 L520,690.0" fill="none" stroke="#5F6C77" stroke-width="1.5" marker-end="url(#a)"/>
 <path d="M400,770.0 L460,770.0 L460,730.0 L520,730.0" fill="none" stroke="#5F6C77" stroke-width="1.5" marker-end="url(#a)"/>
+<path d="M400,1130.0 L520,1130.0" fill="none" stroke="#5F6C77" stroke-width="1.5" marker-end="url(#a)"/>
+<path d="M1120,1130.0 L1240,1130.0" fill="none" stroke="#5F6C77" stroke-width="1.5" marker-end="url(#a)"/>
 </svg>

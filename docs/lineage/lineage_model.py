@@ -222,7 +222,7 @@ FINAL = {
 # ---------------------------------------------------------------- dashboard metrics (page "From columns to dashboard numbers")
 # (field name, plain label, plain definition, upstream columns, charts, chart-level filter in plain words)
 METRICS = [
-    ('distinct_grantees', 'Grantees', 'Number of different organisations', [f1('organization_id')], ['1.01', '1.07', '1.08', '1.10', '1.16', '2.07', '1.13'], 'e.g. active grants only'),
+    ('distinct_grantees', 'Grantees', 'Number of different organisations', [f1('organization_id'), 'fct5_maturity_rag.organization_id'], ['1.01', '1.07', '1.08', '1.10', '1.16', '2.07', '1.13'], 'e.g. active grants only'),
     ('distinct_grants', 'Grants', 'Number of different grants', [f1('grant_id')], ['1.03', '1.05', '1.06', '3.01', '3.02', '3.03', '3.05', '3.06'], 'e.g. pending decisions only'),
     ('distinct_needs', 'Support needs', 'Number of different support requests', ['fct3_support_activity.support_id'], ['1.04', '1.14', '1.15'], 'e.g. open requests only'),
     ('pct_active_grants_on_track', 'Active grantees on track', 'On-track active grants divided by active grants', [f1('is_active_grant'), f1('is_on_track_active_grant'), f1('grant_id')], ['1.02'], ''),
