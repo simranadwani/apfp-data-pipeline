@@ -97,7 +97,7 @@ class Scene:
         self.items.append({'t': 'text', 'id': tid, 'x': x, 'y': y, 'w': w, 'h': h, 'lines': lines, 'size': size, 'color': color, 'bold': bold})
         return tid
 
-    def table(self, x, y, title, tech, rows, head_fill, widths=(NAME_W, TYPE_W), row_h=ROW_H, subtitle=None, table_key=None, dot_w=0):
+    def table(self, x, y, title, tech, rows, head_fill, widths=(NAME_W, TYPE_W), row_h=ROW_H, subtitle=None, table_key=None, dot_w=0, fs=10):
         """rows: list of dict(label, tech, type, kind, rule(optional), key)"""
         tid = self.nid('T')
         w = sum(widths)
@@ -117,7 +117,7 @@ class Scene:
             r['y'] = ry
             rowinfo.append(r)
         self.items.append({'t': 'table', 'id': tid, 'x': x, 'y': y, 'w': w, 'h': h, 'title': title, 'tech': tech, 'subtitle': subtitle, 'rows': rowinfo,
-                           'head_fill': head_fill, 'widths': widths, 'row_h': row_h, 'key': table_key, 'dot_w': dot_w})
+                           'head_fill': head_fill, 'widths': widths, 'row_h': row_h, 'key': table_key, 'dot_w': dot_w, 'fs': fs})
         return {'id': tid, 'x': x, 'y': y, 'w': w, 'h': h, 'rows': rowinfo, 'by_key': {r['key']: r for r in rowinfo if r.get('key')}}
 
     def edge(self, src, tgt, cat='copy', label=None, color=None, dashed=None, width=1.6):
@@ -477,10 +477,16 @@ def drawio_page(sc, idx):
                 cx = 0
                 for j, cid in enumerate(r['cells']):
                     w = it['widths'][j]
-                    fill = FILL[r['kind']]
+                    fill = r.get('fill') or FILL[r['kind']]
+                    if r.get('section'):
+                        val = ('<b>' + escape(r['label']) + '</b>') if j == 0 else ''
+                        st = base + f"rounded=0;fillColor={fill};strokeColor={fill};align=left;spacingLeft=8;verticalAlign=middle;fontSize=13;fontColor=#FFFFFF;"
+                        cells.append(vertex(cid, it['id'], cx, HEAD_H + it['rows'].index(r) * it['row_h'], w, it['row_h'], st, val, None))
+                        cx += w
+                        continue
                     if j == 0:
                         val = html_label(r['label'], r['tech'])
-                        st = base + f"rounded=0;fillColor={fill};strokeColor=#B9C5CB;align=left;spacingLeft=8;verticalAlign=middle;fontSize=12;fontColor={INK};" + ('fontStyle=2;' if r['calc'] else '')
+                        st = base + f"rounded=0;fillColor={fill};strokeColor=#B9C5CB;align=left;spacingLeft=8;verticalAlign=middle;fontSize={max(12, it.get('fs', 10) + 1)};fontColor={INK};" + ('fontStyle=2;' if r['calc'] else '')
                         props = {'tech': r['tech'] or r['label'], 'kind': KIND_NAME[r['kind']], 'rule': r['rule'], 'description': '', 'owner': '', 'last_checked': ''}
                     elif j == 1:
                         val = escape(r['type'])
@@ -490,7 +496,7 @@ def drawio_page(sc, idx):
                         txt = r['cols'][j - 2] if r.get('cols') else (r['rule'] or '')
                         val = escape(txt or '')
                         lead = it.get('dot_w', 0) if j == 2 else 0
-                        st = base + f"rounded=0;fillColor=#FFFFFF;strokeColor=#B9C5CB;align=left;spacingLeft={6 + lead};verticalAlign=middle;fontSize={10 if r.get('cols') else 10};fontColor={MUTED};"
+                        st = base + f"rounded=0;fillColor=#FFFFFF;strokeColor=#B9C5CB;align=left;spacingLeft={6 + lead};verticalAlign=middle;fontSize={it.get('fs', 10)};fontColor={MUTED};"
                         props = None
                     y_rel = HEAD_H + it['rows'].index(r) * it['row_h']
                     cells.append(vertex(cid, it['id'], cx, y_rel, w, it['row_h'], st, val, props))
@@ -574,21 +580,27 @@ def svg_page(sc):
                 cx = x
                 for j, cid in enumerate(r['cells']):
                     cw = it['widths'][j]
-                    fill = FILL[r['kind']] if j < 2 else '#FFFFFF'
-                    o.append(f'<rect x="{cx}" y="{r["y"]}" width="{cw}" height="{it["row_h"]}" fill="{fill}" stroke="#B9C5CB"/>')
+                    fill = (r.get('fill') or FILL[r['kind']]) if (j < 2 or r.get('section')) else '#FFFFFF'
+                    o.append(f'<rect x="{cx}" y="{r["y"]}" width="{cw}" height="{it["row_h"]}" fill="{fill}" stroke="{fill if r.get("section") else "#B9C5CB"}"/>')
+                    if r.get('section'):
+                        if j == 0:
+                            o.append(f'<text x="{cx + 8}" y="{r["y"] + it["row_h"] / 2 + 5:.0f}" font-size="13" font-weight="700" fill="#FFFFFF">{escape(r["label"])}</text>')
+                        cx += cw
+                        continue
                     if j == 0:
+                        nfs = max(12, it.get('fs', 10) + 1)
                         st = ' font-style="italic"' if r['calc'] else ''
                         if r['tech']:
-                            o.append(f'<text x="{cx + 8}" y="{r["y"] + 16}" font-size="12" font-weight="700" fill="{INK}"{st}>{escape(r["label"][:34])}</text>')
+                            o.append(f'<text x="{cx + 8}" y="{r["y"] + 16}" font-size="{nfs}" font-weight="700" fill="{INK}"{st}>{escape(r["label"][:34])}</text>')
                             o.append(f'<text x="{cx + 8}" y="{r["y"] + 30}" font-size="9" fill="#5F6C77">{escape(r["tech"][:46])}</text>')
                         else:
-                            o.append(f'<text x="{cx + 8}" y="{r["y"] + it["row_h"] / 2 + 4:.0f}" font-size="12" fill="{INK}">{escape(r["label"][:44])}</text>')
+                            o.append(f'<text x="{cx + 8}" y="{r["y"] + it["row_h"] / 2 + 4:.0f}" font-size="{nfs}" fill="{INK}">{escape(r["label"][:44])}</text>')
                     elif j == 1:
                         o.append(f'<text x="{cx + cw / 2}" y="{r["y"] + it["row_h"] / 2 + 4:.0f}" font-size="11" fill="#5F6C77" text-anchor="middle">{escape(r["type"])}</text>')
                     else:
                         txt = r['cols'][j - 2] if r.get('cols') else (r['rule'] or '')
                         lead = it.get('dot_w', 0) if j == 2 else 0
-                        fs = 10
+                        fs = it.get('fs', 10)
                         lines = wrap(txt, cw - 12 - lead, fs)[:4]
                         ry = r['y'] + (it['row_h'] - len(lines) * (fs + 2)) / 2 + fs
                         for part in lines:

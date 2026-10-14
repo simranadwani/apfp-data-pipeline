@@ -178,6 +178,151 @@ def page_fct_bands(f, num):
     return sc
 
 
+# ------------------------------------------------------------------ page: one fct table, arranged by source
+ROW_H2, HEAD2 = 38, 46
+
+
+def classify(f):
+    """Group the columns of fct f by where they come from. Returns [(section key, title, colour, [(col, cat, ups, rule)])]."""
+    order = STG_ORDER + ['fct1_grant_portfolio']
+    secs = {}
+    for col, cat, ups, rule in LM.FINAL[f]:
+        tabs = []
+        for u in ups:
+            t = u.split('.')[0]
+            if t not in tabs:
+                tabs.append(t)
+        if not tabs:
+            key = 'fixed'
+        elif len(tabs) == 1:
+            key = tabs[0]
+        else:
+            key = 'several'
+        secs.setdefault(key, []).append((col, cat, ups, rule))
+    for key in secs:  # copied / looked-up columns first (they get the flat arrows), calculated ones after
+        secs[key] = [r for r in secs[key] if r[1] in ('copy', 'join')] + [r for r in secs[key] if r[1] not in ('copy', 'join')]
+    out = []
+    for key in order:
+        if key in secs:
+            copied = sum(1 for r in secs[key] if r[1] == 'copy')
+            out.append((key, f'from {key}', STG_COLOUR[key], secs[key]))
+    if 'several' in secs:
+        out.append(('several', 'calculated from several tables', '#5F6C77', secs['several']))
+    if 'fixed' in secs:
+        out.append(('fixed', 'fixed value, run date or kept empty', '#8A97A1', secs['fixed']))
+    return out
+
+
+def built_from(col, cat, ups, f):
+    if not ups:
+        return {'const': 'fixed value', 'run': 'date of the run', 'blank': 'kept empty'}.get(cat, '')
+    by = {}
+    for u in ups:
+        t, c = u.split('.', 1)
+        by.setdefault(t, []).append(c)
+    if len(by) == 1:
+        cols = list(by.values())[0]
+        if cat in ('copy', 'join') and len(cols) == 1 and cols[0] == col:
+            return ''
+        return ', '.join(cols)
+    return ' + '.join(f'{t}: ' + ', '.join(cs) for t, cs in by.items())
+
+
+def page_fct(f, num):
+    sc = B.Scene(f'{num}. stg to fct: {f}')
+    ribbon(sc, 'fct')
+    info = LM.TABLE_INFO[f]
+    sc.text(40, 70, 1700, 30, [f'{f}   ({len(B.CODE["final"][f])} columns)'], size=24, color=DEEP, bold=True)
+    sc.text(40, 104, 1700, 20, [info[1] + '.'], size=13, color=MUTED)
+    sc.text(40, 126, 1700, 40, ['Charts: ' + ', '.join(LM.FEEDS[f])], size=12, color=TEAL)
+    sections = classify(f)
+    left_w, gap = NAME_W + TYPE_W, 120
+    right_x = 40 + left_w + gap
+    widths = (250, 78, 390, 330)
+    y0 = 200
+    # fct rows (section bars included)
+    rows, sec_start, row_of = [], {}, {}
+    for key, title, colr, cols in sections:
+        sec_start[key] = len(rows)
+        bar = B.row_dict(f'{title}   ({len(cols)})', None, 'text', key='sec:' + key)
+        bar['section'] = True
+        bar['fill'] = colr
+        rows.append(bar)
+        for col, cat, ups, rule in cols:
+            r = fct_row_simple(f, col)
+            r['calc'] = cat == 'calc'
+            r['type'] = B.type_label(r['kind'], r['calc'])
+            r['cols'] = [built_from(col, cat, ups, f), '' if cat == 'copy' else rule]
+            rows.append(r)
+    ft = sc.table(right_x, y0, f, f, rows, FCT_COLOUR[f], widths=widths, row_h=ROW_H2, subtitle=info[1][:70], fs=11)
+    # left cards, each once, level with its own section
+    used = {}
+    for key, title, colr, cols in sections:
+        for col, cat, ups, rule in sorted(cols, key=lambda r: r[1] not in ('copy', 'join')):
+            for u in ups:
+                t, c = u.split('.', 1)
+                used.setdefault(t, [])
+                if c not in used[t]:
+                    used[t].append(c)
+    placed, ly = {}, y0
+    for t in sorted(used, key=lambda t: STG_ORDER.index(t) if t in STG_ORDER else 99):
+        top = y0 + HEAD2 + sec_start[t] * ROW_H2 - (HEAD2 - ROW_H2) if t in sec_start else ly
+        top = max(top, ly)
+        crow = [stg_row(t, c) if t.startswith('stg') else fct_row_simple(t, c) for c in used[t]]
+        tb = sc.table(40, top, t, t, crow, STG_COLOUR[t], widths=(NAME_W, TYPE_W), row_h=ROW_H2,
+                      subtitle=(SRC_OF[t] + '  ·  ' if t in SRC_OF else '') + f'{len(used[t])} columns used', fs=11)
+        placed[t] = tb
+        ly = top + HEAD2 + len(crow) * ROW_H2 + 24
+    # arrows: every column from its first input; the full input list is in "built from"
+    for key, title, colr, cols in sections:
+        for col, cat, ups, rule in cols:
+            if not ups:
+                continue
+            tgt = ft['by_key'][col]['cells'][0]
+            if cat not in ('copy', 'join'):
+                continue  # calculated columns: no arrow, their inputs are listed under "built from"
+            for u in ups:
+                t, c = u.split('.', 1)
+                sc.edge(placed[t]['by_key'][c]['cells'][-1], tgt, cat, color=STG_COLOUR[t], width=1.6)
+    bottom = max(ly, y0 + HEAD2 + len(rows) * ROW_H2) + 20
+    sc.text(40, bottom, 1700, 20, ['Arrow: copied or looked up.  ƒ = calculated: no arrow, its inputs are listed under "built from".  A blank "built from" means the column keeps the same name.'], size=12, color=MUTED)
+    return sc
+
+
+# ------------------------------------------------------------------ page: from fct columns to dashboard numbers
+def page_metrics_v2(num):
+    sc = B.Scene(f'{num}. fct to dashboard: metrics')
+    ribbon(sc, 'dashboard')
+    sc.text(40, 70, 1700, 30, ['From fct columns to dashboard numbers'], size=24, color=DEEP, bold=True)
+    sc.text(40, 104, 1700, 40, ['Each dashboard number is one Looker Studio field. The same field is reused by every chart that needs it; the chart adds its own filter. Fields are named by type: distinct_, sum_, pct_, inr_, txt_.'], size=13, color=MUTED)
+    x1, x2, x3, w1, w2, w3 = 40, 560, 1180, 430, 520, 560
+    y = 180
+    sc.box(x1, y - 44, w1, 38, title='fct columns it reads', fill=B.DEEP, stroke=B.DEEP, tcolor='#FFFFFF', tsize=14)
+    sc.box(x2, y - 44, w2, 38, title='dashboard field (metric)', fill=B.DEEP, stroke=B.DEEP, tcolor='#FFFFFF', tsize=14)
+    sc.box(x3, y - 44, w3, 38, title='charts that show it', fill=B.DEEP, stroke=B.DEEP, tcolor='#FFFFFF', tsize=14)
+    for m in LM.METRICS:
+        field, label, definition, ups, charts, filt = m
+        by = {}
+        for u in ups:
+            t, c = u.split('.', 1)
+            by.setdefault(t, []).append(c)
+        lines = [f'{t}: ' + ', '.join(cs) for t, cs in by.items()]
+        tcol = FCT_COLOUR.get(list(by)[0], '#5F6C77') if by else '#5F6C77'
+        names = [f'{c} {LM.CHART_NAMES.get(c, "")}'.strip() for c in charts]
+        cl = [', '.join(names[i:i + 2]) for i in range(0, len(names), 2)] if len(names) > 3 else names
+        body = [definition] + ([f'Chart filter: {filt}'] if filt else [])
+        h = max(78, 24 + 18 * max(len(lines), len(cl), len(body) + 1))
+        a = sc.box(x1, y, w1, h, title='', body=lines, fill='#FFFFFF', stroke=tcol, bsize=12)
+        sc.items[-1]['bcolor'] = INK
+        b = sc.box(x2, y, w2, h, title=field, body=body, fill='#E2F2F4', stroke='#9CC9D0', tsize=15, bsize=12)
+        c = sc.box(x3, y, w3, h, title='', body=cl, fill='#FFFFFF', stroke='#B9C5CB', bsize=12)
+        sc.items[-1]['bcolor'] = INK
+        sc.edge(a, b, 'copy', color=tcol, width=2)
+        sc.edge(b, c, 'copy', color=tcol, width=2)
+        y += h + 22
+    return sc
+
+
 def main():
     out = os.path.join(HERE, 'pilot', 'APFP_Lineage_pilot.drawio')
     svg_dir = os.path.join(HERE, 'pilot')
@@ -187,7 +332,7 @@ def main():
         if a == '--out': out = args.pop(0)
         elif a == '--svg-dir': svg_dir = args.pop(0)
     os.makedirs(os.path.dirname(out), exist_ok=True)
-    pages = [page_map(), page_fct_bands('fct1_grant_portfolio', 2)]
+    pages = [page_map(), page_fct('fct1_grant_portfolio', 2), page_metrics_v2(3)]
     xml = '<mxfile host="app.diagrams.net" version="24.0.0">' + ''.join(B.drawio_page(p, i + 1) for i, p in enumerate(pages)) + '</mxfile>'
     open(out, 'w', encoding='utf-8').write(xml)
     os.makedirs(svg_dir, exist_ok=True)
