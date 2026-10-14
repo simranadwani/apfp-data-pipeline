@@ -12,13 +12,13 @@ import lineage_model as LM
 from xml.sax.saxutils import quoteattr
 
 INK, MUTED, TEAL, DEEP = B.INK, B.MUTED, B.TEAL, B.DEEP
-STG_COLOUR = {
-    'stg_grants': '#167C88', 'stg_organisations': '#8A6A2F', 'stg_decisions': '#EB6834', 'stg_outcome_progress': '#4A3AA7',
-    'stg_maturity': '#C2185B', 'stg_support': '#2E7D32', 'stg_disbursements': '#E87BA4', 'stg_dividends': '#6D7B86',
-    'fct1_grant_portfolio': '#167C88',
-}
-FCT_COLOUR = {'fct1_grant_portfolio': '#167C88', 'fct2_outcome_progress': '#EB6834', 'fct3_support_activity': '#4A3AA7',
-              'fct4_budget_year': '#E87BA4', 'fct5_maturity_rag': '#8A6A2F', 'fct6_grantee_annual_info': '#5F6C77'}
+# Colour = layer only. src grey, stg teal, fct deep teal, dashboard pale teal. Arrows one grey. One highlight: calculated rows (pale amber).
+C_SRC, C_STG, C_FCT, C_DASH, C_EDGE, C_CALC = '#6B7B86', '#167C88', '#0E4A5C', '#E2F2F4', '#5F6C77', '#FFF3DC'
+STG_COLOUR = {t: C_STG for t in ['stg_grants', 'stg_organisations', 'stg_decisions', 'stg_outcome_progress', 'stg_maturity', 'stg_support',
+                                 'stg_disbursements', 'stg_dividends']}
+STG_COLOUR['fct1_grant_portfolio'] = C_FCT
+FCT_COLOUR = {f: C_FCT for f in ['fct1_grant_portfolio', 'fct2_outcome_progress', 'fct3_support_activity', 'fct4_budget_year', 'fct5_maturity_rag',
+                                 'fct6_grantee_annual_info']}
 STG_ORDER = ['stg_grants', 'stg_organisations', 'stg_decisions', 'stg_outcome_progress', 'stg_maturity', 'stg_support', 'stg_disbursements', 'stg_dividends']
 SRC_OF = {t: v['source_tab'] for t, v in B.CODE['staging'].items()}
 FCT_ORDER = list(FCT_COLOUR)
@@ -35,6 +35,7 @@ def ribbon(sc, active, x=40, y=20):
         on = (k == active)
         sc.box(cx, y, 150, 34, title=k, fill=TEAL if on else '#FFFFFF', stroke=TEAL if on else '#B9C5CB',
                tcolor='#FFFFFF' if on else INK, tsize=15)
+        sc.items[-1]['fill'] = {'src': C_SRC, 'stg': C_STG, 'fct': C_FCT, 'dashboard': C_STG}.get(k, C_STG) if on else '#FFFFFF'
         if i < 3:
             sc.text(cx + 156, y + 4, 22, 24, ['›'], size=22, color=MUTED, bold=True)
         cx += 190
@@ -44,12 +45,16 @@ def ribbon(sc, active, x=40, y=20):
 def stg_row(table, col):
     c = next(c for c in B.CODE['staging'][table]['columns'] if c['name'] == col)
     k = B.kind_of(col, c['type'])
-    return B.row_dict(col, None, k, key=col, type_text=B.type_label(k))
+    r = B.row_dict(col, None, k, key=col, type_text=B.type_label(k))
+    r['fill'] = '#FFFFFF'
+    return r
 
 
 def fct_row_simple(table, col):
     k = B.kind_of(col)
-    return B.row_dict(col, None, k, key=col)
+    r = B.row_dict(col, None, k, key=col)
+    r['fill'] = '#FFFFFF'
+    return r
 
 
 def group_text(ups):
@@ -64,22 +69,23 @@ def group_text(ups):
 def page_map():
     sc = B.Scene('1. Map: src, stg, fct')
     ribbon(sc, None)
-    sc.text(40, 72, 1700, 24, ['Every table, by its real name. Read left to right. Colour = which stg table feeds the fct table.'], size=14, color=MUTED)
+    sc.text(40, 72, 1700, 24, ['Every table, by its real name. Read left to right. Colour = layer: grey src, teal stg, dark fct.'], size=14, color=MUTED)
     top, dy, bw, bh = 190, 92, 330, 70
     xs = {'src': 40, 'stg': 520, 'fct': 1000, 'dash': 1480}
     heads = [('src', 'src  ·  source tabs', 'APFP Central Administration workbook'), ('stg', 'stg  ·  staging', 'one cleaned table per source tab'),
              ('fct', 'fct  ·  final', 'built from stg only (no int_ layer)'), ('dash', 'dashboard  ·  Looker Studio', 'one data source per fct table')]
     for k, t, sub in heads:
-        sc.box(xs[k], top - 70, bw, 60, title=t, body=[sub], fill=B.DEEP, stroke=B.DEEP, tcolor='#FFFFFF', tsize=15, bsize=10)
+        lc = {'src': C_SRC, 'stg': C_STG, 'fct': C_FCT, 'dash': C_STG}[k]
+        sc.box(xs[k], top - 70, bw, 60, title=t, body=[sub], fill=lc, stroke=lc, tcolor='#FFFFFF', tsize=15, bsize=10)
         sc.items[-1]['bcolor'] = '#CFE3E6'
     src_id, stg_id, fct_id = {}, {}, {}
     for i, t in enumerate(STG_ORDER):
         n = len(B.CODE['staging'][t]['columns'])
         y = top + i * dy
-        src_id[t] = sc.box(xs['src'], y, bw, bh, title=SRC_OF[t], body=[f'{n} columns read'], tsize=15)
+        src_id[t] = sc.box(xs['src'], y, bw, bh, title=SRC_OF[t], body=[f'{n} columns read'], stroke=C_SRC, tsize=15)
         stg_id[t] = sc.box(xs['stg'], y, bw, bh, title=t, body=[f'{n} columns'], fill='#FFFFFF', stroke=STG_COLOUR[t], tsize=15)
         sc.items[-1]['stroke'] = STG_COLOUR[t]
-        sc.edge(src_id[t], stg_id[t], 'copy', color='#8A97A1', width=2)
+        sc.edge(src_id[t], stg_id[t], 'copy', color=C_EDGE, width=2)
     fy = {f: top + 10 + i * 112 for i, f in enumerate(MAP_FCT_ORDER)}
     for f in FCT_ORDER:
         n = len(B.CODE['final'][f])
@@ -94,7 +100,7 @@ def page_map():
                     reads[f].append(t)
     for f in FCT_ORDER:
         for t in reads[f]:
-            sc.edge(stg_id[t] if t.startswith('stg') else fct_id[t], fct_id[f], 'copy', color=STG_COLOUR[t] if t.startswith('stg') else '#5F6C77',
+            sc.edge(stg_id[t] if t.startswith('stg') else fct_id[t], fct_id[f], 'copy', color=C_EDGE,
                     dashed=t.startswith('fct'), width=2)
     pages = {'1': 'Portfolio', '2': 'Funding', '3': 'Decision Queue', '4': 'Grantee 360'}
     ids_by_page = {}
@@ -103,9 +109,9 @@ def page_map():
             ids_by_page.setdefault((f, ch[0]), []).append(ch)
     page_id = {}
     for i, (d, name) in enumerate(pages.items()):
-        page_id[d] = sc.box(xs['dash'], top + 20 + i * 150, bw, 80, title=f'{name}', body=[f'charts {d}.xx'], fill='#E2F2F4', stroke='#9CC9D0', tsize=15)
+        page_id[d] = sc.box(xs['dash'], top + 20 + i * 150, bw, 80, title=f'{name}', body=[f'charts {d}.xx'], fill=C_DASH, stroke='#9CC9D0', tsize=15)
     for (f, d), chs in ids_by_page.items():
-        sc.edge(fct_id[f], page_id[d], 'copy', color=FCT_COLOUR[f], width=2)
+        sc.edge(fct_id[f], page_id[d], 'copy', color=C_EDGE, width=2)
     sc.text(40, top + 8 * dy + 10, 1700, 20, ['Dashed grey arrow: fct6_grantee_annual_info is built from fct1_grant_portfolio, not from stg directly.'], size=12, color=MUTED)
     return sc
 
@@ -207,9 +213,9 @@ def classify(f):
             copied = sum(1 for r in secs[key] if r[1] == 'copy')
             out.append((key, f'from {key}', STG_COLOUR[key], secs[key]))
     if 'several' in secs:
-        out.append(('several', 'calculated from several tables', '#5F6C77', secs['several']))
+        out.append(('several', 'calculated from several tables', C_EDGE, secs['several']))
     if 'fixed' in secs:
-        out.append(('fixed', 'fixed value, run date or kept empty', '#8A97A1', secs['fixed']))
+        out.append(('fixed', 'fixed value, run date or kept empty', C_SRC, secs['fixed']))
     return out
 
 
@@ -253,6 +259,8 @@ def page_fct(f, num):
             r['calc'] = cat == 'calc'
             r['type'] = B.type_label(r['kind'], r['calc'])
             r['cols'] = [built_from(col, cat, ups, f), '' if cat == 'copy' else rule]
+            if r['calc']:
+                r['fill'] = r['rowfill'] = C_CALC
             rows.append(r)
     ft = sc.table(right_x, y0, f, f, rows, FCT_COLOUR[f], widths=widths, row_h=ROW_H2, subtitle=info[1][:70], fs=11)
     # left cards, each once, level with its own section
@@ -283,9 +291,9 @@ def page_fct(f, num):
                 continue  # calculated columns: no arrow, their inputs are listed under "built from"
             for u in ups:
                 t, c = u.split('.', 1)
-                sc.edge(placed[t]['by_key'][c]['cells'][-1], tgt, cat, color=STG_COLOUR[t], width=1.6)
+                sc.edge(placed[t]['by_key'][c]['cells'][-1], tgt, cat, color=C_EDGE, width=1.6)
     bottom = max(ly, y0 + HEAD2 + len(rows) * ROW_H2) + 20
-    sc.text(40, bottom, 1700, 20, ['Arrow: copied or looked up.  ƒ = calculated: no arrow, its inputs are listed under "built from".  A blank "built from" means the column keeps the same name.'], size=12, color=MUTED)
+    sc.text(40, bottom, 1700, 20, ['White row: copied or looked up (arrow).  Pale amber row, ƒ: calculated (no arrow; inputs under "built from").  Blank "built from": same name as in stg.'], size=12, color=MUTED)
     return sc
 
 
@@ -297,9 +305,9 @@ def page_metrics_v2(num):
     sc.text(40, 104, 1700, 40, ['Each dashboard number is one Looker Studio field. The same field is reused by every chart that needs it; the chart adds its own filter. Fields are named by type: distinct_, sum_, pct_, inr_, txt_.'], size=13, color=MUTED)
     x1, x2, x3, w1, w2, w3 = 40, 560, 1180, 430, 520, 560
     y = 180
-    sc.box(x1, y - 44, w1, 38, title='fct columns it reads', fill=B.DEEP, stroke=B.DEEP, tcolor='#FFFFFF', tsize=14)
-    sc.box(x2, y - 44, w2, 38, title='dashboard field (metric)', fill=B.DEEP, stroke=B.DEEP, tcolor='#FFFFFF', tsize=14)
-    sc.box(x3, y - 44, w3, 38, title='charts that show it', fill=B.DEEP, stroke=B.DEEP, tcolor='#FFFFFF', tsize=14)
+    sc.box(x1, y - 44, w1, 38, title='fct columns it reads', fill=C_FCT, stroke=C_FCT, tcolor='#FFFFFF', tsize=14)
+    sc.box(x2, y - 44, w2, 38, title='dashboard field (metric)', fill=C_FCT, stroke=C_FCT, tcolor='#FFFFFF', tsize=14)
+    sc.box(x3, y - 44, w3, 38, title='charts that show it', fill=C_FCT, stroke=C_FCT, tcolor='#FFFFFF', tsize=14)
     for m in LM.METRICS:
         field, label, definition, ups, charts, filt = m
         by = {}
@@ -307,14 +315,14 @@ def page_metrics_v2(num):
             t, c = u.split('.', 1)
             by.setdefault(t, []).append(c)
         lines = [f'{t}: ' + ', '.join(cs) for t, cs in by.items()]
-        tcol = FCT_COLOUR.get(list(by)[0], '#5F6C77') if by else '#5F6C77'
+        tcol = C_EDGE
         names = [f'{c} {LM.CHART_NAMES.get(c, "")}'.strip() for c in charts]
         cl = [', '.join(names[i:i + 2]) for i in range(0, len(names), 2)] if len(names) > 3 else names
         body = [definition] + ([f'Chart filter: {filt}'] if filt else [])
         h = max(78, 24 + 18 * max(len(lines), len(cl), len(body) + 1))
-        a = sc.box(x1, y, w1, h, title='', body=lines, fill='#FFFFFF', stroke=tcol, bsize=12)
+        a = sc.box(x1, y, w1, h, title='', body=lines, fill='#FFFFFF', stroke=C_FCT, bsize=12)
         sc.items[-1]['bcolor'] = INK
-        b = sc.box(x2, y, w2, h, title=field, body=body, fill='#E2F2F4', stroke='#9CC9D0', tsize=15, bsize=12)
+        b = sc.box(x2, y, w2, h, title=field, body=body, fill=C_DASH, stroke='#9CC9D0', tsize=15, bsize=12)
         c = sc.box(x3, y, w3, h, title='', body=cl, fill='#FFFFFF', stroke='#B9C5CB', bsize=12)
         sc.items[-1]['bcolor'] = INK
         sc.edge(a, b, 'copy', color=tcol, width=2)

@@ -496,7 +496,7 @@ def drawio_page(sc, idx):
                         txt = r['cols'][j - 2] if r.get('cols') else (r['rule'] or '')
                         val = escape(txt or '')
                         lead = it.get('dot_w', 0) if j == 2 else 0
-                        st = base + f"rounded=0;fillColor=#FFFFFF;strokeColor=#B9C5CB;align=left;spacingLeft={6 + lead};verticalAlign=middle;fontSize={it.get('fs', 10)};fontColor={MUTED};"
+                        st = base + f"rounded=0;fillColor={r.get('rowfill', '#FFFFFF')};strokeColor=#B9C5CB;align=left;spacingLeft={6 + lead};verticalAlign=middle;fontSize={it.get('fs', 10)};fontColor={MUTED};"
                         props = None
                     y_rel = HEAD_H + it['rows'].index(r) * it['row_h']
                     cells.append(vertex(cid, it['id'], cx, y_rel, w, it['row_h'], st, val, props))
@@ -580,7 +580,7 @@ def svg_page(sc):
                 cx = x
                 for j, cid in enumerate(r['cells']):
                     cw = it['widths'][j]
-                    fill = (r.get('fill') or FILL[r['kind']]) if (j < 2 or r.get('section')) else '#FFFFFF'
+                    fill = (r.get('fill') or FILL[r['kind']]) if (j < 2 or r.get('section')) else r.get('rowfill', '#FFFFFF')
                     o.append(f'<rect x="{cx}" y="{r["y"]}" width="{cw}" height="{it["row_h"]}" fill="{fill}" stroke="{fill if r.get("section") else "#B9C5CB"}"/>')
                     if r.get('section'):
                         if j == 0:

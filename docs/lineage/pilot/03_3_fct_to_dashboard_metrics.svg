@@ -20,7 +20,7 @@
 <text x="572" y="158" font-size="14" font-weight="700" fill="#FFFFFF">dashboard field (metric)</text>
 <rect x="1180" y="136" width="560" height="38" rx="8" fill="#0E4A5C" stroke="#0E4A5C" stroke-width="1.4"/>
 <text x="1192" y="158" font-size="14" font-weight="700" fill="#FFFFFF">charts that show it</text>
-<rect x="40" y="180" width="430" height="96" rx="8" fill="#FFFFFF" stroke="#167C88" stroke-width="1.4"/>
+<rect x="40" y="180" width="430" height="96" rx="8" fill="#FFFFFF" stroke="#0E4A5C" stroke-width="1.4"/>
 <text x="52" y="216" font-size="12" fill="#1E2838">fct1_grant_portfolio: organization_id</text>
 <rect x="560" y="180" width="520" height="96" rx="8" fill="#E2F2F4" stroke="#9CC9D0" stroke-width="1.4"/>
 <text x="572" y="203" font-size="15" font-weight="700" fill="#1E2838">distinct_grantees</text>
@@ -31,7 +31,7 @@
 <text x="1192" y="233" font-size="12" fill="#1E2838">1.08 Education sub-categories, 1.10 Beneficiary type</text>
 <text x="1192" y="250" font-size="12" fill="#1E2838">1.16 Year on year, 2.07 Funding range</text>
 <text x="1192" y="267" font-size="12" fill="#1E2838">1.13 Maturity level</text>
-<rect x="40" y="298" width="430" height="96" rx="8" fill="#FFFFFF" stroke="#167C88" stroke-width="1.4"/>
+<rect x="40" y="298" width="430" height="96" rx="8" fill="#FFFFFF" stroke="#0E4A5C" stroke-width="1.4"/>
 <text x="52" y="334" font-size="12" fill="#1E2838">fct1_grant_portfolio: grant_id</text>
 <rect x="560" y="298" width="520" height="96" rx="8" fill="#E2F2F4" stroke="#9CC9D0" stroke-width="1.4"/>
 <text x="572" y="321" font-size="15" font-weight="700" fill="#1E2838">distinct_grants</text>
@@ -42,7 +42,7 @@
 <text x="1192" y="351" font-size="12" fill="#1E2838">1.06 Grants by grant type, 3.01 Pending decisions</text>
 <text x="1192" y="368" font-size="12" fill="#1E2838">3.02 Overdue, 3.03 Due in 30 days</text>
 <text x="1192" y="385" font-size="12" fill="#1E2838">3.05 Due window, 3.06 Recommendations</text>
-<rect x="40" y="416" width="430" height="78" rx="8" fill="#FFFFFF" stroke="#4A3AA7" stroke-width="1.4"/>
+<rect x="40" y="416" width="430" height="78" rx="8" fill="#FFFFFF" stroke="#0E4A5C" stroke-width="1.4"/>
 <text x="52" y="452" font-size="12" fill="#1E2838">fct3_support_activity: support_id</text>
 <rect x="560" y="416" width="520" height="78" rx="8" fill="#E2F2F4" stroke="#9CC9D0" stroke-width="1.4"/>
 <text x="572" y="439" font-size="15" font-weight="700" fill="#1E2838">distinct_needs</text>
@@ -52,7 +52,7 @@
 <text x="1192" y="452" font-size="12" fill="#1E2838">1.04 Open support needs</text>
 <text x="1192" y="469" font-size="12" fill="#1E2838">1.14 Support needs raised</text>
 <text x="1192" y="486" font-size="12" fill="#1E2838">1.15 Support provided</text>
-<rect x="40" y="516" width="430" height="78" rx="8" fill="#FFFFFF" stroke="#167C88" stroke-width="1.4"/>
+<rect x="40" y="516" width="430" height="78" rx="8" fill="#FFFFFF" stroke="#0E4A5C" stroke-width="1.4"/>
 <text x="52" y="552" font-size="12" fill="#1E2838">fct1_grant_portfolio: is_active_grant,</text>
 <text x="52" y="569" font-size="12" fill="#1E2838">is_on_track_active_grant, grant_id</text>
 <rect x="560" y="516" width="520" height="78" rx="8" fill="#E2F2F4" stroke="#9CC9D0" stroke-width="1.4"/>
@@ -60,7 +60,7 @@
 <text x="572" y="572" font-size="12" fill="#5F6C77">On-track active grants divided by active grants</text>
 <rect x="1180" y="516" width="560" height="78" rx="8" fill="#FFFFFF" stroke="#B9C5CB" stroke-width="1.4"/>
 <text x="1192" y="552" font-size="12" fill="#1E2838">1.02 Active grantees on track</text>
-<rect x="40" y="616" width="430" height="78" rx="8" fill="#FFFFFF" stroke="#167C88" stroke-width="1.4"/>
+<rect x="40" y="616" width="430" height="78" rx="8" fill="#FFFFFF" stroke="#0E4A5C" stroke-width="1.4"/>
 <text x="52" y="652" font-size="12" fill="#1E2838">fct1_grant_portfolio: achieved_outcomes_count,</text>
 <text x="52" y="669" font-size="12" fill="#1E2838">total_outcomes_count</text>
 <rect x="560" y="616" width="520" height="78" rx="8" fill="#E2F2F4" stroke="#9CC9D0" stroke-width="1.4"/>
@@ -68,7 +68,7 @@
 <text x="572" y="672" font-size="12" fill="#5F6C77">Achieved outcomes divided by all outcomes</text>
 <rect x="1180" y="616" width="560" height="78" rx="8" fill="#FFFFFF" stroke="#B9C5CB" stroke-width="1.4"/>
 <text x="1192" y="652" font-size="12" fill="#1E2838">3.07 Decision list</text>
-<rect x="40" y="716" width="430" height="78" rx="8" fill="#FFFFFF" stroke="#EB6834" stroke-width="1.4"/>
+<rect x="40" y="716" width="430" height="78" rx="8" fill="#FFFFFF" stroke="#0E4A5C" stroke-width="1.4"/>
 <text x="52" y="752" font-size="12" fill="#1E2838">fct2_outcome_progress: status, is_latest_update, outcome_id</text>
 <rect x="560" y="716" width="520" height="78" rx="8" fill="#E2F2F4" stroke="#9CC9D0" stroke-width="1.4"/>
 <text x="572" y="739" font-size="15" font-weight="700" fill="#1E2838">pct_outcomes_on_track</text>
@@ -76,7 +76,7 @@
 <text x="572" y="789" font-size="12" fill="#5F6C77">Chart filter: latest update only</text>
 <rect x="1180" y="716" width="560" height="78" rx="8" fill="#FFFFFF" stroke="#B9C5CB" stroke-width="1.4"/>
 <text x="1192" y="752" font-size="12" fill="#1E2838">1.12 Quarterly outcome status</text>
-<rect x="40" y="816" width="430" height="78" rx="8" fill="#FFFFFF" stroke="#167C88" stroke-width="1.4"/>
+<rect x="40" y="816" width="430" height="78" rx="8" fill="#FFFFFF" stroke="#0E4A5C" stroke-width="1.4"/>
 <text x="52" y="852" font-size="12" fill="#1E2838">fct1_grant_portfolio: committed_amount</text>
 <rect x="560" y="816" width="520" height="78" rx="8" fill="#E2F2F4" stroke="#9CC9D0" stroke-width="1.4"/>
 <text x="572" y="839" font-size="15" font-weight="700" fill="#1E2838">sum_committed_lakh</text>
@@ -85,7 +85,7 @@
 <text x="1192" y="852" font-size="12" fill="#1E2838">2.05 Funding by thematic area</text>
 <text x="1192" y="869" font-size="12" fill="#1E2838">2.06 Funding by grant type</text>
 <text x="1192" y="886" font-size="12" fill="#1E2838">2.08 Funding year on year</text>
-<rect x="40" y="916" width="430" height="78" rx="8" fill="#FFFFFF" stroke="#167C88" stroke-width="1.4"/>
+<rect x="40" y="916" width="430" height="78" rx="8" fill="#FFFFFF" stroke="#0E4A5C" stroke-width="1.4"/>
 <text x="52" y="952" font-size="12" fill="#1E2838">fct1_grant_portfolio: disbursed_amount</text>
 <rect x="560" y="916" width="520" height="78" rx="8" fill="#E2F2F4" stroke="#9CC9D0" stroke-width="1.4"/>
 <text x="572" y="939" font-size="15" font-weight="700" fill="#1E2838">sum_disbursed_lakh</text>
@@ -93,14 +93,14 @@
 <rect x="1180" y="916" width="560" height="78" rx="8" fill="#FFFFFF" stroke="#B9C5CB" stroke-width="1.4"/>
 <text x="1192" y="952" font-size="12" fill="#1E2838">2.05 Funding by thematic area, 2.06 Funding by grant type</text>
 <text x="1192" y="969" font-size="12" fill="#1E2838">2.08 Funding year on year, 4.03 Funding history</text>
-<rect x="40" y="1016" width="430" height="78" rx="8" fill="#FFFFFF" stroke="#167C88" stroke-width="1.4"/>
+<rect x="40" y="1016" width="430" height="78" rx="8" fill="#FFFFFF" stroke="#0E4A5C" stroke-width="1.4"/>
 <text x="52" y="1052" font-size="12" fill="#1E2838">fct1_grant_portfolio: approved_amount</text>
 <rect x="560" y="1016" width="520" height="78" rx="8" fill="#E2F2F4" stroke="#9CC9D0" stroke-width="1.4"/>
 <text x="572" y="1039" font-size="15" font-weight="700" fill="#1E2838">sum_approved_lakh</text>
 <text x="572" y="1072" font-size="12" fill="#5F6C77">Approved amount divided by 100,000</text>
 <rect x="1180" y="1016" width="560" height="78" rx="8" fill="#FFFFFF" stroke="#B9C5CB" stroke-width="1.4"/>
 <text x="1192" y="1052" font-size="12" fill="#1E2838">4.03 Funding history</text>
-<rect x="40" y="1116" width="430" height="78" rx="8" fill="#FFFFFF" stroke="#167C88" stroke-width="1.4"/>
+<rect x="40" y="1116" width="430" height="78" rx="8" fill="#FFFFFF" stroke="#0E4A5C" stroke-width="1.4"/>
 <text x="52" y="1152" font-size="12" fill="#1E2838">fct1_grant_portfolio: approved_amount, proposed_amount,</text>
 <text x="52" y="1169" font-size="12" fill="#1E2838">annual_budget, cost_per_beneficiary</text>
 <rect x="560" y="1116" width="520" height="78" rx="8" fill="#E2F2F4" stroke="#9CC9D0" stroke-width="1.4"/>
@@ -111,7 +111,7 @@
 <text x="1192" y="1152" font-size="12" fill="#1E2838">1.11 Comparative metrics, 3.04 Proposed renewals</text>
 <text x="1192" y="1169" font-size="12" fill="#1E2838">3.07 Decision list, 4.01 Profile</text>
 <text x="1192" y="1186" font-size="12" fill="#1E2838">4.05 Beneficiaries, 4.08 Latest decision</text>
-<rect x="40" y="1216" width="430" height="96" rx="8" fill="#FFFFFF" stroke="#E87BA4" stroke-width="1.4"/>
+<rect x="40" y="1216" width="430" height="96" rx="8" fill="#FFFFFF" stroke="#0E4A5C" stroke-width="1.4"/>
 <text x="52" y="1252" font-size="12" fill="#1E2838">fct4_budget_year: available_budget, dividend_income,</text>
 <text x="52" y="1269" font-size="12" fill="#1E2838">prior_year_carry_forward, annual_committed_funding,</text>
 <text x="52" y="1286" font-size="12" fill="#1E2838">next_year_q1_committed_funding, annual_disbursed_funding,</text>
@@ -124,14 +124,14 @@
 <text x="1192" y="1269" font-size="12" fill="#1E2838">2.03 Disbursed funding, 2.04 Unallocated balance</text>
 <text x="1192" y="1286" font-size="12" fill="#1E2838">2.09 Dividends, 2.10 Carry forward</text>
 <text x="1192" y="1303" font-size="12" fill="#1E2838">2.11 Current year, 2.12 Next year Q1</text>
-<rect x="40" y="1334" width="430" height="78" rx="8" fill="#FFFFFF" stroke="#EB6834" stroke-width="1.4"/>
+<rect x="40" y="1334" width="430" height="78" rx="8" fill="#FFFFFF" stroke="#0E4A5C" stroke-width="1.4"/>
 <text x="52" y="1370" font-size="12" fill="#1E2838">fct2_outcome_progress: quarter, status</text>
 <rect x="560" y="1334" width="520" height="78" rx="8" fill="#E2F2F4" stroke="#9CC9D0" stroke-width="1.4"/>
 <text x="572" y="1357" font-size="15" font-weight="700" fill="#1E2838">txt_status_q1 ... txt_status_q4</text>
 <text x="572" y="1390" font-size="12" fill="#5F6C77">On Track or Off Track for each quarter</text>
 <rect x="1180" y="1334" width="560" height="78" rx="8" fill="#FFFFFF" stroke="#B9C5CB" stroke-width="1.4"/>
 <text x="1192" y="1370" font-size="12" fill="#1E2838">4.06 Outcome status</text>
-<rect x="40" y="1434" width="430" height="78" rx="8" fill="#FFFFFF" stroke="#167C88" stroke-width="1.4"/>
+<rect x="40" y="1434" width="430" height="78" rx="8" fill="#FFFFFF" stroke="#0E4A5C" stroke-width="1.4"/>
 <text x="52" y="1470" font-size="12" fill="#1E2838">fct1_grant_portfolio: decision_due_date, annual_report_link,</text>
 <text x="52" y="1487" font-size="12" fill="#1E2838">organisation</text>
 <rect x="560" y="1434" width="520" height="78" rx="8" fill="#E2F2F4" stroke="#9CC9D0" stroke-width="1.4"/>
@@ -140,30 +140,30 @@
 <rect x="1180" y="1434" width="560" height="78" rx="8" fill="#FFFFFF" stroke="#B9C5CB" stroke-width="1.4"/>
 <text x="1192" y="1470" font-size="12" fill="#1E2838">3.07 Decision list</text>
 <text x="1192" y="1487" font-size="12" fill="#1E2838">4.08 Latest decision</text>
-<path d="M470,228 C515,228 515,228 560,228" fill="none" stroke="#167C88" stroke-width="2" opacity="0.9" marker-end="url(#arr)"/>
-<path d="M1080,228 C1130,228 1130,228 1180,228" fill="none" stroke="#167C88" stroke-width="2" opacity="0.9" marker-end="url(#arr)"/>
-<path d="M470,346 C515,346 515,346 560,346" fill="none" stroke="#167C88" stroke-width="2" opacity="0.9" marker-end="url(#arr)"/>
-<path d="M1080,346 C1130,346 1130,346 1180,346" fill="none" stroke="#167C88" stroke-width="2" opacity="0.9" marker-end="url(#arr)"/>
-<path d="M470,455 C515,455 515,455 560,455" fill="none" stroke="#4A3AA7" stroke-width="2" opacity="0.9" marker-end="url(#arr)"/>
-<path d="M1080,455 C1130,455 1130,455 1180,455" fill="none" stroke="#4A3AA7" stroke-width="2" opacity="0.9" marker-end="url(#arr)"/>
-<path d="M470,555 C515,555 515,555 560,555" fill="none" stroke="#167C88" stroke-width="2" opacity="0.9" marker-end="url(#arr)"/>
-<path d="M1080,555 C1130,555 1130,555 1180,555" fill="none" stroke="#167C88" stroke-width="2" opacity="0.9" marker-end="url(#arr)"/>
-<path d="M470,655 C515,655 515,655 560,655" fill="none" stroke="#167C88" stroke-width="2" opacity="0.9" marker-end="url(#arr)"/>
-<path d="M1080,655 C1130,655 1130,655 1180,655" fill="none" stroke="#167C88" stroke-width="2" opacity="0.9" marker-end="url(#arr)"/>
-<path d="M470,755 C515,755 515,755 560,755" fill="none" stroke="#EB6834" stroke-width="2" opacity="0.9" marker-end="url(#arr)"/>
-<path d="M1080,755 C1130,755 1130,755 1180,755" fill="none" stroke="#EB6834" stroke-width="2" opacity="0.9" marker-end="url(#arr)"/>
-<path d="M470,855 C515,855 515,855 560,855" fill="none" stroke="#167C88" stroke-width="2" opacity="0.9" marker-end="url(#arr)"/>
-<path d="M1080,855 C1130,855 1130,855 1180,855" fill="none" stroke="#167C88" stroke-width="2" opacity="0.9" marker-end="url(#arr)"/>
-<path d="M470,955 C515,955 515,955 560,955" fill="none" stroke="#167C88" stroke-width="2" opacity="0.9" marker-end="url(#arr)"/>
-<path d="M1080,955 C1130,955 1130,955 1180,955" fill="none" stroke="#167C88" stroke-width="2" opacity="0.9" marker-end="url(#arr)"/>
-<path d="M470,1055 C515,1055 515,1055 560,1055" fill="none" stroke="#167C88" stroke-width="2" opacity="0.9" marker-end="url(#arr)"/>
-<path d="M1080,1055 C1130,1055 1130,1055 1180,1055" fill="none" stroke="#167C88" stroke-width="2" opacity="0.9" marker-end="url(#arr)"/>
-<path d="M470,1155 C515,1155 515,1155 560,1155" fill="none" stroke="#167C88" stroke-width="2" opacity="0.9" marker-end="url(#arr)"/>
-<path d="M1080,1155 C1130,1155 1130,1155 1180,1155" fill="none" stroke="#167C88" stroke-width="2" opacity="0.9" marker-end="url(#arr)"/>
-<path d="M470,1264 C515,1264 515,1264 560,1264" fill="none" stroke="#E87BA4" stroke-width="2" opacity="0.9" marker-end="url(#arr)"/>
-<path d="M1080,1264 C1130,1264 1130,1264 1180,1264" fill="none" stroke="#E87BA4" stroke-width="2" opacity="0.9" marker-end="url(#arr)"/>
-<path d="M470,1373 C515,1373 515,1373 560,1373" fill="none" stroke="#EB6834" stroke-width="2" opacity="0.9" marker-end="url(#arr)"/>
-<path d="M1080,1373 C1130,1373 1130,1373 1180,1373" fill="none" stroke="#EB6834" stroke-width="2" opacity="0.9" marker-end="url(#arr)"/>
-<path d="M470,1473 C515,1473 515,1473 560,1473" fill="none" stroke="#167C88" stroke-width="2" opacity="0.9" marker-end="url(#arr)"/>
-<path d="M1080,1473 C1130,1473 1130,1473 1180,1473" fill="none" stroke="#167C88" stroke-width="2" opacity="0.9" marker-end="url(#arr)"/>
+<path d="M470,228 C515,228 515,228 560,228" fill="none" stroke="#5F6C77" stroke-width="2" opacity="0.9" marker-end="url(#arr)"/>
+<path d="M1080,228 C1130,228 1130,228 1180,228" fill="none" stroke="#5F6C77" stroke-width="2" opacity="0.9" marker-end="url(#arr)"/>
+<path d="M470,346 C515,346 515,346 560,346" fill="none" stroke="#5F6C77" stroke-width="2" opacity="0.9" marker-end="url(#arr)"/>
+<path d="M1080,346 C1130,346 1130,346 1180,346" fill="none" stroke="#5F6C77" stroke-width="2" opacity="0.9" marker-end="url(#arr)"/>
+<path d="M470,455 C515,455 515,455 560,455" fill="none" stroke="#5F6C77" stroke-width="2" opacity="0.9" marker-end="url(#arr)"/>
+<path d="M1080,455 C1130,455 1130,455 1180,455" fill="none" stroke="#5F6C77" stroke-width="2" opacity="0.9" marker-end="url(#arr)"/>
+<path d="M470,555 C515,555 515,555 560,555" fill="none" stroke="#5F6C77" stroke-width="2" opacity="0.9" marker-end="url(#arr)"/>
+<path d="M1080,555 C1130,555 1130,555 1180,555" fill="none" stroke="#5F6C77" stroke-width="2" opacity="0.9" marker-end="url(#arr)"/>
+<path d="M470,655 C515,655 515,655 560,655" fill="none" stroke="#5F6C77" stroke-width="2" opacity="0.9" marker-end="url(#arr)"/>
+<path d="M1080,655 C1130,655 1130,655 1180,655" fill="none" stroke="#5F6C77" stroke-width="2" opacity="0.9" marker-end="url(#arr)"/>
+<path d="M470,755 C515,755 515,755 560,755" fill="none" stroke="#5F6C77" stroke-width="2" opacity="0.9" marker-end="url(#arr)"/>
+<path d="M1080,755 C1130,755 1130,755 1180,755" fill="none" stroke="#5F6C77" stroke-width="2" opacity="0.9" marker-end="url(#arr)"/>
+<path d="M470,855 C515,855 515,855 560,855" fill="none" stroke="#5F6C77" stroke-width="2" opacity="0.9" marker-end="url(#arr)"/>
+<path d="M1080,855 C1130,855 1130,855 1180,855" fill="none" stroke="#5F6C77" stroke-width="2" opacity="0.9" marker-end="url(#arr)"/>
+<path d="M470,955 C515,955 515,955 560,955" fill="none" stroke="#5F6C77" stroke-width="2" opacity="0.9" marker-end="url(#arr)"/>
+<path d="M1080,955 C1130,955 1130,955 1180,955" fill="none" stroke="#5F6C77" stroke-width="2" opacity="0.9" marker-end="url(#arr)"/>
+<path d="M470,1055 C515,1055 515,1055 560,1055" fill="none" stroke="#5F6C77" stroke-width="2" opacity="0.9" marker-end="url(#arr)"/>
+<path d="M1080,1055 C1130,1055 1130,1055 1180,1055" fill="none" stroke="#5F6C77" stroke-width="2" opacity="0.9" marker-end="url(#arr)"/>
+<path d="M470,1155 C515,1155 515,1155 560,1155" fill="none" stroke="#5F6C77" stroke-width="2" opacity="0.9" marker-end="url(#arr)"/>
+<path d="M1080,1155 C1130,1155 1130,1155 1180,1155" fill="none" stroke="#5F6C77" stroke-width="2" opacity="0.9" marker-end="url(#arr)"/>
+<path d="M470,1264 C515,1264 515,1264 560,1264" fill="none" stroke="#5F6C77" stroke-width="2" opacity="0.9" marker-end="url(#arr)"/>
+<path d="M1080,1264 C1130,1264 1130,1264 1180,1264" fill="none" stroke="#5F6C77" stroke-width="2" opacity="0.9" marker-end="url(#arr)"/>
+<path d="M470,1373 C515,1373 515,1373 560,1373" fill="none" stroke="#5F6C77" stroke-width="2" opacity="0.9" marker-end="url(#arr)"/>
+<path d="M1080,1373 C1130,1373 1130,1373 1180,1373" fill="none" stroke="#5F6C77" stroke-width="2" opacity="0.9" marker-end="url(#arr)"/>
+<path d="M470,1473 C515,1473 515,1473 560,1473" fill="none" stroke="#5F6C77" stroke-width="2" opacity="0.9" marker-end="url(#arr)"/>
+<path d="M1080,1473 C1130,1473 1130,1473 1180,1473" fill="none" stroke="#5F6C77" stroke-width="2" opacity="0.9" marker-end="url(#arr)"/>
 </svg>
