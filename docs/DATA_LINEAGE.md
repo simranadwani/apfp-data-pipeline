@@ -1,5 +1,7 @@
 # APFP data lineage
 
+**Column-level, client-readable diagram (editable): [`lineage/APFP_Data_Lineage.drawio`](lineage/APFP_Data_Lineage.drawio)**, 16 pages, opens in app.diagrams.net, the draw.io desktop app or from Google Drive. PNG previews of every page are in `docs/lineage/preview/`. Pages: how the pieces fit, the journey of the data, source tabs, source to staging (3 pages), index of final tables, staging to final (one page per final table), from columns to dashboard numbers, three numbers traced step by step, glossary and key. To keep it in line with the code run `npm run lineage` (lists columns that are in the scripts but not in the diagram, and the reverse). The table-level picture below is the one-page summary.
+
 ![APFP data lineage](lineage/data_lineage.png)
 
 Image files: `docs/lineage/data_lineage.png` (for documents and slides) and `docs/lineage/data_lineage.svg` (editable, scales without blur). To regenerate after a change: `python3 docs/lineage/make_svg.py docs/lineage/data_lineage.svg` (the table lists at the top of the script are the only thing to edit).

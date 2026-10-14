@@ -3,6 +3,27 @@
 All notable changes to the APFP data pipeline. Newest first.
 Each entry lists what changed, which files, and why.
 
+## [0.1.16] — 2026-10-14
+
+### Added — column-level, client-readable lineage in draw.io (docs and tooling only)
+- **What:** `docs/lineage/APFP_Data_Lineage.drawio` (16 pages, plain XML) with: how the pieces fit, the journey of the
+  data, the source tabs and their columns, source to staging (3 pages), an index of the six final tables with every
+  column, one page per final table showing each staging column flowing to each final column with a plain-language rule
+  and the charts it feeds, how the dashboard metrics are made from final columns, three numbers traced step by step,
+  and a glossary with a colour and arrow key. Tables are draw.io containers with one row per column (friendly name,
+  technical name, type), colour-coded by kind (identifier, text, number, date, true/false flag, ready-to-show text,
+  sort helper); arrows attach to the rows and follow when boxes move; each row carries searchable properties (rule,
+  description, owner, last checked). PNG previews of every page are in `docs/lineage/preview/`.
+  - `docs/lineage/lineage_model.py` is the one hand-editable file holding "which column feeds which" and the rule text;
+    `docs/lineage/build_drawio.py` builds the diagram and fails if the model and the code disagree;
+    `docs/lineage/export_model.js` exports the real column lists to `code_columns.json`.
+  - `npm run lineage` (`tests/lineage_check.js`) lists columns that are in the scripts but missing from the diagram and
+    the reverse (verified to catch a renamed column). Not part of `npm test`, so a diagram being edited by hand never
+    blocks a code change.
+- **Files:** `docs/lineage/*`, `docs/DATA_LINEAGE.md`, `tests/lineage_check.js`, `package.json`, `.gitignore`.
+- **Why:** The one-page lineage was clear to the team but too technical for clients. The new diagram starts with the big
+  picture in plain words and drills down to every column. It is maintained by hand in draw.io; the check keeps it honest.
+
 ## [0.1.15] — 2026-10-14
 
 ### Added — data lineage diagram (docs only)
