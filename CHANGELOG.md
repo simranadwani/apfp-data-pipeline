@@ -3,6 +3,19 @@
 All notable changes to the APFP data pipeline. Newest first.
 Each entry lists what changed, which files, and why.
 
+## [0.1.15] — 2026-10-14
+
+### Added — data lineage diagram (docs only)
+- **What:** `docs/DATA_LINEAGE.md` with a diagram (`docs/lineage/data_lineage.png` and `.svg`, plus the script that
+  draws it) showing the 8 source tabs of the Central Administration workbook, the 8 staging tables, the 6 final
+  tables, the Looker Studio data sources and charts they feed, the control tabs and the run order. It also records
+  why there is no intermediate (`int_`) layer, and that `fct6` is the only final table that reads another final table.
+  A text (Mermaid) version is included.
+- **Files:** `docs/DATA_LINEAGE.md`, `docs/lineage/data_lineage.png`, `docs/lineage/data_lineage.svg`,
+  `docs/lineage/make_svg.py`.
+- **Why:** Product owner needs a lineage diagram for documentation. The edges were taken from the code
+  (`Index.js` and the `readSheet` calls in `Final.js`). No script change.
+
 ## [0.1.14] — 2026-10-06
 
 ### Changed — five derived Looker fields now come from the pipeline (`fct1_grant_portfolio`)
