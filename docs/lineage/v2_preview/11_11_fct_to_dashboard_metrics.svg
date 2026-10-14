@@ -1,0 +1,193 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1900 1380" width="1900" height="1380" font-family="Helvetica, Arial, sans-serif">
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#5F6C77"/></marker></defs>
+<rect width="1900" height="1380" fill="#FFFFFF"/>
+<rect x="40" y="20" width="150" height="40" rx="8" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="115.0" y="45.0" font-size="15" font-weight="700" text-anchor="middle" fill="#1E2838">src</text>
+<text x="196" y="46" font-size="22" fill="#5F6C77" font-weight="700">›</text>
+<rect x="230" y="20" width="150" height="40" rx="8" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="305.0" y="45.0" font-size="15" font-weight="700" text-anchor="middle" fill="#1E2838">stg</text>
+<text x="386" y="46" font-size="22" fill="#5F6C77" font-weight="700">›</text>
+<rect x="420" y="20" width="150" height="40" rx="8" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="495.0" y="45.0" font-size="15" font-weight="700" text-anchor="middle" fill="#1E2838">fct</text>
+<text x="576" y="46" font-size="22" fill="#5F6C77" font-weight="700">›</text>
+<rect x="610" y="20" width="150" height="40" rx="8" fill="#3B6BA5" stroke="#3B6BA5"/>
+<text x="685.0" y="45.0" font-size="15" font-weight="700" text-anchor="middle" fill="#FFFFFF">dashboard</text>
+<text x="40" y="104" font-size="24" fill="#0E4A5C" font-weight="700">fct columns → dashboard fields → charts</text>
+<text x="40" y="133" font-size="13" fill="#5F6C77">Each dashboard number is one Looker Studio field, reused by every chart that needs it; the chart adds its own filter. Fields are named by type: distinct_, sum_, pct_, inr_, txt_.</text>
+<rect x="40" y="170" width="20" height="20" fill="#E1D5E7" stroke="#B9C5CB"/>
+<text x="68" y="182" font-size="12" fill="#1E2838">Key column (checked by the cardinality tests)</text>
+<rect x="415" y="170" width="20" height="20" fill="#FFF2CC" stroke="#B9C5CB"/>
+<text x="443" y="182" font-size="12" fill="#1E2838">Number</text>
+<rect x="517" y="170" width="20" height="20" fill="#D5E8D4" stroke="#B9C5CB"/>
+<text x="545" y="182" font-size="12" fill="#1E2838">True / false</text>
+<rect x="661" y="170" width="20" height="20" fill="#DAE8FC" stroke="#B9C5CB"/>
+<text x="689" y="182" font-size="12" fill="#1E2838">Dashboard metric</text>
+<rect x="40" y="230" width="460" height="50" fill="#0E4A5C"/>
+<text x="50" y="252" font-size="14" font-weight="700" fill="#FFFFFF">fct columns it reads</text>
+<text x="50" y="270" font-size="10" fill="#E2F2F4">fct</text>
+<rect x="40" y="280" width="460" height="80" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="48" y="324" font-size="11" fill="#1E2838">fct1_grant_portfolio: organization_id</text>
+<rect x="40" y="360" width="460" height="80" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="48" y="404" font-size="11" fill="#1E2838">fct1_grant_portfolio: grant_id</text>
+<rect x="40" y="440" width="460" height="80" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="48" y="484" font-size="11" fill="#1E2838">fct3_support_activity: support_id</text>
+<rect x="40" y="520" width="460" height="80" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="48" y="557" font-size="11" fill="#1E2838">fct1_grant_portfolio: is_active_grant, is_on_track_active_grant,</text>
+<text x="48" y="571" font-size="11" fill="#1E2838">grant_id</text>
+<rect x="40" y="600" width="460" height="80" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="48" y="644" font-size="11" fill="#1E2838">fct1_grant_portfolio: achieved_outcomes_count, total_outcomes_count</text>
+<rect x="40" y="680" width="460" height="80" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="48" y="724" font-size="11" fill="#1E2838">fct2_outcome_progress: status, is_latest_update, outcome_id</text>
+<rect x="40" y="760" width="460" height="80" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="48" y="804" font-size="11" fill="#1E2838">fct1_grant_portfolio: committed_amount</text>
+<rect x="40" y="840" width="460" height="80" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="48" y="884" font-size="11" fill="#1E2838">fct1_grant_portfolio: disbursed_amount</text>
+<rect x="40" y="920" width="460" height="80" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="48" y="964" font-size="11" fill="#1E2838">fct1_grant_portfolio: approved_amount</text>
+<rect x="40" y="1000" width="460" height="80" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="48" y="1037" font-size="11" fill="#1E2838">fct1_grant_portfolio: approved_amount, proposed_amount, annual_budget,</text>
+<text x="48" y="1051" font-size="11" fill="#1E2838">cost_per_beneficiary</text>
+<rect x="40" y="1080" width="460" height="80" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="48" y="1103" font-size="11" fill="#1E2838">fct4_budget_year: available_budget, dividend_income,</text>
+<text x="48" y="1117" font-size="11" fill="#1E2838">prior_year_carry_forward, annual_committed_funding,</text>
+<text x="48" y="1131" font-size="11" fill="#1E2838">next_year_q1_committed_funding, annual_disbursed_funding,</text>
+<text x="48" y="1145" font-size="11" fill="#1E2838">unallocated_balance</text>
+<rect x="40" y="1160" width="460" height="80" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="48" y="1204" font-size="11" fill="#1E2838">fct2_outcome_progress: quarter, status</text>
+<rect x="40" y="1240" width="460" height="80" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="48" y="1277" font-size="11" fill="#1E2838">fct1_grant_portfolio: decision_due_date, annual_report_link,</text>
+<text x="48" y="1291" font-size="11" fill="#1E2838">organisation</text>
+<rect x="620" y="230" width="600" height="50" fill="#3B6BA5"/>
+<text x="630" y="252" font-size="14" font-weight="700" fill="#FFFFFF">dashboard field (metric)</text>
+<text x="630" y="270" font-size="10" fill="#E2F2F4">dashboard</text>
+<rect x="620" y="280" width="260" height="80" fill="#DAE8FC" stroke="#B9C5CB"/>
+<text x="628" y="324" font-size="12" fill="#1E2838" font-weight="700">distinct_grantees</text>
+<rect x="880" y="280" width="340" height="80" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="888" y="317" font-size="11" fill="#5F6C77">Number of different organisations</text>
+<text x="888" y="331" font-size="11" fill="#5F6C77">Chart filter: e.g. active grants only</text>
+<rect x="620" y="360" width="260" height="80" fill="#DAE8FC" stroke="#B9C5CB"/>
+<text x="628" y="404" font-size="12" fill="#1E2838" font-weight="700">distinct_grants</text>
+<rect x="880" y="360" width="340" height="80" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="888" y="397" font-size="11" fill="#5F6C77">Number of different grants</text>
+<text x="888" y="411" font-size="11" fill="#5F6C77">Chart filter: e.g. pending decisions only</text>
+<rect x="620" y="440" width="260" height="80" fill="#DAE8FC" stroke="#B9C5CB"/>
+<text x="628" y="484" font-size="12" fill="#1E2838" font-weight="700">distinct_needs</text>
+<rect x="880" y="440" width="340" height="80" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="888" y="477" font-size="11" fill="#5F6C77">Number of different support requests</text>
+<text x="888" y="491" font-size="11" fill="#5F6C77">Chart filter: e.g. open requests only</text>
+<rect x="620" y="520" width="260" height="80" fill="#DAE8FC" stroke="#B9C5CB"/>
+<text x="628" y="564" font-size="12" fill="#1E2838" font-weight="700">pct_active_grants_on_track</text>
+<rect x="880" y="520" width="340" height="80" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="888" y="564" font-size="11" fill="#5F6C77">On-track active grants divided by active grants</text>
+<rect x="620" y="600" width="260" height="80" fill="#DAE8FC" stroke="#B9C5CB"/>
+<text x="628" y="644" font-size="12" fill="#1E2838" font-weight="700">pct_outcomes_achieved</text>
+<rect x="880" y="600" width="340" height="80" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="888" y="644" font-size="11" fill="#5F6C77">Achieved outcomes divided by all outcomes</text>
+<rect x="620" y="680" width="260" height="80" fill="#DAE8FC" stroke="#B9C5CB"/>
+<text x="628" y="724" font-size="12" fill="#1E2838" font-weight="700">pct_outcomes_on_track</text>
+<rect x="880" y="680" width="340" height="80" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="888" y="710" font-size="11" fill="#5F6C77">On-track outcomes (latest update) divided by all</text>
+<text x="888" y="724" font-size="11" fill="#5F6C77">outcomes</text>
+<text x="888" y="738" font-size="11" fill="#5F6C77">Chart filter: latest update only</text>
+<rect x="620" y="760" width="260" height="80" fill="#DAE8FC" stroke="#B9C5CB"/>
+<text x="628" y="804" font-size="12" fill="#1E2838" font-weight="700">sum_committed_lakh</text>
+<rect x="880" y="760" width="340" height="80" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="888" y="804" font-size="11" fill="#5F6C77">Committed amount divided by 100,000</text>
+<rect x="620" y="840" width="260" height="80" fill="#DAE8FC" stroke="#B9C5CB"/>
+<text x="628" y="884" font-size="12" fill="#1E2838" font-weight="700">sum_disbursed_lakh</text>
+<rect x="880" y="840" width="340" height="80" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="888" y="884" font-size="11" fill="#5F6C77">Disbursed amount divided by 100,000</text>
+<rect x="620" y="920" width="260" height="80" fill="#DAE8FC" stroke="#B9C5CB"/>
+<text x="628" y="964" font-size="12" fill="#1E2838" font-weight="700">sum_approved_lakh</text>
+<rect x="880" y="920" width="340" height="80" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="888" y="964" font-size="11" fill="#5F6C77">Approved amount divided by 100,000</text>
+<rect x="620" y="1000" width="260" height="80" fill="#DAE8FC" stroke="#B9C5CB"/>
+<text x="628" y="1030" font-size="12" fill="#1E2838" font-weight="700">inr_approved / inr_proposed /</text>
+<text x="628" y="1044" font-size="12" fill="#1E2838" font-weight="700">inr_annual_budget /</text>
+<text x="628" y="1060" font-size="12" fill="#1E2838" font-weight="700">inr_cost_per_beneficiary</text>
+<rect x="880" y="1000" width="340" height="80" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="888" y="1044" font-size="11" fill="#5F6C77">Amount shown as text, for example ₹7,50,000</text>
+<rect x="620" y="1080" width="260" height="80" fill="#DAE8FC" stroke="#B9C5CB"/>
+<text x="628" y="1117" font-size="12" fill="#1E2838" font-weight="700">inr_available ... inr_unallocated (8</text>
+<text x="628" y="1132" font-size="12" fill="#1E2838" font-weight="700">fields)</text>
+<rect x="880" y="1080" width="340" height="80" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="888" y="1124" font-size="11" fill="#5F6C77">Budget tiles shown as text</text>
+<rect x="620" y="1160" width="260" height="80" fill="#DAE8FC" stroke="#B9C5CB"/>
+<text x="628" y="1204" font-size="12" fill="#1E2838" font-weight="700">txt_status_q1 ... txt_status_q4</text>
+<rect x="880" y="1160" width="340" height="80" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="888" y="1204" font-size="11" fill="#5F6C77">On Track or Off Track for each quarter</text>
+<rect x="620" y="1240" width="260" height="80" fill="#DAE8FC" stroke="#B9C5CB"/>
+<text x="628" y="1284" font-size="12" fill="#1E2838" font-weight="700">txt_due_date / link fields</text>
+<rect x="880" y="1240" width="340" height="80" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="888" y="1277" font-size="11" fill="#5F6C77">Date as 31 Mar 2027; link to the report and to</text>
+<text x="888" y="1291" font-size="11" fill="#5F6C77">Grantee 360</text>
+<rect x="1340" y="230" width="520" height="50" fill="#3B6BA5"/>
+<text x="1350" y="252" font-size="14" font-weight="700" fill="#FFFFFF">charts that show it</text>
+<text x="1350" y="270" font-size="10" fill="#E2F2F4">dashboard</text>
+<rect x="1340" y="280" width="520" height="80" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="1348" y="303" font-size="11" fill="#1E2838">1.01 Grantees, 1.07 Grantees by thematic area</text>
+<text x="1348" y="317" font-size="11" fill="#1E2838">1.08 Education sub-categories, 1.10 Beneficiary type</text>
+<text x="1348" y="331" font-size="11" fill="#1E2838">1.16 Year on year, 2.07 Funding range</text>
+<text x="1348" y="345" font-size="11" fill="#1E2838">1.13 Maturity level</text>
+<rect x="1340" y="360" width="520" height="80" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="1348" y="383" font-size="11" fill="#1E2838">1.03 Off-track active grants, 1.05 Grants by duration of support</text>
+<text x="1348" y="397" font-size="11" fill="#1E2838">1.06 Grants by grant type, 3.01 Pending decisions</text>
+<text x="1348" y="411" font-size="11" fill="#1E2838">3.02 Overdue, 3.03 Due in 30 days</text>
+<text x="1348" y="425" font-size="11" fill="#1E2838">3.05 Due window, 3.06 Recommendations</text>
+<rect x="1340" y="440" width="520" height="80" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="1348" y="477" font-size="11" fill="#1E2838">1.04 Open support needs, 1.14 Support needs raised</text>
+<text x="1348" y="491" font-size="11" fill="#1E2838">1.15 Support provided</text>
+<rect x="1340" y="520" width="520" height="80" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="1348" y="564" font-size="11" fill="#1E2838">1.02 Active grantees on track</text>
+<rect x="1340" y="600" width="520" height="80" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="1348" y="644" font-size="11" fill="#1E2838">3.07 Decision list</text>
+<rect x="1340" y="680" width="520" height="80" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="1348" y="724" font-size="11" fill="#1E2838">1.12 Quarterly outcome status</text>
+<rect x="1340" y="760" width="520" height="80" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="1348" y="797" font-size="11" fill="#1E2838">2.05 Funding by thematic area, 2.06 Funding by grant type</text>
+<text x="1348" y="811" font-size="11" fill="#1E2838">2.08 Funding year on year</text>
+<rect x="1340" y="840" width="520" height="80" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="1348" y="877" font-size="11" fill="#1E2838">2.05 Funding by thematic area, 2.06 Funding by grant type</text>
+<text x="1348" y="891" font-size="11" fill="#1E2838">2.08 Funding year on year, 4.03 Funding history</text>
+<rect x="1340" y="920" width="520" height="80" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="1348" y="964" font-size="11" fill="#1E2838">4.03 Funding history</text>
+<rect x="1340" y="1000" width="520" height="80" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="1348" y="1030" font-size="11" fill="#1E2838">1.11 Comparative metrics, 3.04 Proposed renewals</text>
+<text x="1348" y="1044" font-size="11" fill="#1E2838">3.07 Decision list, 4.01 Profile</text>
+<text x="1348" y="1058" font-size="11" fill="#1E2838">4.05 Beneficiaries, 4.08 Latest decision</text>
+<rect x="1340" y="1080" width="520" height="80" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="1348" y="1103" font-size="11" fill="#1E2838">2.01 Available budget, 2.02 Committed funding</text>
+<text x="1348" y="1117" font-size="11" fill="#1E2838">2.03 Disbursed funding, 2.04 Unallocated balance</text>
+<text x="1348" y="1131" font-size="11" fill="#1E2838">2.09 Dividends, 2.10 Carry forward</text>
+<text x="1348" y="1145" font-size="11" fill="#1E2838">2.11 Current year, 2.12 Next year Q1</text>
+<rect x="1340" y="1160" width="520" height="80" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="1348" y="1204" font-size="11" fill="#1E2838">4.06 Outcome status</text>
+<rect x="1340" y="1240" width="520" height="80" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="1348" y="1284" font-size="11" fill="#1E2838">3.07 Decision list, 4.08 Latest decision</text>
+<path d="M500,320.0 L620,320.0" fill="none" stroke="#5F6C77" stroke-width="1.5" marker-end="url(#a)"/>
+<path d="M1220,320.0 L1340,320.0" fill="none" stroke="#5F6C77" stroke-width="1.5" marker-end="url(#a)"/>
+<path d="M500,400.0 L620,400.0" fill="none" stroke="#5F6C77" stroke-width="1.5" marker-end="url(#a)"/>
+<path d="M1220,400.0 L1340,400.0" fill="none" stroke="#5F6C77" stroke-width="1.5" marker-end="url(#a)"/>
+<path d="M500,480.0 L620,480.0" fill="none" stroke="#5F6C77" stroke-width="1.5" marker-end="url(#a)"/>
+<path d="M1220,480.0 L1340,480.0" fill="none" stroke="#5F6C77" stroke-width="1.5" marker-end="url(#a)"/>
+<path d="M500,560.0 L620,560.0" fill="none" stroke="#5F6C77" stroke-width="1.5" marker-end="url(#a)"/>
+<path d="M1220,560.0 L1340,560.0" fill="none" stroke="#5F6C77" stroke-width="1.5" marker-end="url(#a)"/>
+<path d="M500,640.0 L620,640.0" fill="none" stroke="#5F6C77" stroke-width="1.5" marker-end="url(#a)"/>
+<path d="M1220,640.0 L1340,640.0" fill="none" stroke="#5F6C77" stroke-width="1.5" marker-end="url(#a)"/>
+<path d="M500,720.0 L620,720.0" fill="none" stroke="#5F6C77" stroke-width="1.5" marker-end="url(#a)"/>
+<path d="M1220,720.0 L1340,720.0" fill="none" stroke="#5F6C77" stroke-width="1.5" marker-end="url(#a)"/>
+<path d="M500,800.0 L620,800.0" fill="none" stroke="#5F6C77" stroke-width="1.5" marker-end="url(#a)"/>
+<path d="M1220,800.0 L1340,800.0" fill="none" stroke="#5F6C77" stroke-width="1.5" marker-end="url(#a)"/>
+<path d="M500,880.0 L620,880.0" fill="none" stroke="#5F6C77" stroke-width="1.5" marker-end="url(#a)"/>
+<path d="M1220,880.0 L1340,880.0" fill="none" stroke="#5F6C77" stroke-width="1.5" marker-end="url(#a)"/>
+<path d="M500,960.0 L620,960.0" fill="none" stroke="#5F6C77" stroke-width="1.5" marker-end="url(#a)"/>
+<path d="M1220,960.0 L1340,960.0" fill="none" stroke="#5F6C77" stroke-width="1.5" marker-end="url(#a)"/>
+<path d="M500,1040.0 L620,1040.0" fill="none" stroke="#5F6C77" stroke-width="1.5" marker-end="url(#a)"/>
+<path d="M1220,1040.0 L1340,1040.0" fill="none" stroke="#5F6C77" stroke-width="1.5" marker-end="url(#a)"/>
+<path d="M500,1120.0 L620,1120.0" fill="none" stroke="#5F6C77" stroke-width="1.5" marker-end="url(#a)"/>
+<path d="M1220,1120.0 L1340,1120.0" fill="none" stroke="#5F6C77" stroke-width="1.5" marker-end="url(#a)"/>
+<path d="M500,1200.0 L620,1200.0" fill="none" stroke="#5F6C77" stroke-width="1.5" marker-end="url(#a)"/>
+<path d="M1220,1200.0 L1340,1200.0" fill="none" stroke="#5F6C77" stroke-width="1.5" marker-end="url(#a)"/>
+<path d="M500,1280.0 L620,1280.0" fill="none" stroke="#5F6C77" stroke-width="1.5" marker-end="url(#a)"/>
+<path d="M1220,1280.0 L1340,1280.0" fill="none" stroke="#5F6C77" stroke-width="1.5" marker-end="url(#a)"/>
+</svg>

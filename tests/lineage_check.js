@@ -45,4 +45,26 @@ Object.keys(expected).forEach((t) => {
   if (stale.length) { console.log(t + ': in the diagram, no longer in the code -> ' + stale.join(', ')); problems += stale.length; }
 });
 console.log(problems ? '\n' + problems + ' difference(s). Update docs/lineage/lineage_model.py and rebuild, or edit the diagram by hand.' : 'Lineage diagram matches the code (' + Object.keys(expected).length + ' tables checked).');
+
+// Second diagram: docs/lineage/APFP_Data_Lineage_v2.drawio (native tables; every row object carries layer, table, column).
+const V2 = path.join(ROOT, 'docs', 'lineage', 'APFP_Data_Lineage_v2.drawio');
+if (fs.existsSync(V2)) {
+  const xml2 = fs.readFileSync(V2, 'utf8');
+  const seen2 = {};
+  const re2 = /<object [^>]*?layer="([^"]*)" table="([^"]*)" column="([^"]*)"/g;
+  let m2;
+  while ((m2 = re2.exec(xml2))) {
+    if (m2[1] === 'stg' || m2[1] === 'fct') (seen2[m2[2]] = seen2[m2[2]] || new Set()).add(m2[3]);
+  }
+  let p2 = 0;
+  Object.keys(expected).forEach((t) => {
+    const have = seen2[t] || new Set();
+    const missing = [...expected[t]].filter((c) => !have.has(c));
+    const stale = [...have].filter((c) => !expected[t].has(c));
+    if (missing.length) { console.log('v2 ' + t + ': in the code, not in the diagram -> ' + missing.join(', ')); p2 += missing.length; }
+    if (stale.length) { console.log('v2 ' + t + ': in the diagram, no longer in the code -> ' + stale.join(', ')); p2 += stale.length; }
+  });
+  console.log(p2 ? p2 + ' difference(s) in APFP_Data_Lineage_v2.drawio. Run python3 docs/lineage/lineage_pages.py' : 'APFP_Data_Lineage_v2.drawio matches the code (' + Object.keys(expected).length + ' tables checked).');
+  problems += p2;
+}
 process.exit(problems ? 1 : 0);

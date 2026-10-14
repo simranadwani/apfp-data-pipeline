@@ -3,6 +3,27 @@
 All notable changes to the APFP data pipeline. Newest first.
 Each entry lists what changed, which files, and why.
 
+## [0.1.18] — 2026-10-14
+
+### Added — lineage v2: native draw.io tables on one grid, and an Excel spec to build it elsewhere (docs and tooling only)
+- **What:**
+  - `docs/lineage/APFP_Data_Lineage_v2.drawio` (12 pages): Map; src to stg (3 pages, rows aligned, straight arrows); one
+    page per fct table (stg tables on the left, one fct table on the right arranged by source, copied columns with an arrow,
+    calculated columns marked with the f sign and their inputs written under "built from"); fct to dashboard metrics;
+    glossary and key. Every src / stg / fct table is ONE native draw.io table (rows are columns), exact names only.
+  - Fixed colours: lilac = key column (cardinality tests and every `*_id`), yellow = number, green = true / false,
+    blue = dashboard metric; header colour = layer (src grey, stg teal, fct dark teal, dashboard blue); one arrow colour.
+  - `docs/lineage/APFP_Lineage_Spec.xlsx`: the whole diagram as data for another tool (for example ChatGPT): README and prompt,
+    Style_Guide, Grid, Row_Styles (exact draw.io style strings), Pages, Tables, Columns, Edges_Column, Edges_Table, Metrics,
+    Charts, Shapes (every table, row, cell, shape with coordinates), Shape_Edges (every arrow), Checks, Reference_Script,
+    Reference_Images. `rebuild_from_xlsx.py` rebuilds the .drawio from the workbook alone; verified identical to the generator's file (2,342 objects and cells).
+  - `npm run lineage` now also checks the v2 diagram against the code; `export_model.js` exports the cardinality key columns.
+- **Files:** `docs/lineage/lineage_pages.py`, `export_spec_xlsx.py`, `rebuild_from_xlsx.py`, `build_v2.py` (palette, classify),
+  `lineage_model.py` (blocks), `APFP_Data_Lineage_v2.drawio`, `APFP_Lineage_Spec.xlsx`, `v2_preview/`, `pilot/`, `tests/lineage_check.js`.
+- **Why:** the first diagrams were too dense and inconsistent. v2 uses real tables, one layout template and one colour rule, and the
+  workbook lets the diagram be recreated or restyled in any tool.
+- **Regenerate:** `python3 docs/lineage/lineage_pages.py && python3 docs/lineage/export_spec_xlsx.py`.
+
 ## [0.1.17] — 2026-10-14
 
 ### Added — plain-language lineage for clients: one-page picture plus two lookup tabs

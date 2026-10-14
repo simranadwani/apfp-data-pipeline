@@ -1,0 +1,538 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1180 2340" width="1180" height="2340" font-family="Helvetica, Arial, sans-serif">
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#5F6C77"/></marker></defs>
+<rect width="1180" height="2340" fill="#FFFFFF"/>
+<rect x="40" y="20" width="150" height="40" rx="8" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="115.0" y="45.0" font-size="15" font-weight="700" text-anchor="middle" fill="#1E2838">src</text>
+<text x="196" y="46" font-size="22" fill="#5F6C77" font-weight="700">›</text>
+<rect x="230" y="20" width="150" height="40" rx="8" fill="#167C88" stroke="#167C88"/>
+<text x="305.0" y="45.0" font-size="15" font-weight="700" text-anchor="middle" fill="#FFFFFF">stg</text>
+<text x="386" y="46" font-size="22" fill="#5F6C77" font-weight="700">›</text>
+<rect x="420" y="20" width="150" height="40" rx="8" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="495.0" y="45.0" font-size="15" font-weight="700" text-anchor="middle" fill="#1E2838">fct</text>
+<text x="576" y="46" font-size="22" fill="#5F6C77" font-weight="700">›</text>
+<rect x="610" y="20" width="150" height="40" rx="8" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="685.0" y="45.0" font-size="15" font-weight="700" text-anchor="middle" fill="#1E2838">dashboard</text>
+<text x="40" y="104" font-size="24" fill="#0E4A5C" font-weight="700">src to stg: 2 of 3</text>
+<text x="40" y="133" font-size="13" fill="#5F6C77">Each src column is kept under a clean name in stg. Same row, same order, so every arrow is a straight line.</text>
+<rect x="40" y="160" width="20" height="20" fill="#E1D5E7" stroke="#B9C5CB"/>
+<text x="68" y="172" font-size="12" fill="#1E2838">Key column (checked by the cardinality tests)</text>
+<rect x="415" y="160" width="20" height="20" fill="#FFF2CC" stroke="#B9C5CB"/>
+<text x="443" y="172" font-size="12" fill="#1E2838">Number</text>
+<rect x="517" y="160" width="20" height="20" fill="#D5E8D4" stroke="#B9C5CB"/>
+<text x="545" y="172" font-size="12" fill="#1E2838">True / false</text>
+<rect x="661" y="160" width="20" height="20" fill="#DAE8FC" stroke="#B9C5CB"/>
+<text x="689" y="172" font-size="12" fill="#1E2838">Dashboard metric</text>
+<rect x="40" y="210" width="360" height="50" fill="#6B7B86"/>
+<text x="50" y="232" font-size="14" font-weight="700" fill="#FFFFFF">2. Outcome Progress</text>
+<text x="50" y="250" font-size="10" fill="#E2F2F4">src · 23 columns read</text>
+<rect x="40" y="260" width="260" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="48" y="284" font-size="12" fill="#1E2838">Financial Year</text>
+<rect x="300" y="260" width="100" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="308" y="284" font-size="12" fill="#5F6C77">text</text>
+<rect x="40" y="300" width="260" height="40" fill="#E1D5E7" stroke="#B9C5CB"/>
+<text x="48" y="324" font-size="12" fill="#1E2838">Grant ID</text>
+<rect x="300" y="300" width="100" height="40" fill="#E1D5E7" stroke="#B9C5CB"/>
+<text x="308" y="324" font-size="12" fill="#5F6C77">text</text>
+<rect x="40" y="340" width="260" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="48" y="364" font-size="12" fill="#1E2838">Organisation Name</text>
+<rect x="300" y="340" width="100" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="308" y="364" font-size="12" fill="#5F6C77">text</text>
+<rect x="40" y="380" width="260" height="40" fill="#E1D5E7" stroke="#B9C5CB"/>
+<text x="48" y="404" font-size="12" fill="#1E2838">Outcome ID</text>
+<rect x="300" y="380" width="100" height="40" fill="#E1D5E7" stroke="#B9C5CB"/>
+<text x="308" y="404" font-size="12" fill="#5F6C77">text</text>
+<rect x="40" y="420" width="260" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="48" y="444" font-size="12" fill="#1E2838">Outcome / Indicator</text>
+<rect x="300" y="420" width="100" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="308" y="444" font-size="12" fill="#5F6C77">text</text>
+<rect x="40" y="460" width="260" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="48" y="484" font-size="12" fill="#1E2838">End-of-Program Cycle Target</text>
+<rect x="300" y="460" width="100" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="308" y="484" font-size="12" fill="#5F6C77">text</text>
+<rect x="40" y="500" width="260" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="48" y="524" font-size="12" fill="#1E2838">Q1 Progress</text>
+<rect x="300" y="500" width="100" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="308" y="524" font-size="12" fill="#5F6C77">text</text>
+<rect x="40" y="540" width="260" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="48" y="564" font-size="12" fill="#1E2838">Q1 Evidence Link</text>
+<rect x="300" y="540" width="100" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="308" y="564" font-size="12" fill="#5F6C77">text</text>
+<rect x="40" y="580" width="260" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="48" y="604" font-size="12" fill="#1E2838">Q1 Status</text>
+<rect x="300" y="580" width="100" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="308" y="604" font-size="12" fill="#5F6C77">text</text>
+<rect x="40" y="620" width="260" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="48" y="644" font-size="12" fill="#1E2838">Q1 Anagha Notes</text>
+<rect x="300" y="620" width="100" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="308" y="644" font-size="12" fill="#5F6C77">text</text>
+<rect x="40" y="660" width="260" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="48" y="684" font-size="12" fill="#1E2838">Q2 Progress</text>
+<rect x="300" y="660" width="100" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="308" y="684" font-size="12" fill="#5F6C77">text</text>
+<rect x="40" y="700" width="260" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="48" y="724" font-size="12" fill="#1E2838">Q2 Evidence Link</text>
+<rect x="300" y="700" width="100" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="308" y="724" font-size="12" fill="#5F6C77">text</text>
+<rect x="40" y="740" width="260" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="48" y="764" font-size="12" fill="#1E2838">Q2 Status</text>
+<rect x="300" y="740" width="100" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="308" y="764" font-size="12" fill="#5F6C77">text</text>
+<rect x="40" y="780" width="260" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="48" y="804" font-size="12" fill="#1E2838">Q2 Anagha Notes</text>
+<rect x="300" y="780" width="100" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="308" y="804" font-size="12" fill="#5F6C77">text</text>
+<rect x="40" y="820" width="260" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="48" y="844" font-size="12" fill="#1E2838">Q3 Progress</text>
+<rect x="300" y="820" width="100" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="308" y="844" font-size="12" fill="#5F6C77">text</text>
+<rect x="40" y="860" width="260" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="48" y="884" font-size="12" fill="#1E2838">Q3 Evidence Link</text>
+<rect x="300" y="860" width="100" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="308" y="884" font-size="12" fill="#5F6C77">text</text>
+<rect x="40" y="900" width="260" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="48" y="924" font-size="12" fill="#1E2838">Q3 Status</text>
+<rect x="300" y="900" width="100" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="308" y="924" font-size="12" fill="#5F6C77">text</text>
+<rect x="40" y="940" width="260" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="48" y="964" font-size="12" fill="#1E2838">Q3 Anagha Notes</text>
+<rect x="300" y="940" width="100" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="308" y="964" font-size="12" fill="#5F6C77">text</text>
+<rect x="40" y="980" width="260" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="48" y="1004" font-size="12" fill="#1E2838">Q4 Progress</text>
+<rect x="300" y="980" width="100" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="308" y="1004" font-size="12" fill="#5F6C77">text</text>
+<rect x="40" y="1020" width="260" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="48" y="1044" font-size="12" fill="#1E2838">Q4 Evidence Link</text>
+<rect x="300" y="1020" width="100" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="308" y="1044" font-size="12" fill="#5F6C77">text</text>
+<rect x="40" y="1060" width="260" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="48" y="1084" font-size="12" fill="#1E2838">Q4 Status</text>
+<rect x="300" y="1060" width="100" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="308" y="1084" font-size="12" fill="#5F6C77">text</text>
+<rect x="40" y="1100" width="260" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="48" y="1124" font-size="12" fill="#1E2838">Q4 Anagha Notes</text>
+<rect x="300" y="1100" width="100" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="308" y="1124" font-size="12" fill="#5F6C77">text</text>
+<rect x="40" y="1140" width="260" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="48" y="1164" font-size="12" fill="#1E2838">Final Actual</text>
+<rect x="300" y="1140" width="100" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="308" y="1164" font-size="12" fill="#5F6C77">text</text>
+<rect x="520" y="210" width="620" height="50" fill="#167C88"/>
+<text x="530" y="232" font-size="14" font-weight="700" fill="#FFFFFF">stg_outcome_progress</text>
+<text x="530" y="250" font-size="10" fill="#E2F2F4">stg · 23 columns</text>
+<rect x="520" y="260" width="260" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="528" y="284" font-size="12" fill="#1E2838">financial_year</text>
+<rect x="780" y="260" width="100" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="788" y="284" font-size="12" fill="#5F6C77">text</text>
+<rect x="880" y="260" width="260" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="888" y="284" font-size="11" fill="#5F6C77">written as FY 26-27</text>
+<rect x="520" y="300" width="260" height="40" fill="#E1D5E7" stroke="#B9C5CB"/>
+<text x="528" y="324" font-size="12" fill="#1E2838">grant_id</text>
+<rect x="780" y="300" width="100" height="40" fill="#E1D5E7" stroke="#B9C5CB"/>
+<text x="788" y="324" font-size="12" fill="#5F6C77">text</text>
+<rect x="880" y="300" width="260" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="888" y="324" font-size="11" fill="#5F6C77">kept as typed</text>
+<rect x="520" y="340" width="260" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="528" y="364" font-size="12" fill="#1E2838">organisation</text>
+<rect x="780" y="340" width="100" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="788" y="364" font-size="12" fill="#5F6C77">text</text>
+<rect x="880" y="340" width="260" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="888" y="364" font-size="11" fill="#5F6C77">renamed</text>
+<rect x="520" y="380" width="260" height="40" fill="#E1D5E7" stroke="#B9C5CB"/>
+<text x="528" y="404" font-size="12" fill="#1E2838">outcome_id</text>
+<rect x="780" y="380" width="100" height="40" fill="#E1D5E7" stroke="#B9C5CB"/>
+<text x="788" y="404" font-size="12" fill="#5F6C77">text</text>
+<rect x="880" y="380" width="260" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="888" y="404" font-size="11" fill="#5F6C77">kept as typed</text>
+<rect x="520" y="420" width="260" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="528" y="444" font-size="12" fill="#1E2838">outcome_indicator</text>
+<rect x="780" y="420" width="100" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="788" y="444" font-size="12" fill="#5F6C77">text</text>
+<rect x="880" y="420" width="260" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="888" y="444" font-size="11" fill="#5F6C77">kept as typed</text>
+<rect x="520" y="460" width="260" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="528" y="484" font-size="12" fill="#1E2838">target_text</text>
+<rect x="780" y="460" width="100" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="788" y="484" font-size="12" fill="#5F6C77">text</text>
+<rect x="880" y="460" width="260" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="888" y="484" font-size="11" fill="#5F6C77">renamed</text>
+<rect x="520" y="500" width="260" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="528" y="524" font-size="12" fill="#1E2838">q1_progress</text>
+<rect x="780" y="500" width="100" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="788" y="524" font-size="12" fill="#5F6C77">text</text>
+<rect x="880" y="500" width="260" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="888" y="524" font-size="11" fill="#5F6C77">kept as typed</text>
+<rect x="520" y="540" width="260" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="528" y="564" font-size="12" fill="#1E2838">q1_evidence_link</text>
+<rect x="780" y="540" width="100" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="788" y="564" font-size="12" fill="#5F6C77">text</text>
+<rect x="880" y="540" width="260" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="888" y="564" font-size="11" fill="#5F6C77">kept as typed</text>
+<rect x="520" y="580" width="260" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="528" y="604" font-size="12" fill="#1E2838">q1_status</text>
+<rect x="780" y="580" width="100" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="788" y="604" font-size="12" fill="#5F6C77">text</text>
+<rect x="880" y="580" width="260" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="888" y="604" font-size="11" fill="#5F6C77">kept as typed</text>
+<rect x="520" y="620" width="260" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="528" y="644" font-size="12" fill="#1E2838">q1_notes</text>
+<rect x="780" y="620" width="100" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="788" y="644" font-size="12" fill="#5F6C77">text</text>
+<rect x="880" y="620" width="260" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="888" y="644" font-size="11" fill="#5F6C77">renamed</text>
+<rect x="520" y="660" width="260" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="528" y="684" font-size="12" fill="#1E2838">q2_progress</text>
+<rect x="780" y="660" width="100" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="788" y="684" font-size="12" fill="#5F6C77">text</text>
+<rect x="880" y="660" width="260" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="888" y="684" font-size="11" fill="#5F6C77">kept as typed</text>
+<rect x="520" y="700" width="260" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="528" y="724" font-size="12" fill="#1E2838">q2_evidence_link</text>
+<rect x="780" y="700" width="100" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="788" y="724" font-size="12" fill="#5F6C77">text</text>
+<rect x="880" y="700" width="260" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="888" y="724" font-size="11" fill="#5F6C77">kept as typed</text>
+<rect x="520" y="740" width="260" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="528" y="764" font-size="12" fill="#1E2838">q2_status</text>
+<rect x="780" y="740" width="100" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="788" y="764" font-size="12" fill="#5F6C77">text</text>
+<rect x="880" y="740" width="260" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="888" y="764" font-size="11" fill="#5F6C77">kept as typed</text>
+<rect x="520" y="780" width="260" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="528" y="804" font-size="12" fill="#1E2838">q2_notes</text>
+<rect x="780" y="780" width="100" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="788" y="804" font-size="12" fill="#5F6C77">text</text>
+<rect x="880" y="780" width="260" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="888" y="804" font-size="11" fill="#5F6C77">renamed</text>
+<rect x="520" y="820" width="260" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="528" y="844" font-size="12" fill="#1E2838">q3_progress</text>
+<rect x="780" y="820" width="100" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="788" y="844" font-size="12" fill="#5F6C77">text</text>
+<rect x="880" y="820" width="260" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="888" y="844" font-size="11" fill="#5F6C77">kept as typed</text>
+<rect x="520" y="860" width="260" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="528" y="884" font-size="12" fill="#1E2838">q3_evidence_link</text>
+<rect x="780" y="860" width="100" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="788" y="884" font-size="12" fill="#5F6C77">text</text>
+<rect x="880" y="860" width="260" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="888" y="884" font-size="11" fill="#5F6C77">kept as typed</text>
+<rect x="520" y="900" width="260" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="528" y="924" font-size="12" fill="#1E2838">q3_status</text>
+<rect x="780" y="900" width="100" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="788" y="924" font-size="12" fill="#5F6C77">text</text>
+<rect x="880" y="900" width="260" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="888" y="924" font-size="11" fill="#5F6C77">kept as typed</text>
+<rect x="520" y="940" width="260" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="528" y="964" font-size="12" fill="#1E2838">q3_notes</text>
+<rect x="780" y="940" width="100" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="788" y="964" font-size="12" fill="#5F6C77">text</text>
+<rect x="880" y="940" width="260" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="888" y="964" font-size="11" fill="#5F6C77">renamed</text>
+<rect x="520" y="980" width="260" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="528" y="1004" font-size="12" fill="#1E2838">q4_progress</text>
+<rect x="780" y="980" width="100" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="788" y="1004" font-size="12" fill="#5F6C77">text</text>
+<rect x="880" y="980" width="260" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="888" y="1004" font-size="11" fill="#5F6C77">kept as typed</text>
+<rect x="520" y="1020" width="260" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="528" y="1044" font-size="12" fill="#1E2838">q4_evidence_link</text>
+<rect x="780" y="1020" width="100" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="788" y="1044" font-size="12" fill="#5F6C77">text</text>
+<rect x="880" y="1020" width="260" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="888" y="1044" font-size="11" fill="#5F6C77">kept as typed</text>
+<rect x="520" y="1060" width="260" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="528" y="1084" font-size="12" fill="#1E2838">q4_status</text>
+<rect x="780" y="1060" width="100" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="788" y="1084" font-size="12" fill="#5F6C77">text</text>
+<rect x="880" y="1060" width="260" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="888" y="1084" font-size="11" fill="#5F6C77">kept as typed</text>
+<rect x="520" y="1100" width="260" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="528" y="1124" font-size="12" fill="#1E2838">q4_notes</text>
+<rect x="780" y="1100" width="100" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="788" y="1124" font-size="12" fill="#5F6C77">text</text>
+<rect x="880" y="1100" width="260" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="888" y="1124" font-size="11" fill="#5F6C77">renamed</text>
+<rect x="520" y="1140" width="260" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="528" y="1164" font-size="12" fill="#1E2838">final_actual_text</text>
+<rect x="780" y="1140" width="100" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="788" y="1164" font-size="12" fill="#5F6C77">text</text>
+<rect x="880" y="1140" width="260" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="888" y="1164" font-size="11" fill="#5F6C77">renamed</text>
+<rect x="40" y="1240" width="360" height="50" fill="#6B7B86"/>
+<text x="50" y="1262" font-size="14" font-weight="700" fill="#FFFFFF">3. Support</text>
+<text x="50" y="1280" font-size="10" fill="#E2F2F4">src · 11 columns read</text>
+<rect x="40" y="1290" width="260" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="48" y="1314" font-size="12" fill="#1E2838">Financial Year</text>
+<rect x="300" y="1290" width="100" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="308" y="1314" font-size="12" fill="#5F6C77">text</text>
+<rect x="40" y="1330" width="260" height="40" fill="#E1D5E7" stroke="#B9C5CB"/>
+<text x="48" y="1354" font-size="12" fill="#1E2838">Grant ID</text>
+<rect x="300" y="1330" width="100" height="40" fill="#E1D5E7" stroke="#B9C5CB"/>
+<text x="308" y="1354" font-size="12" fill="#5F6C77">text</text>
+<rect x="40" y="1370" width="260" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="48" y="1394" font-size="12" fill="#1E2838">Organisation Name</text>
+<rect x="300" y="1370" width="100" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="308" y="1394" font-size="12" fill="#5F6C77">text</text>
+<rect x="40" y="1410" width="260" height="40" fill="#E1D5E7" stroke="#B9C5CB"/>
+<text x="48" y="1434" font-size="12" fill="#1E2838">Outcome ID</text>
+<rect x="300" y="1410" width="100" height="40" fill="#E1D5E7" stroke="#B9C5CB"/>
+<text x="308" y="1434" font-size="12" fill="#5F6C77">text</text>
+<rect x="40" y="1450" width="260" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="48" y="1474" font-size="12" fill="#1E2838">Quarter</text>
+<rect x="300" y="1450" width="100" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="308" y="1474" font-size="12" fill="#5F6C77">text</text>
+<rect x="40" y="1490" width="260" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="48" y="1514" font-size="12" fill="#1E2838">Support Type</text>
+<rect x="300" y="1490" width="100" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="308" y="1514" font-size="12" fill="#5F6C77">text</text>
+<rect x="40" y="1530" width="260" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="48" y="1554" font-size="12" fill="#1E2838">Support Required</text>
+<rect x="300" y="1530" width="100" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="308" y="1554" font-size="12" fill="#5F6C77">text</text>
+<rect x="40" y="1570" width="260" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="48" y="1594" font-size="12" fill="#1E2838">Evidence Link</text>
+<rect x="300" y="1570" width="100" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="308" y="1594" font-size="12" fill="#5F6C77">text</text>
+<rect x="40" y="1610" width="260" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="48" y="1634" font-size="12" fill="#1E2838">Status</text>
+<rect x="300" y="1610" width="100" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="308" y="1634" font-size="12" fill="#5F6C77">text</text>
+<rect x="40" y="1650" width="260" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="48" y="1674" font-size="12" fill="#1E2838">Anagha Notes</text>
+<rect x="300" y="1650" width="100" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="308" y="1674" font-size="12" fill="#5F6C77">text</text>
+<rect x="40" y="1690" width="260" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="48" y="1714" font-size="12" fill="#1E2838">Support Provided</text>
+<rect x="300" y="1690" width="100" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="308" y="1714" font-size="12" fill="#5F6C77">text</text>
+<rect x="520" y="1240" width="620" height="50" fill="#167C88"/>
+<text x="530" y="1262" font-size="14" font-weight="700" fill="#FFFFFF">stg_support</text>
+<text x="530" y="1280" font-size="10" fill="#E2F2F4">stg · 11 columns</text>
+<rect x="520" y="1290" width="260" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="528" y="1314" font-size="12" fill="#1E2838">financial_year</text>
+<rect x="780" y="1290" width="100" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="788" y="1314" font-size="12" fill="#5F6C77">text</text>
+<rect x="880" y="1290" width="260" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="888" y="1314" font-size="11" fill="#5F6C77">written as FY 26-27</text>
+<rect x="520" y="1330" width="260" height="40" fill="#E1D5E7" stroke="#B9C5CB"/>
+<text x="528" y="1354" font-size="12" fill="#1E2838">grant_id</text>
+<rect x="780" y="1330" width="100" height="40" fill="#E1D5E7" stroke="#B9C5CB"/>
+<text x="788" y="1354" font-size="12" fill="#5F6C77">text</text>
+<rect x="880" y="1330" width="260" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="888" y="1354" font-size="11" fill="#5F6C77">kept as typed</text>
+<rect x="520" y="1370" width="260" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="528" y="1394" font-size="12" fill="#1E2838">organisation</text>
+<rect x="780" y="1370" width="100" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="788" y="1394" font-size="12" fill="#5F6C77">text</text>
+<rect x="880" y="1370" width="260" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="888" y="1394" font-size="11" fill="#5F6C77">renamed</text>
+<rect x="520" y="1410" width="260" height="40" fill="#E1D5E7" stroke="#B9C5CB"/>
+<text x="528" y="1434" font-size="12" fill="#1E2838">outcome_id</text>
+<rect x="780" y="1410" width="100" height="40" fill="#E1D5E7" stroke="#B9C5CB"/>
+<text x="788" y="1434" font-size="12" fill="#5F6C77">text</text>
+<rect x="880" y="1410" width="260" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="888" y="1434" font-size="11" fill="#5F6C77">kept as typed</text>
+<rect x="520" y="1450" width="260" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="528" y="1474" font-size="12" fill="#1E2838">quarter</text>
+<rect x="780" y="1450" width="100" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="788" y="1474" font-size="12" fill="#5F6C77">text</text>
+<rect x="880" y="1450" width="260" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="888" y="1474" font-size="11" fill="#5F6C77">kept as typed</text>
+<rect x="520" y="1490" width="260" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="528" y="1514" font-size="12" fill="#1E2838">support_type</text>
+<rect x="780" y="1490" width="100" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="788" y="1514" font-size="12" fill="#5F6C77">text</text>
+<rect x="880" y="1490" width="260" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="888" y="1514" font-size="11" fill="#5F6C77">kept as typed</text>
+<rect x="520" y="1530" width="260" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="528" y="1554" font-size="12" fill="#1E2838">support_required</text>
+<rect x="780" y="1530" width="100" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="788" y="1554" font-size="12" fill="#5F6C77">text</text>
+<rect x="880" y="1530" width="260" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="888" y="1554" font-size="11" fill="#5F6C77">kept as typed</text>
+<rect x="520" y="1570" width="260" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="528" y="1594" font-size="12" fill="#1E2838">evidence_link</text>
+<rect x="780" y="1570" width="100" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="788" y="1594" font-size="12" fill="#5F6C77">text</text>
+<rect x="880" y="1570" width="260" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="888" y="1594" font-size="11" fill="#5F6C77">kept as typed</text>
+<rect x="520" y="1610" width="260" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="528" y="1634" font-size="12" fill="#1E2838">status</text>
+<rect x="780" y="1610" width="100" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="788" y="1634" font-size="12" fill="#5F6C77">text</text>
+<rect x="880" y="1610" width="260" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="888" y="1634" font-size="11" fill="#5F6C77">kept as typed</text>
+<rect x="520" y="1650" width="260" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="528" y="1674" font-size="12" fill="#1E2838">notes</text>
+<rect x="780" y="1650" width="100" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="788" y="1674" font-size="12" fill="#5F6C77">text</text>
+<rect x="880" y="1650" width="260" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="888" y="1674" font-size="11" fill="#5F6C77">renamed</text>
+<rect x="520" y="1690" width="260" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="528" y="1714" font-size="12" fill="#1E2838">support_provided</text>
+<rect x="780" y="1690" width="100" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="788" y="1714" font-size="12" fill="#5F6C77">text</text>
+<rect x="880" y="1690" width="260" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="888" y="1714" font-size="11" fill="#5F6C77">kept as typed</text>
+<rect x="40" y="1790" width="360" height="50" fill="#6B7B86"/>
+<text x="50" y="1812" font-size="14" font-weight="700" fill="#FFFFFF">4. Decision Tracker</text>
+<text x="50" y="1830" font-size="10" fill="#E2F2F4">src · 11 columns read</text>
+<rect x="40" y="1840" width="260" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="48" y="1864" font-size="12" fill="#1E2838">Decision For FY</text>
+<rect x="300" y="1840" width="100" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="308" y="1864" font-size="12" fill="#5F6C77">text</text>
+<rect x="40" y="1880" width="260" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="48" y="1904" font-size="12" fill="#1E2838">Previous Grant FY</text>
+<rect x="300" y="1880" width="100" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="308" y="1904" font-size="12" fill="#5F6C77">text</text>
+<rect x="40" y="1920" width="260" height="40" fill="#E1D5E7" stroke="#B9C5CB"/>
+<text x="48" y="1944" font-size="12" fill="#1E2838">Grant ID</text>
+<rect x="300" y="1920" width="100" height="40" fill="#E1D5E7" stroke="#B9C5CB"/>
+<text x="308" y="1944" font-size="12" fill="#5F6C77">text</text>
+<rect x="40" y="1960" width="260" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="48" y="1984" font-size="12" fill="#1E2838">Organisation Name</text>
+<rect x="300" y="1960" width="100" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="308" y="1984" font-size="12" fill="#5F6C77">text</text>
+<rect x="40" y="2000" width="260" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="48" y="2024" font-size="12" fill="#1E2838">Grant Type</text>
+<rect x="300" y="2000" width="100" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="308" y="2024" font-size="12" fill="#5F6C77">text</text>
+<rect x="40" y="2040" width="260" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="48" y="2064" font-size="12" fill="#1E2838">Decision Type</text>
+<rect x="300" y="2040" width="100" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="308" y="2064" font-size="12" fill="#5F6C77">text</text>
+<rect x="40" y="2080" width="260" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="48" y="2104" font-size="12" fill="#1E2838">Decision Status</text>
+<rect x="300" y="2080" width="100" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="308" y="2104" font-size="12" fill="#5F6C77">text</text>
+<rect x="40" y="2120" width="260" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="48" y="2144" font-size="12" fill="#1E2838">Decision Rationale</text>
+<rect x="300" y="2120" width="100" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="308" y="2144" font-size="12" fill="#5F6C77">text</text>
+<rect x="40" y="2160" width="260" height="40" fill="#FFF2CC" stroke="#B9C5CB"/>
+<text x="48" y="2184" font-size="12" fill="#1E2838">Proposed Amount</text>
+<rect x="300" y="2160" width="100" height="40" fill="#FFF2CC" stroke="#B9C5CB"/>
+<text x="308" y="2184" font-size="12" fill="#5F6C77">number</text>
+<rect x="40" y="2200" width="260" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="48" y="2224" font-size="12" fill="#1E2838">Decision Due Date</text>
+<rect x="300" y="2200" width="100" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="308" y="2224" font-size="12" fill="#5F6C77">date</text>
+<rect x="40" y="2240" width="260" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="48" y="2264" font-size="12" fill="#1E2838">Annual Report Link</text>
+<rect x="300" y="2240" width="100" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="308" y="2264" font-size="12" fill="#5F6C77">text</text>
+<rect x="520" y="1790" width="620" height="50" fill="#167C88"/>
+<text x="530" y="1812" font-size="14" font-weight="700" fill="#FFFFFF">stg_decisions</text>
+<text x="530" y="1830" font-size="10" fill="#E2F2F4">stg · 11 columns</text>
+<rect x="520" y="1840" width="260" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="528" y="1864" font-size="12" fill="#1E2838">decision_for_fy</text>
+<rect x="780" y="1840" width="100" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="788" y="1864" font-size="12" fill="#5F6C77">text</text>
+<rect x="880" y="1840" width="260" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="888" y="1864" font-size="11" fill="#5F6C77">kept as typed</text>
+<rect x="520" y="1880" width="260" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="528" y="1904" font-size="12" fill="#1E2838">previous_grant_fy</text>
+<rect x="780" y="1880" width="100" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="788" y="1904" font-size="12" fill="#5F6C77">text</text>
+<rect x="880" y="1880" width="260" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="888" y="1904" font-size="11" fill="#5F6C77">kept as typed</text>
+<rect x="520" y="1920" width="260" height="40" fill="#E1D5E7" stroke="#B9C5CB"/>
+<text x="528" y="1944" font-size="12" fill="#1E2838">grant_id</text>
+<rect x="780" y="1920" width="100" height="40" fill="#E1D5E7" stroke="#B9C5CB"/>
+<text x="788" y="1944" font-size="12" fill="#5F6C77">text</text>
+<rect x="880" y="1920" width="260" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="888" y="1944" font-size="11" fill="#5F6C77">kept as typed</text>
+<rect x="520" y="1960" width="260" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="528" y="1984" font-size="12" fill="#1E2838">organisation</text>
+<rect x="780" y="1960" width="100" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="788" y="1984" font-size="12" fill="#5F6C77">text</text>
+<rect x="880" y="1960" width="260" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="888" y="1984" font-size="11" fill="#5F6C77">renamed</text>
+<rect x="520" y="2000" width="260" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="528" y="2024" font-size="12" fill="#1E2838">grant_type</text>
+<rect x="780" y="2000" width="100" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="788" y="2024" font-size="12" fill="#5F6C77">text</text>
+<rect x="880" y="2000" width="260" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="888" y="2024" font-size="11" fill="#5F6C77">kept as typed</text>
+<rect x="520" y="2040" width="260" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="528" y="2064" font-size="12" fill="#1E2838">decision_type</text>
+<rect x="780" y="2040" width="100" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="788" y="2064" font-size="12" fill="#5F6C77">text</text>
+<rect x="880" y="2040" width="260" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="888" y="2064" font-size="11" fill="#5F6C77">kept as typed</text>
+<rect x="520" y="2080" width="260" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="528" y="2104" font-size="12" fill="#1E2838">decision_status</text>
+<rect x="780" y="2080" width="100" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="788" y="2104" font-size="12" fill="#5F6C77">text</text>
+<rect x="880" y="2080" width="260" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="888" y="2104" font-size="11" fill="#5F6C77">kept as typed</text>
+<rect x="520" y="2120" width="260" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="528" y="2144" font-size="12" fill="#1E2838">decision_rationale</text>
+<rect x="780" y="2120" width="100" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="788" y="2144" font-size="12" fill="#5F6C77">text</text>
+<rect x="880" y="2120" width="260" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="888" y="2144" font-size="11" fill="#5F6C77">kept as typed</text>
+<rect x="520" y="2160" width="260" height="40" fill="#FFF2CC" stroke="#B9C5CB"/>
+<text x="528" y="2184" font-size="12" fill="#1E2838">proposed_amount</text>
+<rect x="780" y="2160" width="100" height="40" fill="#FFF2CC" stroke="#B9C5CB"/>
+<text x="788" y="2184" font-size="12" fill="#5F6C77">number</text>
+<rect x="880" y="2160" width="260" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="888" y="2184" font-size="11" fill="#5F6C77">converted to a number</text>
+<rect x="520" y="2200" width="260" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="528" y="2224" font-size="12" fill="#1E2838">decision_due_date</text>
+<rect x="780" y="2200" width="100" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="788" y="2224" font-size="12" fill="#5F6C77">date</text>
+<rect x="880" y="2200" width="260" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="888" y="2224" font-size="11" fill="#5F6C77">converted to a date</text>
+<rect x="520" y="2240" width="260" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="528" y="2264" font-size="12" fill="#1E2838">annual_report_link</text>
+<rect x="780" y="2240" width="100" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="788" y="2264" font-size="12" fill="#5F6C77">text</text>
+<rect x="880" y="2240" width="260" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="888" y="2264" font-size="11" fill="#5F6C77">kept as typed</text>
+<path d="M400,280.0 L520,280.0" fill="none" stroke="#5F6C77" stroke-width="1.5" marker-end="url(#a)"/>
+<path d="M400,320.0 L520,320.0" fill="none" stroke="#5F6C77" stroke-width="1.5" marker-end="url(#a)"/>
+<path d="M400,360.0 L520,360.0" fill="none" stroke="#5F6C77" stroke-width="1.5" marker-end="url(#a)"/>
+<path d="M400,400.0 L520,400.0" fill="none" stroke="#5F6C77" stroke-width="1.5" marker-end="url(#a)"/>
+<path d="M400,440.0 L520,440.0" fill="none" stroke="#5F6C77" stroke-width="1.5" marker-end="url(#a)"/>
+<path d="M400,480.0 L520,480.0" fill="none" stroke="#5F6C77" stroke-width="1.5" marker-end="url(#a)"/>
+<path d="M400,520.0 L520,520.0" fill="none" stroke="#5F6C77" stroke-width="1.5" marker-end="url(#a)"/>
+<path d="M400,560.0 L520,560.0" fill="none" stroke="#5F6C77" stroke-width="1.5" marker-end="url(#a)"/>
+<path d="M400,600.0 L520,600.0" fill="none" stroke="#5F6C77" stroke-width="1.5" marker-end="url(#a)"/>
+<path d="M400,640.0 L520,640.0" fill="none" stroke="#5F6C77" stroke-width="1.5" marker-end="url(#a)"/>
+<path d="M400,680.0 L520,680.0" fill="none" stroke="#5F6C77" stroke-width="1.5" marker-end="url(#a)"/>
+<path d="M400,720.0 L520,720.0" fill="none" stroke="#5F6C77" stroke-width="1.5" marker-end="url(#a)"/>
+<path d="M400,760.0 L520,760.0" fill="none" stroke="#5F6C77" stroke-width="1.5" marker-end="url(#a)"/>
+<path d="M400,800.0 L520,800.0" fill="none" stroke="#5F6C77" stroke-width="1.5" marker-end="url(#a)"/>
+<path d="M400,840.0 L520,840.0" fill="none" stroke="#5F6C77" stroke-width="1.5" marker-end="url(#a)"/>
+<path d="M400,880.0 L520,880.0" fill="none" stroke="#5F6C77" stroke-width="1.5" marker-end="url(#a)"/>
+<path d="M400,920.0 L520,920.0" fill="none" stroke="#5F6C77" stroke-width="1.5" marker-end="url(#a)"/>
+<path d="M400,960.0 L520,960.0" fill="none" stroke="#5F6C77" stroke-width="1.5" marker-end="url(#a)"/>
+<path d="M400,1000.0 L520,1000.0" fill="none" stroke="#5F6C77" stroke-width="1.5" marker-end="url(#a)"/>
+<path d="M400,1040.0 L520,1040.0" fill="none" stroke="#5F6C77" stroke-width="1.5" marker-end="url(#a)"/>
+<path d="M400,1080.0 L520,1080.0" fill="none" stroke="#5F6C77" stroke-width="1.5" marker-end="url(#a)"/>
+<path d="M400,1120.0 L520,1120.0" fill="none" stroke="#5F6C77" stroke-width="1.5" marker-end="url(#a)"/>
+<path d="M400,1160.0 L520,1160.0" fill="none" stroke="#5F6C77" stroke-width="1.5" marker-end="url(#a)"/>
+<path d="M400,1310.0 L520,1310.0" fill="none" stroke="#5F6C77" stroke-width="1.5" marker-end="url(#a)"/>
+<path d="M400,1350.0 L520,1350.0" fill="none" stroke="#5F6C77" stroke-width="1.5" marker-end="url(#a)"/>
+<path d="M400,1390.0 L520,1390.0" fill="none" stroke="#5F6C77" stroke-width="1.5" marker-end="url(#a)"/>
+<path d="M400,1430.0 L520,1430.0" fill="none" stroke="#5F6C77" stroke-width="1.5" marker-end="url(#a)"/>
+<path d="M400,1470.0 L520,1470.0" fill="none" stroke="#5F6C77" stroke-width="1.5" marker-end="url(#a)"/>
+<path d="M400,1510.0 L520,1510.0" fill="none" stroke="#5F6C77" stroke-width="1.5" marker-end="url(#a)"/>
+<path d="M400,1550.0 L520,1550.0" fill="none" stroke="#5F6C77" stroke-width="1.5" marker-end="url(#a)"/>
+<path d="M400,1590.0 L520,1590.0" fill="none" stroke="#5F6C77" stroke-width="1.5" marker-end="url(#a)"/>
+<path d="M400,1630.0 L520,1630.0" fill="none" stroke="#5F6C77" stroke-width="1.5" marker-end="url(#a)"/>
+<path d="M400,1670.0 L520,1670.0" fill="none" stroke="#5F6C77" stroke-width="1.5" marker-end="url(#a)"/>
+<path d="M400,1710.0 L520,1710.0" fill="none" stroke="#5F6C77" stroke-width="1.5" marker-end="url(#a)"/>
+<path d="M400,1860.0 L520,1860.0" fill="none" stroke="#5F6C77" stroke-width="1.5" marker-end="url(#a)"/>
+<path d="M400,1900.0 L520,1900.0" fill="none" stroke="#5F6C77" stroke-width="1.5" marker-end="url(#a)"/>
+<path d="M400,1940.0 L520,1940.0" fill="none" stroke="#5F6C77" stroke-width="1.5" marker-end="url(#a)"/>
+<path d="M400,1980.0 L520,1980.0" fill="none" stroke="#5F6C77" stroke-width="1.5" marker-end="url(#a)"/>
+<path d="M400,2020.0 L520,2020.0" fill="none" stroke="#5F6C77" stroke-width="1.5" marker-end="url(#a)"/>
+<path d="M400,2060.0 L520,2060.0" fill="none" stroke="#5F6C77" stroke-width="1.5" marker-end="url(#a)"/>
+<path d="M400,2100.0 L520,2100.0" fill="none" stroke="#5F6C77" stroke-width="1.5" marker-end="url(#a)"/>
+<path d="M400,2140.0 L520,2140.0" fill="none" stroke="#5F6C77" stroke-width="1.5" marker-end="url(#a)"/>
+<path d="M400,2180.0 L520,2180.0" fill="none" stroke="#5F6C77" stroke-width="1.5" marker-end="url(#a)"/>
+<path d="M400,2220.0 L520,2220.0" fill="none" stroke="#5F6C77" stroke-width="1.5" marker-end="url(#a)"/>
+<path d="M400,2260.0 L520,2260.0" fill="none" stroke="#5F6C77" stroke-width="1.5" marker-end="url(#a)"/>
+</svg>

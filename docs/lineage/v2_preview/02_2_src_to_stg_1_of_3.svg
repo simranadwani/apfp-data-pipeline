@@ -1,0 +1,413 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1180 1790" width="1180" height="1790" font-family="Helvetica, Arial, sans-serif">
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#5F6C77"/></marker></defs>
+<rect width="1180" height="1790" fill="#FFFFFF"/>
+<rect x="40" y="20" width="150" height="40" rx="8" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="115.0" y="45.0" font-size="15" font-weight="700" text-anchor="middle" fill="#1E2838">src</text>
+<text x="196" y="46" font-size="22" fill="#5F6C77" font-weight="700">›</text>
+<rect x="230" y="20" width="150" height="40" rx="8" fill="#167C88" stroke="#167C88"/>
+<text x="305.0" y="45.0" font-size="15" font-weight="700" text-anchor="middle" fill="#FFFFFF">stg</text>
+<text x="386" y="46" font-size="22" fill="#5F6C77" font-weight="700">›</text>
+<rect x="420" y="20" width="150" height="40" rx="8" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="495.0" y="45.0" font-size="15" font-weight="700" text-anchor="middle" fill="#1E2838">fct</text>
+<text x="576" y="46" font-size="22" fill="#5F6C77" font-weight="700">›</text>
+<rect x="610" y="20" width="150" height="40" rx="8" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="685.0" y="45.0" font-size="15" font-weight="700" text-anchor="middle" fill="#1E2838">dashboard</text>
+<text x="40" y="104" font-size="24" fill="#0E4A5C" font-weight="700">src to stg: 1 of 3</text>
+<text x="40" y="133" font-size="13" fill="#5F6C77">Each src column is kept under a clean name in stg. Same row, same order, so every arrow is a straight line.</text>
+<rect x="40" y="160" width="20" height="20" fill="#E1D5E7" stroke="#B9C5CB"/>
+<text x="68" y="172" font-size="12" fill="#1E2838">Key column (checked by the cardinality tests)</text>
+<rect x="415" y="160" width="20" height="20" fill="#FFF2CC" stroke="#B9C5CB"/>
+<text x="443" y="172" font-size="12" fill="#1E2838">Number</text>
+<rect x="517" y="160" width="20" height="20" fill="#D5E8D4" stroke="#B9C5CB"/>
+<text x="545" y="172" font-size="12" fill="#1E2838">True / false</text>
+<rect x="661" y="160" width="20" height="20" fill="#DAE8FC" stroke="#B9C5CB"/>
+<text x="689" y="172" font-size="12" fill="#1E2838">Dashboard metric</text>
+<rect x="40" y="210" width="360" height="50" fill="#6B7B86"/>
+<text x="50" y="232" font-size="14" font-weight="700" fill="#FFFFFF">8. Grant Registry</text>
+<text x="50" y="250" font-size="10" fill="#E2F2F4">src · 23 columns read</text>
+<rect x="40" y="260" width="260" height="40" fill="#E1D5E7" stroke="#B9C5CB"/>
+<text x="48" y="284" font-size="12" fill="#1E2838">Grant ID</text>
+<rect x="300" y="260" width="100" height="40" fill="#E1D5E7" stroke="#B9C5CB"/>
+<text x="308" y="284" font-size="12" fill="#5F6C77">text</text>
+<rect x="40" y="300" width="260" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="48" y="324" font-size="12" fill="#1E2838">Financial Year</text>
+<rect x="300" y="300" width="100" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="308" y="324" font-size="12" fill="#5F6C77">text</text>
+<rect x="40" y="340" width="260" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="48" y="364" font-size="12" fill="#1E2838">Grant Start Quarter</text>
+<rect x="300" y="340" width="100" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="308" y="364" font-size="12" fill="#5F6C77">text</text>
+<rect x="40" y="380" width="260" height="40" fill="#E1D5E7" stroke="#B9C5CB"/>
+<text x="48" y="404" font-size="12" fill="#1E2838">Organisation ID</text>
+<rect x="300" y="380" width="100" height="40" fill="#E1D5E7" stroke="#B9C5CB"/>
+<text x="308" y="404" font-size="12" fill="#5F6C77">text</text>
+<rect x="40" y="420" width="260" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="48" y="444" font-size="12" fill="#1E2838">Organisation Name</text>
+<rect x="300" y="420" width="100" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="308" y="444" font-size="12" fill="#5F6C77">text</text>
+<rect x="40" y="460" width="260" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="48" y="484" font-size="12" fill="#1E2838">Thematic Area</text>
+<rect x="300" y="460" width="100" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="308" y="484" font-size="12" fill="#5F6C77">text</text>
+<rect x="40" y="500" width="260" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="48" y="524" font-size="12" fill="#1E2838">Thematic Sub-area</text>
+<rect x="300" y="500" width="100" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="308" y="524" font-size="12" fill="#5F6C77">text</text>
+<rect x="40" y="540" width="260" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="48" y="564" font-size="12" fill="#1E2838">Proximity to Children / Beneficiary</text>
+<rect x="300" y="540" width="100" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="308" y="564" font-size="12" fill="#5F6C77">text</text>
+<rect x="40" y="580" width="260" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="48" y="604" font-size="12" fill="#1E2838">Project Title</text>
+<rect x="300" y="580" width="100" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="308" y="604" font-size="12" fill="#5F6C77">text</text>
+<rect x="40" y="620" width="260" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="48" y="644" font-size="12" fill="#1E2838">Grant Start Date</text>
+<rect x="300" y="620" width="100" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="308" y="644" font-size="12" fill="#5F6C77">date</text>
+<rect x="40" y="660" width="260" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="48" y="684" font-size="12" fill="#1E2838">Grant End Date</text>
+<rect x="300" y="660" width="100" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="308" y="684" font-size="12" fill="#5F6C77">date</text>
+<rect x="40" y="700" width="260" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="48" y="724" font-size="12" fill="#1E2838">Grant Type</text>
+<rect x="300" y="700" width="100" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="308" y="724" font-size="12" fill="#5F6C77">text</text>
+<rect x="40" y="740" width="260" height="40" fill="#FFF2CC" stroke="#B9C5CB"/>
+<text x="48" y="764" font-size="12" fill="#1E2838">Amount Approved</text>
+<rect x="300" y="740" width="100" height="40" fill="#FFF2CC" stroke="#B9C5CB"/>
+<text x="308" y="764" font-size="12" fill="#5F6C77">number</text>
+<rect x="40" y="780" width="260" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="48" y="804" font-size="12" fill="#1E2838">Grant Status</text>
+<rect x="300" y="780" width="100" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="308" y="804" font-size="12" fill="#5F6C77">text</text>
+<rect x="40" y="820" width="260" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="48" y="844" font-size="12" fill="#1E2838">Programme Status</text>
+<rect x="300" y="820" width="100" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="308" y="844" font-size="12" fill="#5F6C77">text</text>
+<rect x="40" y="860" width="260" height="40" fill="#FFF2CC" stroke="#B9C5CB"/>
+<text x="48" y="884" font-size="12" fill="#1E2838">Years Implemented</text>
+<rect x="300" y="860" width="100" height="40" fill="#FFF2CC" stroke="#B9C5CB"/>
+<text x="308" y="884" font-size="12" fill="#5F6C77">number</text>
+<rect x="40" y="900" width="260" height="40" fill="#FFF2CC" stroke="#B9C5CB"/>
+<text x="48" y="924" font-size="12" fill="#1E2838">Team Size — Current FY</text>
+<rect x="300" y="900" width="100" height="40" fill="#FFF2CC" stroke="#B9C5CB"/>
+<text x="308" y="924" font-size="12" fill="#5F6C77">number</text>
+<rect x="40" y="940" width="260" height="40" fill="#FFF2CC" stroke="#B9C5CB"/>
+<text x="48" y="957" font-size="12" fill="#1E2838">Employee Attrition — Current</text>
+<text x="48" y="972" font-size="12" fill="#1E2838">Snapshot</text>
+<rect x="300" y="940" width="100" height="40" fill="#FFF2CC" stroke="#B9C5CB"/>
+<text x="308" y="964" font-size="12" fill="#5F6C77">number</text>
+<rect x="40" y="980" width="260" height="40" fill="#FFF2CC" stroke="#B9C5CB"/>
+<text x="48" y="1004" font-size="12" fill="#1E2838">Annual Budget — Current FY</text>
+<rect x="300" y="980" width="100" height="40" fill="#FFF2CC" stroke="#B9C5CB"/>
+<text x="308" y="1004" font-size="12" fill="#5F6C77">number</text>
+<rect x="40" y="1020" width="260" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="48" y="1044" font-size="12" fill="#1E2838">Primary Beneficiary Group</text>
+<rect x="300" y="1020" width="100" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="308" y="1044" font-size="12" fill="#5F6C77">text</text>
+<rect x="40" y="1060" width="260" height="40" fill="#FFF2CC" stroke="#B9C5CB"/>
+<text x="48" y="1084" font-size="12" fill="#1E2838">Primary Beneficiary Count</text>
+<rect x="300" y="1060" width="100" height="40" fill="#FFF2CC" stroke="#B9C5CB"/>
+<text x="308" y="1084" font-size="12" fill="#5F6C77">number</text>
+<rect x="40" y="1100" width="260" height="40" fill="#FFF2CC" stroke="#B9C5CB"/>
+<text x="48" y="1117" font-size="12" fill="#1E2838">Foreign Funding — Percentage of</text>
+<text x="48" y="1132" font-size="12" fill="#1E2838">Total Annual Funding</text>
+<rect x="300" y="1100" width="100" height="40" fill="#FFF2CC" stroke="#B9C5CB"/>
+<text x="308" y="1124" font-size="12" fill="#5F6C77">number</text>
+<rect x="40" y="1140" width="260" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="48" y="1164" font-size="12" fill="#1E2838">Record Status</text>
+<rect x="300" y="1140" width="100" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="308" y="1164" font-size="12" fill="#5F6C77">text</text>
+<rect x="520" y="210" width="620" height="50" fill="#167C88"/>
+<text x="530" y="232" font-size="14" font-weight="700" fill="#FFFFFF">stg_grants</text>
+<text x="530" y="250" font-size="10" fill="#E2F2F4">stg · 23 columns</text>
+<rect x="520" y="260" width="260" height="40" fill="#E1D5E7" stroke="#B9C5CB"/>
+<text x="528" y="284" font-size="12" fill="#1E2838">grant_id</text>
+<rect x="780" y="260" width="100" height="40" fill="#E1D5E7" stroke="#B9C5CB"/>
+<text x="788" y="284" font-size="12" fill="#5F6C77">text</text>
+<rect x="880" y="260" width="260" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="888" y="284" font-size="11" fill="#5F6C77">kept as typed</text>
+<rect x="520" y="300" width="260" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="528" y="324" font-size="12" fill="#1E2838">financial_year</text>
+<rect x="780" y="300" width="100" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="788" y="324" font-size="12" fill="#5F6C77">text</text>
+<rect x="880" y="300" width="260" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="888" y="324" font-size="11" fill="#5F6C77">written as FY 26-27</text>
+<rect x="520" y="340" width="260" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="528" y="364" font-size="12" fill="#1E2838">grant_start_quarter</text>
+<rect x="780" y="340" width="100" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="788" y="364" font-size="12" fill="#5F6C77">text</text>
+<rect x="880" y="340" width="260" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="888" y="364" font-size="11" fill="#5F6C77">kept as typed</text>
+<rect x="520" y="380" width="260" height="40" fill="#E1D5E7" stroke="#B9C5CB"/>
+<text x="528" y="404" font-size="12" fill="#1E2838">organization_id</text>
+<rect x="780" y="380" width="100" height="40" fill="#E1D5E7" stroke="#B9C5CB"/>
+<text x="788" y="404" font-size="12" fill="#5F6C77">text</text>
+<rect x="880" y="380" width="260" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="888" y="404" font-size="11" fill="#5F6C77">renamed</text>
+<rect x="520" y="420" width="260" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="528" y="444" font-size="12" fill="#1E2838">organisation</text>
+<rect x="780" y="420" width="100" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="788" y="444" font-size="12" fill="#5F6C77">text</text>
+<rect x="880" y="420" width="260" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="888" y="444" font-size="11" fill="#5F6C77">renamed</text>
+<rect x="520" y="460" width="260" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="528" y="484" font-size="12" fill="#1E2838">thematic_area</text>
+<rect x="780" y="460" width="100" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="788" y="484" font-size="12" fill="#5F6C77">text</text>
+<rect x="880" y="460" width="260" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="888" y="484" font-size="11" fill="#5F6C77">kept as typed</text>
+<rect x="520" y="500" width="260" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="528" y="524" font-size="12" fill="#1E2838">thematic_sub_area</text>
+<rect x="780" y="500" width="100" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="788" y="524" font-size="12" fill="#5F6C77">text</text>
+<rect x="880" y="500" width="260" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="888" y="524" font-size="11" fill="#5F6C77">kept as typed</text>
+<rect x="520" y="540" width="260" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="528" y="564" font-size="12" fill="#1E2838">proximity_to_children_beneficiary</text>
+<rect x="780" y="540" width="100" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="788" y="564" font-size="12" fill="#5F6C77">text</text>
+<rect x="880" y="540" width="260" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="888" y="564" font-size="11" fill="#5F6C77">kept as typed</text>
+<rect x="520" y="580" width="260" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="528" y="604" font-size="12" fill="#1E2838">project_title</text>
+<rect x="780" y="580" width="100" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="788" y="604" font-size="12" fill="#5F6C77">text</text>
+<rect x="880" y="580" width="260" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="888" y="604" font-size="11" fill="#5F6C77">kept as typed</text>
+<rect x="520" y="620" width="260" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="528" y="644" font-size="12" fill="#1E2838">grant_start_date</text>
+<rect x="780" y="620" width="100" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="788" y="644" font-size="12" fill="#5F6C77">date</text>
+<rect x="880" y="620" width="260" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="888" y="644" font-size="11" fill="#5F6C77">converted to a date</text>
+<rect x="520" y="660" width="260" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="528" y="684" font-size="12" fill="#1E2838">grant_end_date</text>
+<rect x="780" y="660" width="100" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="788" y="684" font-size="12" fill="#5F6C77">date</text>
+<rect x="880" y="660" width="260" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="888" y="684" font-size="11" fill="#5F6C77">converted to a date</text>
+<rect x="520" y="700" width="260" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="528" y="724" font-size="12" fill="#1E2838">grant_type</text>
+<rect x="780" y="700" width="100" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="788" y="724" font-size="12" fill="#5F6C77">text</text>
+<rect x="880" y="700" width="260" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="888" y="724" font-size="11" fill="#5F6C77">kept as typed</text>
+<rect x="520" y="740" width="260" height="40" fill="#FFF2CC" stroke="#B9C5CB"/>
+<text x="528" y="764" font-size="12" fill="#1E2838">approved_amount</text>
+<rect x="780" y="740" width="100" height="40" fill="#FFF2CC" stroke="#B9C5CB"/>
+<text x="788" y="764" font-size="12" fill="#5F6C77">number</text>
+<rect x="880" y="740" width="260" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="888" y="764" font-size="11" fill="#5F6C77">renamed</text>
+<rect x="520" y="780" width="260" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="528" y="804" font-size="12" fill="#1E2838">grant_status</text>
+<rect x="780" y="780" width="100" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="788" y="804" font-size="12" fill="#5F6C77">text</text>
+<rect x="880" y="780" width="260" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="888" y="804" font-size="11" fill="#5F6C77">kept as typed</text>
+<rect x="520" y="820" width="260" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="528" y="844" font-size="12" fill="#1E2838">programme_status</text>
+<rect x="780" y="820" width="100" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="788" y="844" font-size="12" fill="#5F6C77">text</text>
+<rect x="880" y="820" width="260" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="888" y="844" font-size="11" fill="#5F6C77">kept as typed</text>
+<rect x="520" y="860" width="260" height="40" fill="#FFF2CC" stroke="#B9C5CB"/>
+<text x="528" y="884" font-size="12" fill="#1E2838">years_implemented</text>
+<rect x="780" y="860" width="100" height="40" fill="#FFF2CC" stroke="#B9C5CB"/>
+<text x="788" y="884" font-size="12" fill="#5F6C77">number</text>
+<rect x="880" y="860" width="260" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="888" y="884" font-size="11" fill="#5F6C77">converted to a number</text>
+<rect x="520" y="900" width="260" height="40" fill="#FFF2CC" stroke="#B9C5CB"/>
+<text x="528" y="924" font-size="12" fill="#1E2838">team_size</text>
+<rect x="780" y="900" width="100" height="40" fill="#FFF2CC" stroke="#B9C5CB"/>
+<text x="788" y="924" font-size="12" fill="#5F6C77">number</text>
+<rect x="880" y="900" width="260" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="888" y="924" font-size="11" fill="#5F6C77">renamed</text>
+<rect x="520" y="940" width="260" height="40" fill="#FFF2CC" stroke="#B9C5CB"/>
+<text x="528" y="964" font-size="12" fill="#1E2838">attrition_rate</text>
+<rect x="780" y="940" width="100" height="40" fill="#FFF2CC" stroke="#B9C5CB"/>
+<text x="788" y="964" font-size="12" fill="#5F6C77">number</text>
+<rect x="880" y="940" width="260" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="888" y="964" font-size="11" fill="#5F6C77">renamed</text>
+<rect x="520" y="980" width="260" height="40" fill="#FFF2CC" stroke="#B9C5CB"/>
+<text x="528" y="1004" font-size="12" fill="#1E2838">annual_budget</text>
+<rect x="780" y="980" width="100" height="40" fill="#FFF2CC" stroke="#B9C5CB"/>
+<text x="788" y="1004" font-size="12" fill="#5F6C77">number</text>
+<rect x="880" y="980" width="260" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="888" y="1004" font-size="11" fill="#5F6C77">renamed</text>
+<rect x="520" y="1020" width="260" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="528" y="1044" font-size="12" fill="#1E2838">primary_beneficiary_group</text>
+<rect x="780" y="1020" width="100" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="788" y="1044" font-size="12" fill="#5F6C77">text</text>
+<rect x="880" y="1020" width="260" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="888" y="1044" font-size="11" fill="#5F6C77">kept as typed</text>
+<rect x="520" y="1060" width="260" height="40" fill="#FFF2CC" stroke="#B9C5CB"/>
+<text x="528" y="1084" font-size="12" fill="#1E2838">primary_beneficiary_count</text>
+<rect x="780" y="1060" width="100" height="40" fill="#FFF2CC" stroke="#B9C5CB"/>
+<text x="788" y="1084" font-size="12" fill="#5F6C77">number</text>
+<rect x="880" y="1060" width="260" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="888" y="1084" font-size="11" fill="#5F6C77">converted to a number</text>
+<rect x="520" y="1100" width="260" height="40" fill="#FFF2CC" stroke="#B9C5CB"/>
+<text x="528" y="1124" font-size="12" fill="#1E2838">foreign_contribution_rate</text>
+<rect x="780" y="1100" width="100" height="40" fill="#FFF2CC" stroke="#B9C5CB"/>
+<text x="788" y="1124" font-size="12" fill="#5F6C77">number</text>
+<rect x="880" y="1100" width="260" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="888" y="1124" font-size="11" fill="#5F6C77">renamed</text>
+<rect x="520" y="1140" width="260" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="528" y="1164" font-size="12" fill="#1E2838">record_status</text>
+<rect x="780" y="1140" width="100" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="788" y="1164" font-size="12" fill="#5F6C77">text</text>
+<rect x="880" y="1140" width="260" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="888" y="1164" font-size="11" fill="#5F6C77">kept as typed</text>
+<rect x="40" y="1240" width="360" height="50" fill="#6B7B86"/>
+<text x="50" y="1262" font-size="14" font-weight="700" fill="#FFFFFF">9. Organisation Registry</text>
+<text x="50" y="1280" font-size="10" fill="#E2F2F4">src · 11 columns read</text>
+<rect x="40" y="1290" width="260" height="40" fill="#E1D5E7" stroke="#B9C5CB"/>
+<text x="48" y="1314" font-size="12" fill="#1E2838">Organisation ID</text>
+<rect x="300" y="1290" width="100" height="40" fill="#E1D5E7" stroke="#B9C5CB"/>
+<text x="308" y="1314" font-size="12" fill="#5F6C77">text</text>
+<rect x="40" y="1330" width="260" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="48" y="1354" font-size="12" fill="#1E2838">Organisation Name</text>
+<rect x="300" y="1330" width="100" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="308" y="1354" font-size="12" fill="#5F6C77">text</text>
+<rect x="40" y="1370" width="260" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="48" y="1394" font-size="12" fill="#1E2838">Mission Statement</text>
+<rect x="300" y="1370" width="100" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="308" y="1394" font-size="12" fill="#5F6C77">text</text>
+<rect x="40" y="1410" width="260" height="40" fill="#D5E8D4" stroke="#B9C5CB"/>
+<text x="48" y="1434" font-size="12" fill="#1E2838">Code of Conduct Policy?</text>
+<rect x="300" y="1410" width="100" height="40" fill="#D5E8D4" stroke="#B9C5CB"/>
+<text x="308" y="1434" font-size="12" fill="#5F6C77">true / false</text>
+<rect x="40" y="1450" width="260" height="40" fill="#D5E8D4" stroke="#B9C5CB"/>
+<text x="48" y="1474" font-size="12" fill="#1E2838">POSH Policy?</text>
+<rect x="300" y="1450" width="100" height="40" fill="#D5E8D4" stroke="#B9C5CB"/>
+<text x="308" y="1474" font-size="12" fill="#5F6C77">true / false</text>
+<rect x="40" y="1490" width="260" height="40" fill="#D5E8D4" stroke="#B9C5CB"/>
+<text x="48" y="1514" font-size="12" fill="#1E2838">Child Protection Policy?</text>
+<rect x="300" y="1490" width="100" height="40" fill="#D5E8D4" stroke="#B9C5CB"/>
+<text x="308" y="1514" font-size="12" fill="#5F6C77">true / false</text>
+<rect x="40" y="1530" width="260" height="40" fill="#D5E8D4" stroke="#B9C5CB"/>
+<text x="48" y="1554" font-size="12" fill="#1E2838">Data Protection Policy?</text>
+<rect x="300" y="1530" width="100" height="40" fill="#D5E8D4" stroke="#B9C5CB"/>
+<text x="308" y="1554" font-size="12" fill="#5F6C77">true / false</text>
+<rect x="40" y="1570" width="260" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="48" y="1594" font-size="12" fill="#1E2838">Latest Annual Report Link</text>
+<rect x="300" y="1570" width="100" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="308" y="1594" font-size="12" fill="#5F6C77">text</text>
+<rect x="40" y="1610" width="260" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="48" y="1634" font-size="12" fill="#1E2838">FCRA Registration Status</text>
+<rect x="300" y="1610" width="100" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="308" y="1634" font-size="12" fill="#5F6C77">text</text>
+<rect x="40" y="1650" width="260" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="48" y="1674" font-size="12" fill="#1E2838">FCRA Registration Expiry Date</text>
+<rect x="300" y="1650" width="100" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="308" y="1674" font-size="12" fill="#5F6C77">date</text>
+<rect x="40" y="1690" width="260" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="48" y="1714" font-size="12" fill="#1E2838">Record Status</text>
+<rect x="300" y="1690" width="100" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="308" y="1714" font-size="12" fill="#5F6C77">text</text>
+<rect x="520" y="1240" width="620" height="50" fill="#167C88"/>
+<text x="530" y="1262" font-size="14" font-weight="700" fill="#FFFFFF">stg_organisations</text>
+<text x="530" y="1280" font-size="10" fill="#E2F2F4">stg · 11 columns</text>
+<rect x="520" y="1290" width="260" height="40" fill="#E1D5E7" stroke="#B9C5CB"/>
+<text x="528" y="1314" font-size="12" fill="#1E2838">organization_id</text>
+<rect x="780" y="1290" width="100" height="40" fill="#E1D5E7" stroke="#B9C5CB"/>
+<text x="788" y="1314" font-size="12" fill="#5F6C77">text</text>
+<rect x="880" y="1290" width="260" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="888" y="1314" font-size="11" fill="#5F6C77">renamed</text>
+<rect x="520" y="1330" width="260" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="528" y="1354" font-size="12" fill="#1E2838">organisation</text>
+<rect x="780" y="1330" width="100" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="788" y="1354" font-size="12" fill="#5F6C77">text</text>
+<rect x="880" y="1330" width="260" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="888" y="1354" font-size="11" fill="#5F6C77">renamed</text>
+<rect x="520" y="1370" width="260" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="528" y="1394" font-size="12" fill="#1E2838">mission_statement</text>
+<rect x="780" y="1370" width="100" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="788" y="1394" font-size="12" fill="#5F6C77">text</text>
+<rect x="880" y="1370" width="260" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="888" y="1394" font-size="11" fill="#5F6C77">kept as typed</text>
+<rect x="520" y="1410" width="260" height="40" fill="#D5E8D4" stroke="#B9C5CB"/>
+<text x="528" y="1434" font-size="12" fill="#1E2838">has_code_of_conduct_policy</text>
+<rect x="780" y="1410" width="100" height="40" fill="#D5E8D4" stroke="#B9C5CB"/>
+<text x="788" y="1434" font-size="12" fill="#5F6C77">true / false</text>
+<rect x="880" y="1410" width="260" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="888" y="1434" font-size="11" fill="#5F6C77">converted to true / false</text>
+<rect x="520" y="1450" width="260" height="40" fill="#D5E8D4" stroke="#B9C5CB"/>
+<text x="528" y="1474" font-size="12" fill="#1E2838">has_posh_policy</text>
+<rect x="780" y="1450" width="100" height="40" fill="#D5E8D4" stroke="#B9C5CB"/>
+<text x="788" y="1474" font-size="12" fill="#5F6C77">true / false</text>
+<rect x="880" y="1450" width="260" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="888" y="1474" font-size="11" fill="#5F6C77">converted to true / false</text>
+<rect x="520" y="1490" width="260" height="40" fill="#D5E8D4" stroke="#B9C5CB"/>
+<text x="528" y="1514" font-size="12" fill="#1E2838">has_child_protection_policy</text>
+<rect x="780" y="1490" width="100" height="40" fill="#D5E8D4" stroke="#B9C5CB"/>
+<text x="788" y="1514" font-size="12" fill="#5F6C77">true / false</text>
+<rect x="880" y="1490" width="260" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="888" y="1514" font-size="11" fill="#5F6C77">converted to true / false</text>
+<rect x="520" y="1530" width="260" height="40" fill="#D5E8D4" stroke="#B9C5CB"/>
+<text x="528" y="1554" font-size="12" fill="#1E2838">has_data_protection_policy</text>
+<rect x="780" y="1530" width="100" height="40" fill="#D5E8D4" stroke="#B9C5CB"/>
+<text x="788" y="1554" font-size="12" fill="#5F6C77">true / false</text>
+<rect x="880" y="1530" width="260" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="888" y="1554" font-size="11" fill="#5F6C77">converted to true / false</text>
+<rect x="520" y="1570" width="260" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="528" y="1594" font-size="12" fill="#1E2838">latest_annual_report_link</text>
+<rect x="780" y="1570" width="100" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="788" y="1594" font-size="12" fill="#5F6C77">text</text>
+<rect x="880" y="1570" width="260" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="888" y="1594" font-size="11" fill="#5F6C77">kept as typed</text>
+<rect x="520" y="1610" width="260" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="528" y="1634" font-size="12" fill="#1E2838">fcra_registration_status</text>
+<rect x="780" y="1610" width="100" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="788" y="1634" font-size="12" fill="#5F6C77">text</text>
+<rect x="880" y="1610" width="260" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="888" y="1634" font-size="11" fill="#5F6C77">kept as typed</text>
+<rect x="520" y="1650" width="260" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="528" y="1674" font-size="12" fill="#1E2838">fcra_registration_expiry_date</text>
+<rect x="780" y="1650" width="100" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="788" y="1674" font-size="12" fill="#5F6C77">date</text>
+<rect x="880" y="1650" width="260" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="888" y="1674" font-size="11" fill="#5F6C77">converted to a date</text>
+<rect x="520" y="1690" width="260" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="528" y="1714" font-size="12" fill="#1E2838">record_status</text>
+<rect x="780" y="1690" width="100" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="788" y="1714" font-size="12" fill="#5F6C77">text</text>
+<rect x="880" y="1690" width="260" height="40" fill="#FFFFFF" stroke="#B9C5CB"/>
+<text x="888" y="1714" font-size="11" fill="#5F6C77">kept as typed</text>
+<path d="M400,280.0 L520,280.0" fill="none" stroke="#5F6C77" stroke-width="1.5" marker-end="url(#a)"/>
+<path d="M400,320.0 L520,320.0" fill="none" stroke="#5F6C77" stroke-width="1.5" marker-end="url(#a)"/>
+<path d="M400,360.0 L520,360.0" fill="none" stroke="#5F6C77" stroke-width="1.5" marker-end="url(#a)"/>
+<path d="M400,400.0 L520,400.0" fill="none" stroke="#5F6C77" stroke-width="1.5" marker-end="url(#a)"/>
+<path d="M400,440.0 L520,440.0" fill="none" stroke="#5F6C77" stroke-width="1.5" marker-end="url(#a)"/>
+<path d="M400,480.0 L520,480.0" fill="none" stroke="#5F6C77" stroke-width="1.5" marker-end="url(#a)"/>
+<path d="M400,520.0 L520,520.0" fill="none" stroke="#5F6C77" stroke-width="1.5" marker-end="url(#a)"/>
+<path d="M400,560.0 L520,560.0" fill="none" stroke="#5F6C77" stroke-width="1.5" marker-end="url(#a)"/>
+<path d="M400,600.0 L520,600.0" fill="none" stroke="#5F6C77" stroke-width="1.5" marker-end="url(#a)"/>
+<path d="M400,640.0 L520,640.0" fill="none" stroke="#5F6C77" stroke-width="1.5" marker-end="url(#a)"/>
+<path d="M400,680.0 L520,680.0" fill="none" stroke="#5F6C77" stroke-width="1.5" marker-end="url(#a)"/>
+<path d="M400,720.0 L520,720.0" fill="none" stroke="#5F6C77" stroke-width="1.5" marker-end="url(#a)"/>
+<path d="M400,760.0 L520,760.0" fill="none" stroke="#5F6C77" stroke-width="1.5" marker-end="url(#a)"/>
+<path d="M400,800.0 L520,800.0" fill="none" stroke="#5F6C77" stroke-width="1.5" marker-end="url(#a)"/>
+<path d="M400,840.0 L520,840.0" fill="none" stroke="#5F6C77" stroke-width="1.5" marker-end="url(#a)"/>
+<path d="M400,880.0 L520,880.0" fill="none" stroke="#5F6C77" stroke-width="1.5" marker-end="url(#a)"/>
+<path d="M400,920.0 L520,920.0" fill="none" stroke="#5F6C77" stroke-width="1.5" marker-end="url(#a)"/>
+<path d="M400,960.0 L520,960.0" fill="none" stroke="#5F6C77" stroke-width="1.5" marker-end="url(#a)"/>
+<path d="M400,1000.0 L520,1000.0" fill="none" stroke="#5F6C77" stroke-width="1.5" marker-end="url(#a)"/>
+<path d="M400,1040.0 L520,1040.0" fill="none" stroke="#5F6C77" stroke-width="1.5" marker-end="url(#a)"/>
+<path d="M400,1080.0 L520,1080.0" fill="none" stroke="#5F6C77" stroke-width="1.5" marker-end="url(#a)"/>
+<path d="M400,1120.0 L520,1120.0" fill="none" stroke="#5F6C77" stroke-width="1.5" marker-end="url(#a)"/>
+<path d="M400,1160.0 L520,1160.0" fill="none" stroke="#5F6C77" stroke-width="1.5" marker-end="url(#a)"/>
+<path d="M400,1310.0 L520,1310.0" fill="none" stroke="#5F6C77" stroke-width="1.5" marker-end="url(#a)"/>
+<path d="M400,1350.0 L520,1350.0" fill="none" stroke="#5F6C77" stroke-width="1.5" marker-end="url(#a)"/>
+<path d="M400,1390.0 L520,1390.0" fill="none" stroke="#5F6C77" stroke-width="1.5" marker-end="url(#a)"/>
+<path d="M400,1430.0 L520,1430.0" fill="none" stroke="#5F6C77" stroke-width="1.5" marker-end="url(#a)"/>
+<path d="M400,1470.0 L520,1470.0" fill="none" stroke="#5F6C77" stroke-width="1.5" marker-end="url(#a)"/>
+<path d="M400,1510.0 L520,1510.0" fill="none" stroke="#5F6C77" stroke-width="1.5" marker-end="url(#a)"/>
+<path d="M400,1550.0 L520,1550.0" fill="none" stroke="#5F6C77" stroke-width="1.5" marker-end="url(#a)"/>
+<path d="M400,1590.0 L520,1590.0" fill="none" stroke="#5F6C77" stroke-width="1.5" marker-end="url(#a)"/>
+<path d="M400,1630.0 L520,1630.0" fill="none" stroke="#5F6C77" stroke-width="1.5" marker-end="url(#a)"/>
+<path d="M400,1670.0 L520,1670.0" fill="none" stroke="#5F6C77" stroke-width="1.5" marker-end="url(#a)"/>
+<path d="M400,1710.0 L520,1710.0" fill="none" stroke="#5F6C77" stroke-width="1.5" marker-end="url(#a)"/>
+</svg>

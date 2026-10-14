@@ -8,6 +8,7 @@ Built to the Goalkeep *Data Pipeline Build Phase SoP v1.0*.
 - **History of changes:** [CHANGELOG.md](CHANGELOG.md)
 - **Dashboard build spec (Looker Studio):** [docs/APFP_Looker_Dashboard_Build_Spec.docx](docs/APFP_Looker_Dashboard_Build_Spec.docx), with the Cowork prompt in [docs/COWORK_PROMPT.md](docs/COWORK_PROMPT.md) and paste-safe formulas in [docs/looker_calculated_fields.txt](docs/looker_calculated_fields.txt)
 - **Data lineage for clients:** the one-page picture [docs/lineage/story/APFP_Data_Story.drawio](docs/lineage/story/APFP_Data_Story.drawio) and, in the Data Pipeline workbook, the `Data_Dictionary` and `Chart_Passport` tabs (rebuilt on every run)
+- **Data lineage v2 (native tables):** [docs/lineage/APFP_Data_Lineage_v2.drawio](docs/lineage/APFP_Data_Lineage_v2.drawio) and the spec workbook [docs/lineage/APFP_Lineage_Spec.xlsx](docs/lineage/APFP_Lineage_Spec.xlsx) (to rebuild it in another tool)
 - **Data lineage (technical):** [docs/DATA_LINEAGE.md](docs/DATA_LINEAGE.md) and the editable column-level diagram [docs/lineage/APFP_Data_Lineage.drawio](docs/lineage/APFP_Data_Lineage.drawio) (open in draw.io; `npm run lineage` checks it against the code)
 
 ## Files
