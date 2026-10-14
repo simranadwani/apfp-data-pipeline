@@ -97,7 +97,7 @@ class Scene:
         self.items.append({'t': 'text', 'id': tid, 'x': x, 'y': y, 'w': w, 'h': h, 'lines': lines, 'size': size, 'color': color, 'bold': bold})
         return tid
 
-    def table(self, x, y, title, tech, rows, head_fill, widths=(NAME_W, TYPE_W), row_h=ROW_H, subtitle=None, table_key=None):
+    def table(self, x, y, title, tech, rows, head_fill, widths=(NAME_W, TYPE_W), row_h=ROW_H, subtitle=None, table_key=None, dot_w=0):
         """rows: list of dict(label, tech, type, kind, rule(optional), key)"""
         tid = self.nid('T')
         w = sum(widths)
@@ -117,7 +117,7 @@ class Scene:
             r['y'] = ry
             rowinfo.append(r)
         self.items.append({'t': 'table', 'id': tid, 'x': x, 'y': y, 'w': w, 'h': h, 'title': title, 'tech': tech, 'subtitle': subtitle, 'rows': rowinfo,
-                           'head_fill': head_fill, 'widths': widths, 'row_h': row_h, 'key': table_key})
+                           'head_fill': head_fill, 'widths': widths, 'row_h': row_h, 'key': table_key, 'dot_w': dot_w})
         return {'id': tid, 'x': x, 'y': y, 'w': w, 'h': h, 'rows': rowinfo, 'by_key': {r['key']: r for r in rowinfo if r.get('key')}}
 
     def edge(self, src, tgt, cat='copy', label=None, color=None, dashed=None, width=1.6):
@@ -487,11 +487,17 @@ def drawio_page(sc, idx):
                         st = base + f"rounded=0;fillColor={fill};strokeColor=#B9C5CB;align=center;verticalAlign=middle;fontSize=11;fontColor={MUTED};"
                         props = None
                     else:
-                        val = escape(r['rule'] or '')
-                        st = base + f"rounded=0;fillColor=#FFFFFF;strokeColor=#B9C5CB;align=left;spacingLeft=6;verticalAlign=middle;fontSize=10;fontColor={MUTED};"
+                        txt = r['cols'][j - 2] if r.get('cols') else (r['rule'] or '')
+                        val = escape(txt or '')
+                        lead = it.get('dot_w', 0) if j == 2 else 0
+                        st = base + f"rounded=0;fillColor=#FFFFFF;strokeColor=#B9C5CB;align=left;spacingLeft={6 + lead};verticalAlign=middle;fontSize={10 if r.get('cols') else 10};fontColor={MUTED};"
                         props = None
                     y_rel = HEAD_H + it['rows'].index(r) * it['row_h']
                     cells.append(vertex(cid, it['id'], cx, y_rel, w, it['row_h'], st, val, props))
+                    if j == 2:
+                        for k, dc in enumerate(r.get('dots', [])):
+                            cells.append(vertex(sc.nid('d'), it['id'], cx + 6 + k * 14, y_rel + (it['row_h'] - 10) / 2, 10, 10,
+                                                f'ellipse;html=1;fillColor={dc};strokeColor=none;', ''))
                     cx += w
     for n, e in enumerate(sc.edges):
         style = f"edgeStyle=entityRelationEdgeStyle;html=1;endArrow=block;endFill=1;rounded=0;strokeColor={e['color']};strokeWidth={e['width']};" + ('dashed=1;' if e['dashed'] else '') + 'jettySize=auto;orthogonalLoop=1;'
@@ -580,10 +586,17 @@ def svg_page(sc):
                     elif j == 1:
                         o.append(f'<text x="{cx + cw / 2}" y="{r["y"] + it["row_h"] / 2 + 4:.0f}" font-size="11" fill="#5F6C77" text-anchor="middle">{escape(r["type"])}</text>')
                     else:
-                        ry = r['y'] + 14
-                        for part in wrap(r['rule'] or '', cw - 12, 10)[:3]:
-                            o.append(f'<text x="{cx + 6}" y="{ry}" font-size="10" fill="#5F6C77">{escape(part)}</text>')
-                            ry += 12
+                        txt = r['cols'][j - 2] if r.get('cols') else (r['rule'] or '')
+                        lead = it.get('dot_w', 0) if j == 2 else 0
+                        fs = 10
+                        lines = wrap(txt, cw - 12 - lead, fs)[:4]
+                        ry = r['y'] + (it['row_h'] - len(lines) * (fs + 2)) / 2 + fs
+                        for part in lines:
+                            o.append(f'<text x="{cx + 6 + lead}" y="{ry:.0f}" font-size="{fs}" fill="#5F6C77">{escape(part)}</text>')
+                            ry += fs + 2
+                        if j == 2:
+                            for k, dc in enumerate(r.get('dots', [])):
+                                o.append(f'<circle cx="{cx + 11 + k * 14}" cy="{r["y"] + it["row_h"] / 2:.0f}" r="5" fill="{dc}"/>')
                     cx += cw
     o.extend(edge_svg)
     o.append('</svg>')

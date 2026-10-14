@@ -284,3 +284,22 @@ TRACES = [
         ],
     },
 ]
+
+# ---------------------------------------------------------------- blocks: how a final table is split into readable bands
+# table -> [(band title, [columns])]. Every column of the table must appear in exactly one band (build_v2.py checks this).
+BLOCKS = {
+    'fct1_grant_portfolio': [
+        ('Grant: identity, status, dates, display text', ['financial_year', 'grant_id', 'organization_id', 'organisation', 'mission', 'thematic_area',
+            'education_sub_category', 'proximity_to_children_beneficiary', 'grant_type', 'grant_status', 'grant_start_date', 'grant_end_date',
+            'has_completed_program_lifecycle', 'is_active_grant', 'grant_period', 'grant_status_type_amount', 'sub_category_line']),
+        ('Organisation profile and years funded', ['fcra_registration', 'funding_year', 'duration_of_support_bucket', 'annual_budget', 'team_size',
+            'attrition_rate', 'foreign_contribution_rate', 'core_policies_met_count', 'core_policies_total_count']),
+        ('Beneficiaries and money', ['primary_beneficiary_group', 'primary_beneficiary_count', 'approved_amount', 'committed_amount', 'disbursed_amount',
+            'cost_per_beneficiary', 'funding_range', 'funding_range_order', 'is_funded_grantee']),
+        ('Decision', ['decision_type', 'decision_status', 'recommendation', 'decision_due_date', 'reason_for_recommendation', 'proposed_amount',
+            'annual_report_link', 'due_window', 'due_window_order', 'is_pending_decision', 'is_overdue_decision', 'is_due_within_30_days']),
+        ('Performance and maturity', ['grant_performance_status', 'is_on_track_active_grant', 'is_off_track_active_grant', 'total_outcomes_count',
+            'achieved_outcomes_count', 'clarity_status', 'capacity_status', 'compliance_status']),
+        ('Housekeeping', ['grantee_360_link', 'as_of_date']),
+    ],
+}
