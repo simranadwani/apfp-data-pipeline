@@ -12,8 +12,11 @@ import lineage_model as LM
 from xml.sax.saxutils import quoteattr
 
 INK, MUTED, TEAL, DEEP = B.INK, B.MUTED, B.TEAL, B.DEEP
-# Colour = layer only. src grey, stg teal, fct deep teal, dashboard pale teal. Arrows one grey. One highlight: calculated rows (pale amber).
-C_SRC, C_STG, C_FCT, C_DASH, C_EDGE, C_CALC = '#6B7B86', '#167C88', '#0E4A5C', '#E2F2F4', '#5F6C77', '#FFF3DC'
+# Header colour = layer (src grey, stg teal, fct dark teal). Cell colour = column kind (see H_*). Arrows one grey.
+C_SRC, C_STG, C_FCT, C_DASH, C_EDGE = '#6B7B86', '#167C88', '#0E4A5C', '#DAE8FC', '#5F6C77'
+# Column highlights (fixed): key columns checked by the cardinality tests, numbers, true/false flags; blue = dashboard metrics
+H_KEY, H_NUM, H_BOOL = '#E1D5E7', '#FFF2CC', '#D5E8D4'
+CARD = B.CODE.get('cardinality', {})
 STG_COLOUR = {t: C_STG for t in ['stg_grants', 'stg_organisations', 'stg_decisions', 'stg_outcome_progress', 'stg_maturity', 'stg_support',
                                  'stg_disbursements', 'stg_dividends']}
 STG_COLOUR['fct1_grant_portfolio'] = C_FCT
@@ -42,18 +45,39 @@ def ribbon(sc, active, x=40, y=20):
     return cx
 
 
+def hl(table, col, stype=None):
+    """Highlight colour of a column, or white."""
+    if col in CARD.get(table, []) or col.endswith('_id'):
+        return H_KEY
+    k = B.kind_of(col, stype)
+    if k == 'flag':
+        return H_BOOL
+    if k in ('number', 'helper') and col != 'aspect_display':
+        return H_NUM
+    return '#FFFFFF'
+
+
+def legend_row(sc, y):
+    x = 40
+    for colr, text in [(H_KEY, 'Key column (checked by the cardinality tests)'), (H_NUM, 'Number'), (H_BOOL, 'True / false'), (C_DASH, 'Dashboard metric')]:
+        sc.box(x, y, 16, 16, fill=colr, stroke='#B9C5CB')
+        sc.text(x + 24, y - 1, 330, 18, [text], size=12, color=INK)
+        x += 40 + len(text) * 7
+    return y
+
+
 def stg_row(table, col):
     c = next(c for c in B.CODE['staging'][table]['columns'] if c['name'] == col)
     k = B.kind_of(col, c['type'])
     r = B.row_dict(col, None, k, key=col, type_text=B.type_label(k))
-    r['fill'] = '#FFFFFF'
+    r['fill'] = hl(table, col, c['type'])
     return r
 
 
 def fct_row_simple(table, col):
     k = B.kind_of(col)
     r = B.row_dict(col, None, k, key=col)
-    r['fill'] = '#FFFFFF'
+    r['fill'] = hl(table, col)
     return r
 
 
@@ -109,7 +133,7 @@ def page_map():
             ids_by_page.setdefault((f, ch[0]), []).append(ch)
     page_id = {}
     for i, (d, name) in enumerate(pages.items()):
-        page_id[d] = sc.box(xs['dash'], top + 20 + i * 150, bw, 80, title=f'{name}', body=[f'charts {d}.xx'], fill=C_DASH, stroke='#9CC9D0', tsize=15)
+        page_id[d] = sc.box(xs['dash'], top + 20 + i * 150, bw, 80, title=f'{name}', body=[f'charts {d}.xx'], fill=C_DASH, stroke='#9DB7DC', tsize=15)
     for (f, d), chs in ids_by_page.items():
         sc.edge(fct_id[f], page_id[d], 'copy', color=C_EDGE, width=2)
     sc.text(40, top + 8 * dy + 10, 1700, 20, ['Dashed grey arrow: fct6_grantee_annual_info is built from fct1_grant_portfolio, not from stg directly.'], size=12, color=MUTED)
@@ -241,11 +265,12 @@ def page_fct(f, num):
     sc.text(40, 70, 1700, 30, [f'{f}   ({len(B.CODE["final"][f])} columns)'], size=24, color=DEEP, bold=True)
     sc.text(40, 104, 1700, 20, [info[1] + '.'], size=13, color=MUTED)
     sc.text(40, 126, 1700, 40, ['Charts: ' + ', '.join(LM.FEEDS[f])], size=12, color=TEAL)
+    legend_row(sc, 180)
     sections = classify(f)
     left_w, gap = NAME_W + TYPE_W, 120
     right_x = 40 + left_w + gap
     widths = (250, 78, 390, 330)
-    y0 = 200
+    y0 = 218
     # fct rows (section bars included)
     rows, sec_start, row_of = [], {}, {}
     for key, title, colr, cols in sections:
@@ -259,8 +284,6 @@ def page_fct(f, num):
             r['calc'] = cat == 'calc'
             r['type'] = B.type_label(r['kind'], r['calc'])
             r['cols'] = [built_from(col, cat, ups, f), '' if cat == 'copy' else rule]
-            if r['calc']:
-                r['fill'] = r['rowfill'] = C_CALC
             rows.append(r)
     ft = sc.table(right_x, y0, f, f, rows, FCT_COLOUR[f], widths=widths, row_h=ROW_H2, subtitle=info[1][:70], fs=11)
     # left cards, each once, level with its own section
@@ -293,7 +316,7 @@ def page_fct(f, num):
                 t, c = u.split('.', 1)
                 sc.edge(placed[t]['by_key'][c]['cells'][-1], tgt, cat, color=C_EDGE, width=1.6)
     bottom = max(ly, y0 + HEAD2 + len(rows) * ROW_H2) + 20
-    sc.text(40, bottom, 1700, 20, ['White row: copied or looked up (arrow).  Pale amber row, ƒ: calculated (no arrow; inputs under "built from").  Blank "built from": same name as in stg.'], size=12, color=MUTED)
+    sc.text(40, bottom, 1700, 20, ['Arrow: copied or looked up.  ƒ = calculated: no arrow, inputs listed under "built from".  Blank "built from": same name as in stg.'], size=12, color=MUTED)
     return sc
 
 
@@ -303,8 +326,9 @@ def page_metrics_v2(num):
     ribbon(sc, 'dashboard')
     sc.text(40, 70, 1700, 30, ['From fct columns to dashboard numbers'], size=24, color=DEEP, bold=True)
     sc.text(40, 104, 1700, 40, ['Each dashboard number is one Looker Studio field. The same field is reused by every chart that needs it; the chart adds its own filter. Fields are named by type: distinct_, sum_, pct_, inr_, txt_.'], size=13, color=MUTED)
+    legend_row(sc, 150)
     x1, x2, x3, w1, w2, w3 = 40, 560, 1180, 430, 520, 560
-    y = 180
+    y = 215
     sc.box(x1, y - 44, w1, 38, title='fct columns it reads', fill=C_FCT, stroke=C_FCT, tcolor='#FFFFFF', tsize=14)
     sc.box(x2, y - 44, w2, 38, title='dashboard field (metric)', fill=C_FCT, stroke=C_FCT, tcolor='#FFFFFF', tsize=14)
     sc.box(x3, y - 44, w3, 38, title='charts that show it', fill=C_FCT, stroke=C_FCT, tcolor='#FFFFFF', tsize=14)
@@ -322,7 +346,7 @@ def page_metrics_v2(num):
         h = max(78, 24 + 18 * max(len(lines), len(cl), len(body) + 1))
         a = sc.box(x1, y, w1, h, title='', body=lines, fill='#FFFFFF', stroke=C_FCT, bsize=12)
         sc.items[-1]['bcolor'] = INK
-        b = sc.box(x2, y, w2, h, title=field, body=body, fill=C_DASH, stroke='#9CC9D0', tsize=15, bsize=12)
+        b = sc.box(x2, y, w2, h, title=field, body=body, fill=C_DASH, stroke='#9DB7DC', tsize=15, bsize=12)
         c = sc.box(x3, y, w3, h, title='', body=cl, fill='#FFFFFF', stroke='#B9C5CB', bsize=12)
         sc.items[-1]['bcolor'] = INK
         sc.edge(a, b, 'copy', color=tcol, width=2)

@@ -687,5 +687,60 @@
    "current_value",
    "previous_value"
   ]
+ },
+ "cardinality": {
+  "stg_grants": [
+   "grant_id"
+  ],
+  "stg_organisations": [
+   "organization_id"
+  ],
+  "stg_outcome_progress": [
+   "grant_id",
+   "outcome_id"
+  ],
+  "stg_support": [
+   "grant_id"
+  ],
+  "stg_decisions": [
+   "grant_id"
+  ],
+  "stg_dividends": [
+   "financial_year"
+  ],
+  "stg_disbursements": [
+   "disbursement_id",
+   "grant_id"
+  ],
+  "stg_maturity": [
+   "grant_id",
+   "aspect",
+   "indicator"
+  ],
+  "fct1_grant_portfolio": [
+   "grant_id",
+   "organization_id"
+  ],
+  "fct2_outcome_progress": [
+   "grant_id",
+   "outcome_id",
+   "quarter"
+  ],
+  "fct3_support_activity": [
+   "support_id",
+   "grant_id"
+  ],
+  "fct4_budget_year": [
+   "financial_year"
+  ],
+  "fct5_maturity_rag": [
+   "grant_id",
+   "aspect",
+   "indicator"
+  ],
+  "fct6_grantee_annual_info": [
+   "grant_id",
+   "metric"
+  ]
  }
 }
