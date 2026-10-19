@@ -1,0 +1,183 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1720 1150" width="1720" height="1150" font-family="Raleway, 'Helvetica Neue', Helvetica, Arial, sans-serif">
+<defs>
+<marker id="ar_fct1_grant_portfolio" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#167C88"/></marker>
+<marker id="ar_fct6_grantee_annual_info" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#5F6C77"/></marker>
+<marker id="ar_fct2_outcome_progress" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#EB6834"/></marker>
+<marker id="ar_fct5_maturity_rag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#8A6A2F"/></marker>
+<marker id="ar_fct3_support_activity" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#4A3AA7"/></marker>
+<marker id="ar_fct4_budget_year" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#E87BA4"/></marker>
+<marker id="ar_grey" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#8A97A1"/></marker>
+</defs>
+<rect width="1720" height="1150" fill="#F4F6F7"/>
+<rect x="0" y="0" width="1720" height="86" fill="#0E4A5C"/>
+<text x="40" y="38" font-size="28" font-weight="700" fill="#FFFFFF">APFP data lineage</text>
+<text x="40" y="66" font-size="15" fill="#CFE3E6">APFP Central Administration workbook  →  stg_ (staging)  →  fct_ (final)  →  Looker Studio. No int_ (intermediate) layer: every fct_ table is built directly from stg_ tables.</text>
+<rect x="50" y="104" width="300" height="52" rx="8" fill="#167C88"/>
+<text x="66" y="127" font-size="16" font-weight="700" fill="#FFFFFF">SOURCE</text>
+<text x="66" y="146" font-size="12" fill="#E2F2F4">APFP Central Administration workbook (8 tabs)</text>
+<rect x="470" y="104" width="300" height="52" rx="8" fill="#167C88"/>
+<text x="486" y="127" font-size="16" font-weight="700" fill="#FFFFFF">STAGING  (stg_)</text>
+<text x="486" y="146" font-size="12" fill="#E2F2F4">one per source tab: clean, rename, cast</text>
+<rect x="940" y="104" width="300" height="52" rx="8" fill="#167C88"/>
+<text x="956" y="127" font-size="16" font-weight="700" fill="#FFFFFF">FINAL  (fct_)</text>
+<text x="956" y="146" font-size="12" fill="#E2F2F4">joins, derived fields, dashboard shape</text>
+<rect x="1370" y="104" width="300" height="52" rx="8" fill="#167C88"/>
+<text x="1386" y="127" font-size="16" font-weight="700" fill="#FFFFFF">LOOKER STUDIO</text>
+<text x="1386" y="146" font-size="12" fill="#E2F2F4">one data source per fct_ table</text>
+<rect x="36" y="174" width="328" height="650" rx="10" fill="#FFFFFF" stroke="#CBD5DA" stroke-dasharray="5 4"/>
+<path d="M350,219.0 L466,219.0" stroke="#8A97A1" stroke-width="2" fill="none" marker-end="url(#ar_grey)"/>
+<path d="M350,299.0 L466,299.0" stroke="#8A97A1" stroke-width="2" fill="none" marker-end="url(#ar_grey)"/>
+<path d="M350,379.0 L466,379.0" stroke="#8A97A1" stroke-width="2" fill="none" marker-end="url(#ar_grey)"/>
+<path d="M350,459.0 L466,459.0" stroke="#8A97A1" stroke-width="2" fill="none" marker-end="url(#ar_grey)"/>
+<path d="M350,539.0 L466,539.0" stroke="#8A97A1" stroke-width="2" fill="none" marker-end="url(#ar_grey)"/>
+<path d="M350,619.0 L466,619.0" stroke="#8A97A1" stroke-width="2" fill="none" marker-end="url(#ar_grey)"/>
+<path d="M350,699.0 L466,699.0" stroke="#8A97A1" stroke-width="2" fill="none" marker-end="url(#ar_grey)"/>
+<path d="M350,779.0 L466,779.0" stroke="#8A97A1" stroke-width="2" fill="none" marker-end="url(#ar_grey)"/>
+<path d="M770,219.0 C853.0,219.0 853.0,189.0 936,189.0" stroke="#167C88" stroke-width="2" fill="none" opacity="0.85" marker-end="url(#ar_fct1_grant_portfolio)"/>
+<path d="M770,299.0 C853.0,299.0 853.0,195.0 936,195.0" stroke="#167C88" stroke-width="2" fill="none" opacity="0.85" marker-end="url(#ar_fct1_grant_portfolio)"/>
+<path d="M770,379.0 C853.0,379.0 853.0,201.0 936,201.0" stroke="#167C88" stroke-width="2" fill="none" opacity="0.85" marker-end="url(#ar_fct1_grant_portfolio)"/>
+<path d="M770,459.0 C853.0,459.0 853.0,207.0 936,207.0" stroke="#167C88" stroke-width="2" fill="none" opacity="0.85" marker-end="url(#ar_fct1_grant_portfolio)"/>
+<path d="M770,539.0 C853.0,539.0 853.0,213.0 936,213.0" stroke="#167C88" stroke-width="2" fill="none" opacity="0.85" marker-end="url(#ar_fct1_grant_portfolio)"/>
+<path d="M770,699.0 C853.0,699.0 853.0,219.0 936,219.0" stroke="#167C88" stroke-width="2" fill="none" opacity="0.85" marker-end="url(#ar_fct1_grant_portfolio)"/>
+<path d="M770,219.0 C853.0,219.0 853.0,425.0 936,425.0" stroke="#EB6834" stroke-width="2" fill="none" opacity="0.85" marker-end="url(#ar_fct2_outcome_progress)"/>
+<path d="M770,459.0 C853.0,459.0 853.0,431.0 936,431.0" stroke="#EB6834" stroke-width="2" fill="none" opacity="0.85" marker-end="url(#ar_fct2_outcome_progress)"/>
+<path d="M770,219.0 C853.0,219.0 853.0,537.0 936,537.0" stroke="#8A6A2F" stroke-width="2" fill="none" opacity="0.85" marker-end="url(#ar_fct5_maturity_rag)"/>
+<path d="M770,539.0 C853.0,539.0 853.0,543.0 936,543.0" stroke="#8A6A2F" stroke-width="2" fill="none" opacity="0.85" marker-end="url(#ar_fct5_maturity_rag)"/>
+<path d="M770,219.0 C853.0,219.0 853.0,649.0 936,649.0" stroke="#4A3AA7" stroke-width="2" fill="none" opacity="0.85" marker-end="url(#ar_fct3_support_activity)"/>
+<path d="M770,619.0 C853.0,619.0 853.0,655.0 936,655.0" stroke="#4A3AA7" stroke-width="2" fill="none" opacity="0.85" marker-end="url(#ar_fct3_support_activity)"/>
+<path d="M770,699.0 C853.0,699.0 853.0,761.0 936,761.0" stroke="#E87BA4" stroke-width="2" fill="none" opacity="0.85" marker-end="url(#ar_fct4_budget_year)"/>
+<path d="M770,779.0 C853.0,779.0 853.0,767.0 936,767.0" stroke="#E87BA4" stroke-width="2" fill="none" opacity="0.85" marker-end="url(#ar_fct4_budget_year)"/>
+<path d="M1200,233 L1200,283" stroke="#5F6C77" stroke-width="2.4" stroke-dasharray="6 4" fill="none" marker-end="url(#ar_fct6_grantee_annual_info)"/>
+<text x="1208" y="264.0" font-size="11" fill="#5F6C77">reshaped from fct1</text>
+<path d="M1240,204.0 L1366,204.0" stroke="#167C88" stroke-width="2.4" fill="none" marker-end="url(#ar_fct1_grant_portfolio)"/>
+<path d="M1240,316.0 L1366,316.0" stroke="#5F6C77" stroke-width="2.4" fill="none" marker-end="url(#ar_fct6_grantee_annual_info)"/>
+<path d="M1240,428.0 L1366,428.0" stroke="#EB6834" stroke-width="2.4" fill="none" marker-end="url(#ar_fct2_outcome_progress)"/>
+<path d="M1240,540.0 L1366,540.0" stroke="#8A6A2F" stroke-width="2.4" fill="none" marker-end="url(#ar_fct5_maturity_rag)"/>
+<path d="M1240,652.0 L1366,652.0" stroke="#4A3AA7" stroke-width="2.4" fill="none" marker-end="url(#ar_fct3_support_activity)"/>
+<path d="M1240,764.0 L1366,764.0" stroke="#E87BA4" stroke-width="2.4" fill="none" marker-end="url(#ar_fct4_budget_year)"/>
+<rect x="50" y="190" width="300" height="58" rx="8" fill="#FFFFFF" stroke="#B9C5CB" stroke-width="1.4"/>
+<text x="68" y="215" font-size="15" font-weight="700" fill="#1E2838">8. Grant Registry</text>
+<text x="68" y="234" font-size="12" fill="#5F6C77">source tab</text>
+<rect x="470" y="190" width="300" height="58" rx="8" fill="#E2F2F4" stroke="#9CC9D0" stroke-width="1.4"/>
+<text x="488" y="215" font-size="15" font-weight="700" fill="#1E2838">stg_grants</text>
+<text x="488" y="234" font-size="12" fill="#5F6C77">grain: grant_id</text>
+<rect x="50" y="270" width="300" height="58" rx="8" fill="#FFFFFF" stroke="#B9C5CB" stroke-width="1.4"/>
+<text x="68" y="295" font-size="15" font-weight="700" fill="#1E2838">9. Organisation Registry</text>
+<text x="68" y="314" font-size="12" fill="#5F6C77">source tab</text>
+<rect x="470" y="270" width="300" height="58" rx="8" fill="#E2F2F4" stroke="#9CC9D0" stroke-width="1.4"/>
+<text x="488" y="295" font-size="15" font-weight="700" fill="#1E2838">stg_organisations</text>
+<text x="488" y="314" font-size="12" fill="#5F6C77">grain: organization_id</text>
+<rect x="50" y="350" width="300" height="58" rx="8" fill="#FFFFFF" stroke="#B9C5CB" stroke-width="1.4"/>
+<text x="68" y="375" font-size="15" font-weight="700" fill="#1E2838">4. Decision Tracker</text>
+<text x="68" y="394" font-size="12" fill="#5F6C77">source tab</text>
+<rect x="470" y="350" width="300" height="58" rx="8" fill="#E2F2F4" stroke="#9CC9D0" stroke-width="1.4"/>
+<text x="488" y="375" font-size="15" font-weight="700" fill="#1E2838">stg_decisions</text>
+<text x="488" y="394" font-size="12" fill="#5F6C77">grain: grant_id</text>
+<rect x="50" y="430" width="300" height="58" rx="8" fill="#FFFFFF" stroke="#B9C5CB" stroke-width="1.4"/>
+<text x="68" y="455" font-size="15" font-weight="700" fill="#1E2838">2. Outcome Progress</text>
+<text x="68" y="474" font-size="12" fill="#5F6C77">source tab</text>
+<rect x="470" y="430" width="300" height="58" rx="8" fill="#E2F2F4" stroke="#9CC9D0" stroke-width="1.4"/>
+<text x="488" y="455" font-size="15" font-weight="700" fill="#1E2838">stg_outcome_progress</text>
+<text x="488" y="474" font-size="12" fill="#5F6C77">grain: grant_id x outcome_id</text>
+<rect x="50" y="510" width="300" height="58" rx="8" fill="#FFFFFF" stroke="#B9C5CB" stroke-width="1.4"/>
+<text x="68" y="535" font-size="15" font-weight="700" fill="#1E2838">7. Organisation Maturity</text>
+<text x="68" y="554" font-size="12" fill="#5F6C77">source tab</text>
+<rect x="470" y="510" width="300" height="58" rx="8" fill="#E2F2F4" stroke="#9CC9D0" stroke-width="1.4"/>
+<text x="488" y="535" font-size="15" font-weight="700" fill="#1E2838">stg_maturity</text>
+<text x="488" y="554" font-size="12" fill="#5F6C77">grain: grant_id x aspect x indicator</text>
+<rect x="50" y="590" width="300" height="58" rx="8" fill="#FFFFFF" stroke="#B9C5CB" stroke-width="1.4"/>
+<text x="68" y="615" font-size="15" font-weight="700" fill="#1E2838">3. Support</text>
+<text x="68" y="634" font-size="12" fill="#5F6C77">source tab</text>
+<rect x="470" y="590" width="300" height="58" rx="8" fill="#E2F2F4" stroke="#9CC9D0" stroke-width="1.4"/>
+<text x="488" y="615" font-size="15" font-weight="700" fill="#1E2838">stg_support</text>
+<text x="488" y="634" font-size="12" fill="#5F6C77">grain: support request</text>
+<rect x="50" y="670" width="300" height="58" rx="8" fill="#FFFFFF" stroke="#B9C5CB" stroke-width="1.4"/>
+<text x="68" y="695" font-size="15" font-weight="700" fill="#1E2838">6. Committed &amp; Spent Tracker</text>
+<text x="68" y="714" font-size="12" fill="#5F6C77">source tab</text>
+<rect x="470" y="670" width="300" height="58" rx="8" fill="#E2F2F4" stroke="#9CC9D0" stroke-width="1.4"/>
+<text x="488" y="695" font-size="15" font-weight="700" fill="#1E2838">stg_disbursements</text>
+<text x="488" y="714" font-size="12" fill="#5F6C77">grain: disbursement_id</text>
+<rect x="50" y="750" width="300" height="58" rx="8" fill="#FFFFFF" stroke="#B9C5CB" stroke-width="1.4"/>
+<text x="68" y="775" font-size="15" font-weight="700" fill="#1E2838">5. Dividends</text>
+<text x="68" y="794" font-size="12" fill="#5F6C77">source tab</text>
+<rect x="470" y="750" width="300" height="58" rx="8" fill="#E2F2F4" stroke="#9CC9D0" stroke-width="1.4"/>
+<text x="488" y="775" font-size="15" font-weight="700" fill="#1E2838">stg_dividends</text>
+<text x="488" y="794" font-size="12" fill="#5F6C77">grain: financial_year</text>
+<rect x="940" y="175" width="300" height="58" rx="8" fill="#FFFFFF" stroke="#167C88" stroke-width="1.4"/>
+<rect x="940" y="175" width="7" height="58" rx="3" fill="#167C88"/>
+<text x="958" y="200" font-size="15" font-weight="700" fill="#1E2838">fct1_grant_portfolio</text>
+<text x="958" y="219" font-size="12" fill="#5F6C77">one row per grant</text>
+<rect x="1370" y="175" width="300" height="58" rx="8" fill="#FFFFFF" stroke="#CBD5DA" stroke-width="1.4"/>
+<text x="1388" y="200" font-size="15" font-weight="700" fill="#1E2838">charts: Pages 1 to 5 (all views)</text>
+<text x="1388" y="219" font-size="12" fill="#5F6C77">data source fct1</text>
+<rect x="940" y="287" width="300" height="58" rx="8" fill="#FFFFFF" stroke="#5F6C77" stroke-width="1.4"/>
+<rect x="940" y="287" width="7" height="58" rx="3" fill="#5F6C77"/>
+<text x="958" y="312" font-size="15" font-weight="700" fill="#1E2838">fct6_grantee_annual_info</text>
+<text x="958" y="331" font-size="12" fill="#5F6C77">one row per grant x metric</text>
+<rect x="1370" y="287" width="300" height="58" rx="8" fill="#FFFFFF" stroke="#CBD5DA" stroke-width="1.4"/>
+<text x="1388" y="312" font-size="15" font-weight="700" fill="#1E2838">charts: 4.02</text>
+<text x="1388" y="331" font-size="12" fill="#5F6C77">data source fct6</text>
+<rect x="940" y="399" width="300" height="58" rx="8" fill="#FFFFFF" stroke="#EB6834" stroke-width="1.4"/>
+<rect x="940" y="399" width="7" height="58" rx="3" fill="#EB6834"/>
+<text x="958" y="424" font-size="15" font-weight="700" fill="#1E2838">fct2_outcome_progress</text>
+<text x="958" y="443" font-size="12" fill="#5F6C77">grant x outcome x quarter</text>
+<rect x="1370" y="399" width="300" height="58" rx="8" fill="#FFFFFF" stroke="#CBD5DA" stroke-width="1.4"/>
+<text x="1388" y="424" font-size="15" font-weight="700" fill="#1E2838">charts: 1.12, 4.06</text>
+<text x="1388" y="443" font-size="12" fill="#5F6C77">data source fct2</text>
+<rect x="940" y="511" width="300" height="58" rx="8" fill="#FFFFFF" stroke="#8A6A2F" stroke-width="1.4"/>
+<rect x="940" y="511" width="7" height="58" rx="3" fill="#8A6A2F"/>
+<text x="958" y="536" font-size="15" font-weight="700" fill="#1E2838">fct5_maturity_rag</text>
+<text x="958" y="555" font-size="12" fill="#5F6C77">grant x aspect x indicator</text>
+<rect x="1370" y="511" width="300" height="58" rx="8" fill="#FFFFFF" stroke="#CBD5DA" stroke-width="1.4"/>
+<text x="1388" y="536" font-size="15" font-weight="700" fill="#1E2838">charts: 1.13, 4.04</text>
+<text x="1388" y="555" font-size="12" fill="#5F6C77">data source fct5</text>
+<rect x="940" y="623" width="300" height="58" rx="8" fill="#FFFFFF" stroke="#4A3AA7" stroke-width="1.4"/>
+<rect x="940" y="623" width="7" height="58" rx="3" fill="#4A3AA7"/>
+<text x="958" y="648" font-size="15" font-weight="700" fill="#1E2838">fct3_support_activity</text>
+<text x="958" y="667" font-size="12" fill="#5F6C77">one row per support request</text>
+<rect x="1370" y="623" width="300" height="58" rx="8" fill="#FFFFFF" stroke="#CBD5DA" stroke-width="1.4"/>
+<text x="1388" y="648" font-size="15" font-weight="700" fill="#1E2838">charts: 1.04, 1.14, 1.15, 4.07</text>
+<text x="1388" y="667" font-size="12" fill="#5F6C77">data source fct3</text>
+<rect x="940" y="735" width="300" height="58" rx="8" fill="#FFFFFF" stroke="#E87BA4" stroke-width="1.4"/>
+<rect x="940" y="735" width="7" height="58" rx="3" fill="#E87BA4"/>
+<text x="958" y="760" font-size="15" font-weight="700" fill="#1E2838">fct4_budget_year</text>
+<text x="958" y="779" font-size="12" fill="#5F6C77">one row per financial year</text>
+<rect x="1370" y="735" width="300" height="58" rx="8" fill="#FFFFFF" stroke="#CBD5DA" stroke-width="1.4"/>
+<text x="1388" y="760" font-size="15" font-weight="700" fill="#1E2838">charts: 2.01-2.04, 2.09-2.12</text>
+<text x="1388" y="779" font-size="12" fill="#5F6C77">data source fct4</text>
+<text x="1370" y="823" font-size="12" fill="#5F6C77">fct1 is also added a second time ("all years") so</text>
+<text x="1370" y="839" font-size="12" fill="#5F6C77">the year-over-year charts ignore the Financial Year</text>
+<text x="1370" y="855" font-size="12" fill="#5F6C77">control: 1.16, 2.08, 4.03, 4.05.</text>
+<rect x="40" y="896" width="1640" height="212" rx="10" fill="#FFFFFF" stroke="#CBD5DA"/>
+<text x="60" y="924" font-size="16" font-weight="700" fill="#0E4A5C">How it runs and how it is checked  (Apps Script, function runCompletePipeline, run by hand)</text>
+<rect x="60.0" y="940" width="307.2" height="124" rx="8" fill="#F4F6F9" stroke="#D9E1E5"/>
+<text x="72.0" y="962" font-size="13.5" font-weight="700" fill="#1E2838">1  alignTimeZones</text>
+<text x="72.0" y="982" font-size="11.5" fill="#5F6C77">pipeline workbook time zone = script</text>
+<text x="72.0" y="998" font-size="11.5" fill="#5F6C77">time zone</text>
+<text x="368.2" y="1000" font-size="16" fill="#167C88">›</text>
+<rect x="383.2" y="940" width="307.2" height="124" rx="8" fill="#F4F6F9" stroke="#D9E1E5"/>
+<text x="395.2" y="962" font-size="13.5" font-weight="700" fill="#1E2838">2  Source Header Check</text>
+<text x="395.2" y="982" font-size="11.5" fill="#5F6C77">compares source headers with</text>
+<text x="395.2" y="998" font-size="11.5" fill="#5F6C77">ref_source_header_baseline; writes</text>
+<text x="395.2" y="1014" font-size="11.5" fill="#5F6C77">Source_Header_Audit; stops the run on</text>
+<text x="395.2" y="1030" font-size="11.5" fill="#5F6C77">a missing or renamed column and emails</text>
+<text x="395.2" y="1046" font-size="11.5" fill="#5F6C77">the owner</text>
+<text x="691.4" y="1000" font-size="16" fill="#167C88">›</text>
+<rect x="706.4" y="940" width="307.2" height="124" rx="8" fill="#F4F6F9" stroke="#D9E1E5"/>
+<text x="718.4" y="962" font-size="13.5" font-weight="700" fill="#1E2838">3  Staging layer</text>
+<text x="718.4" y="982" font-size="11.5" fill="#5F6C77">8 build functions: read a source tab,</text>
+<text x="718.4" y="998" font-size="11.5" fill="#5F6C77">keep and rename columns, cast types,</text>
+<text x="718.4" y="1014" font-size="11.5" fill="#5F6C77">normalise FY to "FY 26-27"</text>
+<text x="1014.5999999999999" y="1000" font-size="16" fill="#167C88">›</text>
+<rect x="1029.6" y="940" width="307.2" height="124" rx="8" fill="#F4F6F9" stroke="#D9E1E5"/>
+<text x="1041.6" y="962" font-size="13.5" font-weight="700" fill="#1E2838">4  Final layer</text>
+<text x="1041.6" y="982" font-size="11.5" fill="#5F6C77">6 build functions: fct1, fct2, fct3,</text>
+<text x="1041.6" y="998" font-size="11.5" fill="#5F6C77">fct4, fct5, then fct6 (reads fct1)</text>
+<text x="1337.8" y="1000" font-size="16" fill="#167C88">›</text>
+<rect x="1352.8" y="940" width="307.2" height="124" rx="8" fill="#F4F6F9" stroke="#D9E1E5"/>
+<text x="1364.8" y="962" font-size="13.5" font-weight="700" fill="#1E2838">5  Cardinality tests</text>
+<text x="1364.8" y="982" font-size="11.5" fill="#5F6C77">key uniqueness, no blank keys, grant</text>
+<text x="1364.8" y="998" font-size="11.5" fill="#5F6C77">ids exist in stg_grants; result in</text>
+<text x="1364.8" y="1014" font-size="11.5" fill="#5F6C77">Cardinality Test Results</text>
+<text x="60" y="1086" font-size="11.5" fill="#5F6C77">Support tabs: Index (all tab names, nothing hard-coded), Pipeline Log (one row per build function: rows written, duration, SUCCESS / ERROR). Edge colour = the fct_ table that reads the stg_ table; grey edges are 1 to 1 source to staging.</text>
+</svg>

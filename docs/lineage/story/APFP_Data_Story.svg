@@ -1,0 +1,105 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1500 960" width="1500" height="960" font-family="Raleway, 'Helvetica Neue', Arial, sans-serif">
+<rect width="1500" height="960" fill="#F4F6F7"/><rect width="1500" height="76" fill="#0E4A5C"/>
+<text x="40" y="36" font-size="26" font-weight="700" fill="#FFFFFF">How the dashboard numbers are made</text>
+<path d="M440,182.0 C515.0,182.0 515.0,168.5 590,168.5" fill="none" stroke="#167C88" stroke-width="2.2" opacity="0.8"/><circle cx="590" cy="168.5" r="4" fill="#167C88"/>
+<path d="M440,266.0 C515.0,266.0 515.0,175.5 590,175.5" fill="none" stroke="#167C88" stroke-width="2.2" opacity="0.8"/><circle cx="590" cy="175.5" r="4" fill="#167C88"/>
+<path d="M440,350.0 C515.0,350.0 515.0,182.5 590,182.5" fill="none" stroke="#167C88" stroke-width="2.2" opacity="0.8"/><circle cx="590" cy="182.5" r="4" fill="#167C88"/>
+<path d="M440,434.0 C515.0,434.0 515.0,189.5 590,189.5" fill="none" stroke="#167C88" stroke-width="2.2" opacity="0.8"/><circle cx="590" cy="189.5" r="4" fill="#167C88"/>
+<path d="M440,518.0 C515.0,518.0 515.0,196.5 590,196.5" fill="none" stroke="#167C88" stroke-width="2.2" opacity="0.8"/><circle cx="590" cy="196.5" r="4" fill="#167C88"/>
+<path d="M440,686.0 C515.0,686.0 515.0,203.5 590,203.5" fill="none" stroke="#167C88" stroke-width="2.2" opacity="0.8"/><circle cx="590" cy="203.5" r="4" fill="#167C88"/>
+<path d="M440,182.0 C515.0,182.0 515.0,406.5 590,406.5" fill="none" stroke="#EB6834" stroke-width="2.2" opacity="0.8"/><circle cx="590" cy="406.5" r="4" fill="#EB6834"/>
+<path d="M440,434.0 C515.0,434.0 515.0,413.5 590,413.5" fill="none" stroke="#EB6834" stroke-width="2.2" opacity="0.8"/><circle cx="590" cy="413.5" r="4" fill="#EB6834"/>
+<path d="M440,182.0 C515.0,182.0 515.0,518.5 590,518.5" fill="none" stroke="#8A6A2F" stroke-width="2.2" opacity="0.8"/><circle cx="590" cy="518.5" r="4" fill="#8A6A2F"/>
+<path d="M440,518.0 C515.0,518.0 515.0,525.5 590,525.5" fill="none" stroke="#8A6A2F" stroke-width="2.2" opacity="0.8"/><circle cx="590" cy="525.5" r="4" fill="#8A6A2F"/>
+<path d="M440,182.0 C515.0,182.0 515.0,630.5 590,630.5" fill="none" stroke="#4A3AA7" stroke-width="2.2" opacity="0.8"/><circle cx="590" cy="630.5" r="4" fill="#4A3AA7"/>
+<path d="M440,602.0 C515.0,602.0 515.0,637.5 590,637.5" fill="none" stroke="#4A3AA7" stroke-width="2.2" opacity="0.8"/><circle cx="590" cy="637.5" r="4" fill="#4A3AA7"/>
+<path d="M440,686.0 C515.0,686.0 515.0,742.5 590,742.5" fill="none" stroke="#E87BA4" stroke-width="2.2" opacity="0.8"/><circle cx="590" cy="742.5" r="4" fill="#E87BA4"/>
+<path d="M440,770.0 C515.0,770.0 515.0,749.5 590,749.5" fill="none" stroke="#E87BA4" stroke-width="2.2" opacity="0.8"/><circle cx="590" cy="749.5" r="4" fill="#E87BA4"/>
+<path d="M890,218 C890.0,218 890.0,266 890,266" fill="none" stroke="#5F6C77" stroke-width="2.2" opacity="0.8" stroke-dasharray="7 5"/><circle cx="890" cy="266" r="4" fill="#5F6C77"/>
+<path d="M950,186.0 C1045.0,186.0 1045.0,204.5 1140,204.5" fill="none" stroke="#167C88" stroke-width="2.2" opacity="0.8"/><circle cx="1140" cy="204.5" r="4" fill="#167C88"/>
+<path d="M950,410.0 C1045.0,410.0 1045.0,213.5 1140,213.5" fill="none" stroke="#EB6834" stroke-width="2.2" opacity="0.8"/><circle cx="1140" cy="213.5" r="4" fill="#EB6834"/>
+<path d="M950,522.0 C1045.0,522.0 1045.0,222.5 1140,222.5" fill="none" stroke="#8A6A2F" stroke-width="2.2" opacity="0.8"/><circle cx="1140" cy="222.5" r="4" fill="#8A6A2F"/>
+<path d="M950,634.0 C1045.0,634.0 1045.0,231.5 1140,231.5" fill="none" stroke="#4A3AA7" stroke-width="2.2" opacity="0.8"/><circle cx="1140" cy="231.5" r="4" fill="#4A3AA7"/>
+<path d="M950,186.0 C1045.0,186.0 1045.0,363.5 1140,363.5" fill="none" stroke="#167C88" stroke-width="2.2" opacity="0.8"/><circle cx="1140" cy="363.5" r="4" fill="#167C88"/>
+<path d="M950,746.0 C1045.0,746.0 1045.0,372.5 1140,372.5" fill="none" stroke="#E87BA4" stroke-width="2.2" opacity="0.8"/><circle cx="1140" cy="372.5" r="4" fill="#E87BA4"/>
+<path d="M950,186.0 C1045.0,186.0 1045.0,518.0 1140,518.0" fill="none" stroke="#167C88" stroke-width="2.2" opacity="0.8"/><circle cx="1140" cy="518.0" r="4" fill="#167C88"/>
+<path d="M950,186.0 C1045.0,186.0 1045.0,650.0 1140,650.0" fill="none" stroke="#167C88" stroke-width="2.2" opacity="0.8"/><circle cx="1140" cy="650.0" r="4" fill="#167C88"/>
+<path d="M950,298.0 C1045.0,298.0 1045.0,659.0 1140,659.0" fill="none" stroke="#5F6C77" stroke-width="2.2" opacity="0.8"/><circle cx="1140" cy="659.0" r="4" fill="#5F6C77"/>
+<path d="M950,410.0 C1045.0,410.0 1045.0,668.0 1140,668.0" fill="none" stroke="#EB6834" stroke-width="2.2" opacity="0.8"/><circle cx="1140" cy="668.0" r="4" fill="#EB6834"/>
+<path d="M950,522.0 C1045.0,522.0 1045.0,677.0 1140,677.0" fill="none" stroke="#8A6A2F" stroke-width="2.2" opacity="0.8"/><circle cx="1140" cy="677.0" r="4" fill="#8A6A2F"/>
+<path d="M950,634.0 C1045.0,634.0 1045.0,686.0 1140,686.0" fill="none" stroke="#4A3AA7" stroke-width="2.2" opacity="0.8"/><circle cx="1140" cy="686.0" r="4" fill="#4A3AA7"/>
+<text x="40" y="60" font-size="14" fill="#CFE3E6">Programme staff type the data once. The scripts clean it and build six dashboard-ready tables. The dashboard only reads those tables.</text>
+<rect x="40" y="92" width="400" height="46" rx="8" fill="#167C88"/>
+<text x="56" y="112" font-size="16" font-weight="700" fill="#FFFFFF">1  Where staff type</text>
+<text x="56" y="130" font-size="12" fill="#E2F2F4">APFP Central Administration workbook</text>
+<rect x="590" y="92" width="360" height="46" rx="8" fill="#167C88"/>
+<text x="606" y="112" font-size="16" font-weight="700" fill="#FFFFFF">2  Dashboard-ready tables</text>
+<text x="606" y="130" font-size="12" fill="#E2F2F4">cleaned and combined by the scripts</text>
+<rect x="1140" y="92" width="320" height="46" rx="8" fill="#167C88"/>
+<text x="1156" y="112" font-size="16" font-weight="700" fill="#FFFFFF">3  Where you see it</text>
+<text x="1156" y="130" font-size="12" fill="#E2F2F4">Looker Studio dashboard pages</text>
+<rect x="40" y="150" width="400" height="64" rx="9" fill="#FFFFFF" stroke="#B9C5CB" stroke-width="1.5"/>
+<text x="62" y="177" font-size="16" font-weight="700" fill="#1E2838">Grant register</text>
+<text x="62" y="199" font-size="12.5" fill="#5F6C77">8. Grant Registry  ·  Grants, amounts, dates, status</text>
+<rect x="40" y="234" width="400" height="64" rx="9" fill="#FFFFFF" stroke="#B9C5CB" stroke-width="1.5"/>
+<text x="62" y="261" font-size="16" font-weight="700" fill="#1E2838">Organisation register</text>
+<text x="62" y="283" font-size="12.5" fill="#5F6C77">9. Organisation Registry  ·  Mission, policies, registration</text>
+<rect x="40" y="318" width="400" height="64" rx="9" fill="#FFFFFF" stroke="#B9C5CB" stroke-width="1.5"/>
+<text x="62" y="345" font-size="16" font-weight="700" fill="#1E2838">Decision tracker</text>
+<text x="62" y="367" font-size="12.5" fill="#5F6C77">4. Decision Tracker  ·  Renew / close recommendations</text>
+<rect x="40" y="402" width="400" height="64" rx="9" fill="#FFFFFF" stroke="#B9C5CB" stroke-width="1.5"/>
+<text x="62" y="429" font-size="16" font-weight="700" fill="#1E2838">Outcome progress</text>
+<text x="62" y="451" font-size="12.5" fill="#5F6C77">2. Outcome Progress  ·  Targets and quarterly progress</text>
+<rect x="40" y="486" width="400" height="64" rx="9" fill="#FFFFFF" stroke="#B9C5CB" stroke-width="1.5"/>
+<text x="62" y="513" font-size="16" font-weight="700" fill="#1E2838">Organisation maturity</text>
+<text x="62" y="535" font-size="12.5" fill="#5F6C77">7. Organisation Maturity  ·  Red / Amber / Green ratings</text>
+<rect x="40" y="570" width="400" height="64" rx="9" fill="#FFFFFF" stroke="#B9C5CB" stroke-width="1.5"/>
+<text x="62" y="597" font-size="16" font-weight="700" fill="#1E2838">Support requests</text>
+<text x="62" y="619" font-size="12.5" fill="#5F6C77">3. Support  ·  Help asked for and given</text>
+<rect x="40" y="654" width="400" height="64" rx="9" fill="#FFFFFF" stroke="#B9C5CB" stroke-width="1.5"/>
+<text x="62" y="681" font-size="16" font-weight="700" fill="#1E2838">Committed and spent</text>
+<text x="62" y="703" font-size="12.5" fill="#5F6C77">6. Committed &amp; Spent Tracker  ·  Planned and actual payments</text>
+<rect x="40" y="738" width="400" height="64" rx="9" fill="#FFFFFF" stroke="#B9C5CB" stroke-width="1.5"/>
+<text x="62" y="765" font-size="16" font-weight="700" fill="#1E2838">Dividends</text>
+<text x="62" y="787" font-size="12.5" fill="#5F6C77">5. Dividends  ·  Dividend income per year</text>
+<rect x="590" y="154" width="360" height="64" rx="9" fill="#FFFFFF" stroke="#167C88" stroke-width="1.5"/>
+<rect x="590" y="154" width="8" height="64" rx="3" fill="#167C88"/>
+<text x="612" y="181" font-size="16" font-weight="700" fill="#1E2838">Grant portfolio</text>
+<text x="612" y="203" font-size="12.5" fill="#5F6C77">One row per grant: funding, decision, ratings</text>
+<rect x="590" y="266" width="360" height="64" rx="9" fill="#FFFFFF" stroke="#5F6C77" stroke-width="1.5"/>
+<rect x="590" y="266" width="8" height="64" rx="3" fill="#5F6C77"/>
+<text x="612" y="293" font-size="16" font-weight="700" fill="#1E2838">Annual information</text>
+<text x="612" y="315" font-size="12.5" fill="#5F6C77">This year next to last year (built from the portfolio)</text>
+<rect x="590" y="378" width="360" height="64" rx="9" fill="#FFFFFF" stroke="#EB6834" stroke-width="1.5"/>
+<rect x="590" y="378" width="8" height="64" rx="3" fill="#EB6834"/>
+<text x="612" y="405" font-size="16" font-weight="700" fill="#1E2838">Outcome progress</text>
+<text x="612" y="427" font-size="12.5" fill="#5F6C77">One row per outcome and quarter</text>
+<rect x="590" y="490" width="360" height="64" rx="9" fill="#FFFFFF" stroke="#8A6A2F" stroke-width="1.5"/>
+<rect x="590" y="490" width="8" height="64" rx="3" fill="#8A6A2F"/>
+<text x="612" y="517" font-size="16" font-weight="700" fill="#1E2838">Maturity ratings</text>
+<text x="612" y="539" font-size="12.5" fill="#5F6C77">One row per maturity indicator</text>
+<rect x="590" y="602" width="360" height="64" rx="9" fill="#FFFFFF" stroke="#4A3AA7" stroke-width="1.5"/>
+<rect x="590" y="602" width="8" height="64" rx="3" fill="#4A3AA7"/>
+<text x="612" y="629" font-size="16" font-weight="700" fill="#1E2838">Support activity</text>
+<text x="612" y="651" font-size="12.5" fill="#5F6C77">One row per support request</text>
+<rect x="590" y="714" width="360" height="64" rx="9" fill="#FFFFFF" stroke="#E87BA4" stroke-width="1.5"/>
+<rect x="590" y="714" width="8" height="64" rx="3" fill="#E87BA4"/>
+<text x="612" y="741" font-size="16" font-weight="700" fill="#1E2838">Budget by year</text>
+<text x="612" y="763" font-size="12.5" fill="#5F6C77">Dividends, commitments, payments, balance</text>
+<rect x="1140" y="180" width="320" height="76" rx="9" fill="#E2F2F4" stroke="#9CC9D0" stroke-width="1.5"/>
+<text x="1162" y="207" font-size="16" font-weight="700" fill="#1E2838">Portfolio</text>
+<text x="1162" y="229" font-size="12.5" fill="#5F6C77">Who we fund and how they are doing  ·  16 charts</text>
+<rect x="1140" y="330" width="320" height="76" rx="9" fill="#E2F2F4" stroke="#9CC9D0" stroke-width="1.5"/>
+<text x="1162" y="357" font-size="16" font-weight="700" fill="#1E2838">Funding</text>
+<text x="1162" y="379" font-size="12.5" fill="#5F6C77">Money in, committed, paid out  ·  12 charts</text>
+<rect x="1140" y="480" width="320" height="76" rx="9" fill="#E2F2F4" stroke="#9CC9D0" stroke-width="1.5"/>
+<text x="1162" y="507" font-size="16" font-weight="700" fill="#1E2838">Decision Queue</text>
+<text x="1162" y="529" font-size="12.5" fill="#5F6C77">Renewals and closures to decide  ·  7 charts</text>
+<rect x="1140" y="630" width="320" height="76" rx="9" fill="#E2F2F4" stroke="#9CC9D0" stroke-width="1.5"/>
+<text x="1162" y="657" font-size="16" font-weight="700" fill="#1E2838">Grantee 360</text>
+<text x="1162" y="679" font-size="12.5" fill="#5F6C77">One organisation in full  ·  8 charts</text>
+<rect x="40" y="842" width="1420" height="92" rx="10" fill="#FFFFFF" stroke="#CBD5DA"/>
+<text x="60" y="870" font-size="15" font-weight="700" fill="#0E4A5C">Want the detail?</text>
+<text x="60" y="894" font-size="13" fill="#5F6C77">Data_Dictionary tab: every column, what it holds, which source tab and column it comes from, which charts use it.</text>
+<text x="60" y="914" font-size="13" fill="#5F6C77">Chart_Passport tab: every chart, what it shows, its filter, the table and the source tabs behind it. Both are rebuilt on every pipeline run.</text>
+</svg>

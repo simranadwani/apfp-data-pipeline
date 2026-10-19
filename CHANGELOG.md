@@ -3,6 +3,102 @@
 All notable changes to the APFP data pipeline. Newest first.
 Each entry lists what changed, which files, and why.
 
+## [0.1.19] — 2026-10-19
+
+### Changed — source workbook switched to the real "APFP Central Administration"
+- **What:** `SOURCE_SPREADSHEET_ID` is now `1XnmRn83_ihykh9F5bczIfi49247sBH4rqXWl3_e4YZ4` (was the "Dummy Data" workbook).
+- **Files:** `Pipeline.js`, `PIPELINE_LOGIC.md`.
+- **Why:** the pipeline should read the live workbook. Checked read-only before the change: all 8 source tabs exist, every header the
+  pipeline requires is present (Source Header Check will pass, no baseline reset needed), 36 grants and 36 organisations in FY 2026-27 with
+  no duplicate or orphan ids, 14 outcome rows and 385 maturity rows link to real grants.
+- **Data gaps in the new workbook (not code errors):** `3. Support` has no rows; `4. Decision Tracker` has 14 rows and `6. Committed & Spent
+  Tracker` 12 rows with a blank Grant ID (only dates / FY pre-filled); `5. Dividends` has no amounts. The run still completes, but the
+  cardinality tests will report WARN for stg_support (no rows), stg_decisions and stg_disbursements (blank grant_id), and the decision,
+  support and funding charts stay empty until those tabs are filled.
+- **After merging:** `clasp push`, then `runCompletePipeline`. Looker Studio is unaffected (it reads the Data Pipeline workbook).
+
+## [0.1.18] — 2026-10-14
+
+### Added — lineage v2: native draw.io tables on one grid, and an Excel spec to build it elsewhere (docs and tooling only)
+- **What:**
+  - `docs/lineage/APFP_Data_Lineage_v2.drawio` (10 pages): Map; src to stg for ALL 8 tabs on one page (src table and stg table side by
+    side, name and type, straight arrows); fct: all 6 final tables with every column on one page; then one page per fct table
+    (stg tables on the left, the fct table arranged by source with an arrow for copied columns and calculated columns marked
+    with the f sign, then a band "Dashboard fields and charts built from this table": fct columns, dashboard field, charts, and
+    the charts that read columns directly); glossary and key. Every src / stg / fct table is ONE native draw.io table, exact names only.
+    Fix: cells after the first in a row now carry their x offset (without it draw.io piles all cells of a row on top of each other).
+  - Fixed colours: lilac = key column (cardinality tests and every `*_id`), yellow = number, green = true / false,
+    blue = dashboard metric; header colour = layer (src grey, stg teal, fct dark teal, dashboard blue); one arrow colour.
+  - `docs/lineage/APFP_Lineage_Spec.xlsx`: the whole diagram as data for another tool (for example ChatGPT): README and prompt,
+    Style_Guide, Grid, Row_Styles (exact draw.io style strings), Pages, Tables, Columns, Edges_Column, Edges_Table, Metrics,
+    Charts, Shapes (every table, row, cell, shape with coordinates), Shape_Edges (every arrow), Checks, Reference_Script,
+    Reference_Images. `rebuild_from_xlsx.py` rebuilds the .drawio from the workbook alone; verified identical to the generator's file (2,640 objects and cells).
+  - `npm run lineage` now also checks the v2 diagram against the code; `export_model.js` exports the cardinality key columns.
+- **Files:** `docs/lineage/lineage_pages.py`, `export_spec_xlsx.py`, `rebuild_from_xlsx.py`, `build_v2.py` (palette, classify),
+  `lineage_model.py` (blocks), `APFP_Data_Lineage_v2.drawio`, `APFP_Lineage_Spec.xlsx`, `v2_preview/`, `pilot/`, `tests/lineage_check.js`.
+- **Why:** the first diagrams were too dense and inconsistent. v2 uses real tables, one layout template and one colour rule, and the
+  workbook lets the diagram be recreated or restyled in any tool.
+- **Regenerate:** `python3 docs/lineage/lineage_pages.py && python3 docs/lineage/export_spec_xlsx.py`.
+
+## [0.1.17] — 2026-10-14
+
+### Added — plain-language lineage for clients: one-page picture plus two lookup tabs
+- **What:**
+  - `Data_Dictionary` tab (pipeline workbook): one row per dashboard-ready column (123 rows) with what it holds, how it is
+    made (copied / looked up / calculated / fixed), the source tab and source column it comes from, and the charts that use it.
+  - `Chart_Passport` tab: one row per dashboard chart or tile (43 rows) with the page, what it shows, the filter in
+    plain words, the table, the columns used and the source tabs behind it.
+  - Both are written by the pipeline on every run (`buildDataDictionary`, `buildChartPassport`, at the end of the final
+    layer), so they list exactly the columns that exist. Source tabs are traced through `lineage_model.py`, including
+    fct6 back through fct1 to the source.
+  - One-page picture `docs/lineage/story/APFP_Data_Story.drawio` (+ `.svg`, `.png`): source tabs, six dashboard-ready
+    tables, four dashboard pages, 27 arrows, table level only, plain words.
+- **Files:** `Lineage.js`, `LineageData.js` (generated), `Index.js` (two rows, layer `doc`), `Pipeline.js`,
+  `docs/lineage/chart_passport.py`, `docs/lineage/export_catalog.py`, `docs/lineage/make_story.py`, `tests/harness.js`,
+  `tests/pipeline.test.js` (3 new tests; the log-count assertion 16 to 18), README, DATA_LINEAGE.md.
+- **Why:** the 16-page column-level diagram is right for the data team but cumbersome for clients. Clients ask "where does
+  this number come from?": a filterable table answers that faster than arrows, and the picture gives the big idea on one
+  page. The column-level diagram stays as a technical appendix.
+- **Keeping it current:** a new final column needs one line in `docs/lineage/lineage_model.py`, then
+  `python3 docs/lineage/export_catalog.py`; a new chart needs one line in `chart_passport.py`. `npm test` fails if
+  `LineageData.js` is stale or a column has no description.
+- **After merging:** `clasp push` and run `runCompletePipeline` (the Index tab self-heals with the two new rows).
+  Share the two tabs view-only, or publish them as a Looker Studio data source page if clients should not see the workbook.
+
+## [0.1.16] — 2026-10-14
+
+### Added — column-level, client-readable lineage in draw.io (docs and tooling only)
+- **What:** `docs/lineage/APFP_Data_Lineage.drawio` (16 pages, plain XML) with: how the pieces fit, the journey of the
+  data, the source tabs and their columns, source to staging (3 pages), an index of the six final tables with every
+  column, one page per final table showing each staging column flowing to each final column with a plain-language rule
+  and the charts it feeds, how the dashboard metrics are made from final columns, three numbers traced step by step,
+  and a glossary with a colour and arrow key. Tables are draw.io containers with one row per column (friendly name,
+  technical name, type), colour-coded by kind (identifier, text, number, date, true/false flag, ready-to-show text,
+  sort helper); arrows attach to the rows and follow when boxes move; each row carries searchable properties (rule,
+  description, owner, last checked). PNG previews of every page are in `docs/lineage/preview/`.
+  - `docs/lineage/lineage_model.py` is the one hand-editable file holding "which column feeds which" and the rule text;
+    `docs/lineage/build_drawio.py` builds the diagram and fails if the model and the code disagree;
+    `docs/lineage/export_model.js` exports the real column lists to `code_columns.json`.
+  - `npm run lineage` (`tests/lineage_check.js`) lists columns that are in the scripts but missing from the diagram and
+    the reverse (verified to catch a renamed column). Not part of `npm test`, so a diagram being edited by hand never
+    blocks a code change.
+- **Files:** `docs/lineage/*`, `docs/DATA_LINEAGE.md`, `tests/lineage_check.js`, `package.json`, `.gitignore`.
+- **Why:** The one-page lineage was clear to the team but too technical for clients. The new diagram starts with the big
+  picture in plain words and drills down to every column. It is maintained by hand in draw.io; the check keeps it honest.
+
+## [0.1.15] — 2026-10-14
+
+### Added — data lineage diagram (docs only)
+- **What:** `docs/DATA_LINEAGE.md` with a diagram (`docs/lineage/data_lineage.png` and `.svg`, plus the script that
+  draws it) showing the 8 source tabs of the Central Administration workbook, the 8 staging tables, the 6 final
+  tables, the Looker Studio data sources and charts they feed, the control tabs and the run order. It also records
+  why there is no intermediate (`int_`) layer, and that `fct6` is the only final table that reads another final table.
+  A text (Mermaid) version is included.
+- **Files:** `docs/DATA_LINEAGE.md`, `docs/lineage/data_lineage.png`, `docs/lineage/data_lineage.svg`,
+  `docs/lineage/make_svg.py`.
+- **Why:** Product owner needs a lineage diagram for documentation. The edges were taken from the code
+  (`Index.js` and the `readSheet` calls in `Final.js`). No script change.
+
 ## [0.1.14] — 2026-10-06
 
 ### Changed — five derived Looker fields now come from the pipeline (`fct1_grant_portfolio`)
