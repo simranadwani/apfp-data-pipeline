@@ -3,6 +3,20 @@
 All notable changes to the APFP data pipeline. Newest first.
 Each entry lists what changed, which files, and why.
 
+## [0.1.19] — 2026-10-19
+
+### Changed — source workbook switched to the real "APFP Central Administration"
+- **What:** `SOURCE_SPREADSHEET_ID` is now `1XnmRn83_ihykh9F5bczIfi49247sBH4rqXWl3_e4YZ4` (was the "Dummy Data" workbook).
+- **Files:** `Pipeline.js`, `PIPELINE_LOGIC.md`.
+- **Why:** the pipeline should read the live workbook. Checked read-only before the change: all 8 source tabs exist, every header the
+  pipeline requires is present (Source Header Check will pass, no baseline reset needed), 36 grants and 36 organisations in FY 2026-27 with
+  no duplicate or orphan ids, 14 outcome rows and 385 maturity rows link to real grants.
+- **Data gaps in the new workbook (not code errors):** `3. Support` has no rows; `4. Decision Tracker` has 14 rows and `6. Committed & Spent
+  Tracker` 12 rows with a blank Grant ID (only dates / FY pre-filled); `5. Dividends` has no amounts. The run still completes, but the
+  cardinality tests will report WARN for stg_support (no rows), stg_decisions and stg_disbursements (blank grant_id), and the decision,
+  support and funding charts stay empty until those tabs are filled.
+- **After merging:** `clasp push`, then `runCompletePipeline`. Looker Studio is unaffected (it reads the Data Pipeline workbook).
+
 ## [0.1.18] — 2026-10-14
 
 ### Added — lineage v2: native draw.io tables on one grid, and an Excel spec to build it elsewhere (docs and tooling only)

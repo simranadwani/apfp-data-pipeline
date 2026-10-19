@@ -5,7 +5,7 @@
  * (see PIPELINE_LOGIC.md for why). No triggers are installed; run it by hand.
  */
 
-const SOURCE_SPREADSHEET_ID = '18waNT2rH8HtErPqL3ERGNPNlSTXD-DfJc4quzzEhfkw'; // APFP Central Administration (source)
+const SOURCE_SPREADSHEET_ID = '1XnmRn83_ihykh9F5bczIfi49247sBH4rqXWl3_e4YZ4'; // APFP Central Administration (source)
 const PIPELINE_SPREADSHEET_ID = '1bjMmSxdN9RYJ6-Odgobqs4MedVy2QOMDYKLdKX08L00'; // Data Pipeline (output)
 
 function runCompletePipeline() {

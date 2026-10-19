@@ -3,7 +3,7 @@
 How the APFP Looker Studio dashboard tables are built from the APFP Central Administration workbook.
 Built to the Goalkeep *Data Pipeline Build Phase SoP v1.0*.
 
-- **Source workbook:** APFP Central Administration (`18waNT2rH8HtErPqL3ERGNPNlSTXD-DfJc4quzzEhfkw`)
+- **Source workbook:** APFP Central Administration (`1XnmRn83_ihykh9F5bczIfi49247sBH4rqXWl3_e4YZ4`)
 - **Pipeline workbook:** Data Pipeline (`1bjMmSxdN9RYJ6-Odgobqs4MedVy2QOMDYKLdKX08L00`)
 - **Dashboard spec:** APFP Dashboard Mockup → *Fact Tables* tab (T1–T5)
 
