@@ -3,6 +3,17 @@
 All notable changes to the APFP data pipeline. Newest first.
 Each entry lists what changed, which files, and why.
 
+## [0.1.20] — 2026-10-20
+
+### Added — Cowork prompt to investigate "Data Set Configuration Error" charts (docs only)
+- **What:** `docs/COWORK_INVESTIGATE_CONFIG_ERRORS.md`: a read-only investigation prompt (Part A) plus limited field-type experiments (Part B).
+- **Why:** after the source switch (0.1.19) the owner's export `APFP_Grant_Portfolio_Dashboard_5.pdf` shows the error on 1.04, 1.12 (chart and scorecard), 1.13,
+  1.14, 1.15, 2.07, 3.04, 3.05, 3.07, 4.06, 4.07 and the 4.08 proposed amount, while text-only charts on the same data show 0 or "null".
+  Pattern: the errors sit on tables with zero rows (fct2, fct3) or use a field that is blank in every row (proposed_amount, decision_due_date,
+  due_window_order, funding_range_order, status_order) as a number, date or numeric sort, which Looker types as Text. The prompt asks Cowork to confirm this
+  with the exact messages from "See details" before any pipeline change is decided.
+- **Files:** `docs/COWORK_INVESTIGATE_CONFIG_ERRORS.md`, `CHANGELOG.md`.
+
 ## [0.1.19] — 2026-10-19
 
 ### Changed — source workbook switched to the real "APFP Central Administration"
