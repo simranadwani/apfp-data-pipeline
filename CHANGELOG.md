@@ -3,6 +3,15 @@
 All notable changes to the APFP data pipeline. Newest first.
 Each entry lists what changed, which files, and why.
 
+## [0.1.21] — 2026-10-22
+
+### Added — Cowork prompt to test how Looker Studio treats empty sheets (docs only)
+- **What:** `docs/COWORK_TEST_EMPTY_STATES.md`: builds a scratch sheet and report and tests scenarios (header only, blank columns, zeros instead of blanks,
+  one placeholder "anchor" row, anchor row plus blank columns, anchor row on an all-years chart, optional Sheets Table).
+- **Why:** charts on empty pipeline tables show "Data Set Configuration Error" instead of "No data". Before changing the pipeline we need evidence which sheet shapes
+  give an error and whether a placeholder row keeps the schema so charts show "No data". The test touches only two new scratch files.
+- **Files:** `docs/COWORK_TEST_EMPTY_STATES.md`, `CHANGELOG.md`.
+
 ## [0.1.20] — 2026-10-20
 
 ### Added — Cowork prompt to investigate "Data Set Configuration Error" charts (docs only)
