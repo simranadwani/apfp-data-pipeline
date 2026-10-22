@@ -5,11 +5,13 @@ Each entry lists what changed, which files, and why.
 
 ## [0.1.21] — 2026-10-22
 
-### Added — Cowork prompt to test how Looker Studio treats empty sheets (docs only)
-- **What:** `docs/COWORK_TEST_EMPTY_STATES.md`: builds a scratch sheet and report and tests scenarios (header only, blank columns, zeros instead of blanks,
-  one placeholder "anchor" row, anchor row plus blank columns, anchor row on an all-years chart, optional Sheets Table).
+### Added — Cowork prompt to test how Looker Studio treats empty sheets, on a copy of the real dashboard (docs only)
+- **What:** `docs/COWORK_TEST_EMPTY_STATES.md`. Cowork copies the owner's sample fact-table sheet (link given by the owner) and the real report, switches the
+  copy's seven data sources to the sheet copy, checks the baseline on every chart (1.01 to 4.08), then tests scenarios by editing only the sheet copy: header-only
+  tables (fct2, fct3), blank columns (fct1, fct5), zeros instead of blanks, one placeholder "anchor" row on empty tables and with blank columns, a stray anchor row on the
+  all-years charts with a chart-level filter, and an optional Sheets Table. The original report and sheets are never edited.
 - **Why:** charts on empty pipeline tables show "Data Set Configuration Error" instead of "No data". Before changing the pipeline we need evidence which sheet shapes
-  give an error and whether a placeholder row keeps the schema so charts show "No data". The test touches only two new scratch files.
+  give an error and whether a placeholder row keeps the schema, tested on the real charts and calculated fields rather than a toy report.
 - **Files:** `docs/COWORK_TEST_EMPTY_STATES.md`, `CHANGELOG.md`.
 
 ## [0.1.20] — 2026-10-20
