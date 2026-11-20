@@ -913,7 +913,7 @@ const LINEAGE_DATA = {
    ]
   },
   "fct2_outcome_progress.quarter": {
-   "meaning": "Q1 to Q4 turned into rows: one row per reported quarter",
+   "meaning": "Q1 to Q4 turned into rows: one row per reported quarter; empty on the placeholder row of an outcome with nothing reported",
    "how": "Calculated",
    "source_tabs": [
     "2. Outcome Progress"
@@ -1083,7 +1083,7 @@ const LINEAGE_DATA = {
    "charts": []
   },
   "fct2_outcome_progress.is_latest_update": {
-   "meaning": "True for the latest reported quarter of the outcome",
+   "meaning": "True for the latest reported quarter of the outcome, and on the placeholder row of an outcome with nothing reported",
    "how": "Calculated",
    "source_tabs": [
     "2. Outcome Progress"
@@ -1104,6 +1104,45 @@ const LINEAGE_DATA = {
    ],
    "charts": [
     "1.12"
+   ]
+  },
+  "fct2_outcome_progress.has_update": {
+   "meaning": "True when the row comes from a reported quarter, False on the placeholder row of an outcome with nothing reported",
+   "how": "Calculated",
+   "source_tabs": [
+    "2. Outcome Progress"
+   ],
+   "source_columns": [
+    "2. Outcome Progress > Q1 Anagha Notes",
+    "2. Outcome Progress > Q1 Progress",
+    "2. Outcome Progress > Q1 Status",
+    "2. Outcome Progress > Q2 Anagha Notes",
+    "2. Outcome Progress > Q2 Progress",
+    "2. Outcome Progress > Q2 Status",
+    "2. Outcome Progress > Q3 Anagha Notes",
+    "2. Outcome Progress > Q3 Progress",
+    "2. Outcome Progress > Q3 Status",
+    "2. Outcome Progress > Q4 Anagha Notes",
+    "2. Outcome Progress > Q4 Progress",
+    "2. Outcome Progress > Q4 Status"
+   ],
+   "charts": []
+  },
+  "fct2_outcome_progress.reporting_status": {
+   "meaning": "On Track or Off Track from the quarter status; Not yet reported when the status is blank",
+   "how": "Calculated",
+   "source_tabs": [
+    "2. Outcome Progress"
+   ],
+   "source_columns": [
+    "2. Outcome Progress > Q1 Status",
+    "2. Outcome Progress > Q2 Status",
+    "2. Outcome Progress > Q3 Status",
+    "2. Outcome Progress > Q4 Status"
+   ],
+   "charts": [
+    "1.12",
+    "4.06"
    ]
   },
   "fct3_support_activity.financial_year": {
@@ -1899,7 +1938,8 @@ const LINEAGE_DATA = {
     "outcome_id",
     "quarter",
     "status",
-    "is_latest_update"
+    "is_latest_update",
+    "reporting_status"
    ],
    "source_tabs": [
     "2. Outcome Progress"
@@ -2380,7 +2420,8 @@ const LINEAGE_DATA = {
     "quarter",
     "status",
     "annual_achievement_pct",
-    "latest_notes"
+    "latest_notes",
+    "reporting_status"
    ],
    "source_tabs": [
     "2. Outcome Progress"

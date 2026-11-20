@@ -42,7 +42,7 @@ The `System - *` tabs are not read.
 | `Index` | util | One row per tab. Scripts read every tab name from here (SoP 1.2) |
 | `stg_*` (8 tabs) | stg | Same grain as the source tab |
 | `fct1_grant_portfolio` | fct | One row per `grant_id` |
-| `fct2_outcome_progress` | fct | One row per `grant_id` × `outcome_id` × reported `quarter` |
+| `fct2_outcome_progress` | fct | One row per `grant_id` × `outcome_id` × reported `quarter`, plus one placeholder row per outcome with nothing reported |
 | `fct3_support_activity` | fct | One row per `support_id` |
 | `fct4_budget_year` | fct | One row per `financial_year` |
 | `fct5_maturity_rag` | fct | One row per `grant_id` × `aspect` × `indicator` |
@@ -157,9 +157,9 @@ Source for every row: `stg_grants`. Joins: `stg_organisations` on `organization_
 | due_window_order | number | derived | Sort helper for `due_window`: Overdue 1, 0–30 days 2, 31–60 days 3, 61+ days 4; blank when there is no window |
 | funding_range_order | number | derived | Sort helper for `funding_range`: <₹1 lakh 1, ₹1–10 lakh 2, ₹11–20 lakh 3, ₹21–50 lakh 4, >₹50 lakh 5; blank when there is no range. Last column |
 
-### fct2_outcome_progress — one row per grant × outcome × reported quarter (T2)
+### fct2_outcome_progress — one row per grant × outcome × reported quarter, plus a placeholder row for each outcome with nothing reported (T2)
 
-Built by unpivoting Q1–Q4 in `stg_outcome_progress`. A quarter gets a row only when it has a status, progress or notes, so unreported future quarters don't count.
+Built by unpivoting Q1–Q4 in `stg_outcome_progress`. A quarter gets a row only when it has a status, progress or notes, so unreported future quarters don't count. An outcome with no reported quarter at all gets exactly one placeholder row (`has_update` = FALSE) carrying its definition columns (year, grant, organisation, thematic area, grant status, outcome, target) so it still shows on the dashboard; `quarter`, `status`, the achievement figures, notes and evidence link stay blank and `is_latest_update` is TRUE. An outcome that has any reported quarter never gets a placeholder.
 
 | Column | Type | Source | Logic |
 |---|---|---|---|
@@ -179,7 +179,9 @@ Built by unpivoting Q1–Q4 in `stg_outcome_progress`. A quarter gets a row only
 | outcome_notes | text | Qn Anagha Notes | As source |
 | latest_notes | text | Qn Anagha Notes | Notes of the outcome's latest reported quarter. Repeated on every quarter row so a table can show one note per outcome |
 | evidence_link | text | Qn Evidence Link | As source |
-| is_latest_update | boolean | derived | TRUE on the outcome's latest quarter that has a status (for "latest update" scorecards) |
+| is_latest_update | boolean | derived | TRUE on the outcome's latest quarter that has a status (for "latest update" scorecards), and on the placeholder row of an outcome with nothing reported |
+| has_update | boolean | derived | TRUE when the row comes from a reported quarter, FALSE on a placeholder row. Last-but-one column |
+| reporting_status | text | derived | `On Track` / `Off Track` from `status`; `Not yet reported` when `status` is blank (placeholders and reported quarters without a status). `status` itself stays as in the source. Last column |
 
 ### fct3_support_activity — one row per support request (T3)
 

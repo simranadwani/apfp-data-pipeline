@@ -38,6 +38,7 @@ const FCT2_HEADERS = [
   'outcome_id', 'outcome_indicator', 'quarter', 'status', 'target_text', 'target_value',
   'achieved_value', 'outcome_achievement_pct', 'final_actual_value', 'annual_achievement_pct',
   'outcome_notes', 'latest_notes', 'evidence_link', 'is_latest_update',
+  'has_update', 'reporting_status',
 ];
 
 const FCT3_HEADERS = [
@@ -180,7 +181,8 @@ function buildFct1GrantPortfolio(ss, idx) {
 }
 
 // ---------------------------------------------------------------------------
-// fct2_outcome_progress — one row per grant_id × outcome_id × reported quarter
+// fct2_outcome_progress — one row per grant_id × outcome_id × reported quarter,
+// plus one placeholder row (has_update = FALSE) for each outcome with no reported quarter
 // ---------------------------------------------------------------------------
 function buildFct2OutcomeProgress(ss, idx) {
   const grantById = indexBy(readSheet(ss, idx.STG_GRANTS), 'grant_id');
@@ -194,12 +196,14 @@ function buildFct2OutcomeProgress(ss, idx) {
     const latest = latestReportedQuarter(o);
     const finalActual = parseMeasure(o.final_actual_text);
     const latestNotes = latest ? o[latest.toLowerCase() + '_notes'] : '';
+    let reportedQuarters = 0;
     QUARTERS.forEach(function (q) {
       const p = q.toLowerCase();
       const status = o[p + '_status'];
       const progress = o[p + '_progress'];
       if (isBlank(status) && isBlank(progress) && isBlank(o[p + '_notes'])) return; // quarter not reported yet
       const achieved = parseMeasure(progress);
+      reportedQuarters++;
       rows.push({
         financial_year: o.financial_year,
         grant_id: o.grant_id,
@@ -221,8 +225,28 @@ function buildFct2OutcomeProgress(ss, idx) {
         latest_notes: latestNotes,
         evidence_link: o[p + '_evidence_link'],
         is_latest_update: q === latest,
+        has_update: true,
+        reporting_status: outcomeReportingStatus(status),
       });
     });
+    if (reportedQuarters === 0) {
+      // Nothing reported yet: keep one definition row so the outcome still shows on the dashboard.
+      rows.push({
+        financial_year: o.financial_year,
+        grant_id: o.grant_id,
+        organization_id: g.organization_id,
+        organisation: g.organisation || o.organisation,
+        thematic_area: g.thematic_area,
+        grant_status: g.grant_status,
+        outcome_id: o.outcome_id,
+        outcome_indicator: o.outcome_indicator,
+        target_text: o.target_text,
+        target_value: target === null ? '' : target,
+        is_latest_update: true,
+        has_update: false,
+        reporting_status: outcomeReportingStatus(''),
+      });
+    }
   });
   return writeSheet(ss, idx.FCT2_OUTCOME_PROGRESS, FCT2_HEADERS, rows);
 }
@@ -462,6 +486,11 @@ function parseMeasure(text) {
 }
 
 /** Latest quarter (Q4 → Q1) with a status for this outcome row, or ''. */
+function outcomeReportingStatus(status) {
+  const s = String(status || '').trim().toLowerCase();
+  return s === 'on track' ? 'On Track' : s === 'off track' ? 'Off Track' : 'Not yet reported';
+}
+
 function latestReportedQuarter(outcomeRow) {
   for (let i = QUARTERS.length - 1; i >= 0; i--) {
     if (!isBlank(outcomeRow[QUARTERS[i].toLowerCase() + '_status'])) return QUARTERS[i];

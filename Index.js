@@ -28,7 +28,7 @@ const INDEX_DEFAULTS = [
   ['STG_MATURITY', 'stg_maturity', 'stg', 'One row per grant_id x aspect x indicator', 'Cleaned Organisation Maturity RAG ratings'],
 
   ['FCT1_GRANT_PORTFOLIO', 'fct1_grant_portfolio', 'fct', 'One row per grant_id', 'Grant-level portfolio, funding, decision and organisation profile for all dashboard views'],
-  ['FCT2_OUTCOME_PROGRESS', 'fct2_outcome_progress', 'fct', 'One row per grant_id x outcome_id x quarter (reported quarters only)', 'Quarterly outcome progress and status'],
+  ['FCT2_OUTCOME_PROGRESS', 'fct2_outcome_progress', 'fct', 'One row per grant_id x outcome_id x reported quarter, plus one placeholder row per outcome with nothing reported', 'Quarterly outcome progress and status'],
   ['FCT3_SUPPORT_ACTIVITY', 'fct3_support_activity', 'fct', 'One row per support_id', 'Support needs raised and APFP responses'],
   ['FCT4_BUDGET_YEAR', 'fct4_budget_year', 'fct', 'One row per financial_year', 'Dividends, carry-forward, commitments, disbursements and unallocated balance'],
   ['FCT5_MATURITY_RAG', 'fct5_maturity_rag', 'fct', 'One row per grant_id x aspect x indicator', 'Maturity RAG at indicator level for portfolio and Grantee 360 views'],

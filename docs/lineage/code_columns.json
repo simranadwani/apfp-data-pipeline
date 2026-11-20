@@ -631,7 +631,9 @@
    "outcome_notes",
    "latest_notes",
    "evidence_link",
-   "is_latest_update"
+   "is_latest_update",
+   "has_update",
+   "reporting_status"
   ],
   "fct3_support_activity": [
    "financial_year",

@@ -3,6 +3,25 @@
 All notable changes to the APFP data pipeline. Newest first.
 Each entry lists what changed, which files, and why.
 
+## [0.1.20] — 2026-11-20
+
+### Changed — fct2_outcome_progress now lists every outcome, reported or not
+- **What:** an outcome with no reported quarter gets exactly one placeholder row (`has_update` = FALSE) carrying its definition columns
+  (`financial_year`, `grant_id`, `organization_id`, `organisation`, `thematic_area`, `grant_status`, `outcome_id`, `outcome_indicator`,
+  `target_text`, `target_value`). `quarter`, `status`, the achievement figures, notes and `evidence_link` stay blank; `is_latest_update` is
+  TRUE so the "Latest update only" filter in 1.12 keeps working. Two columns are appended at the end: `has_update` (TRUE for rows from a
+  reported quarter) and `reporting_status` (`On Track` / `Off Track` / `Not yet reported`). `status` is unchanged. Reported rows keep their values.
+- **Files:** `Final.js` (`buildFct2OutcomeProgress`, `FCT2_HEADERS`, new `outcomeReportingStatus`), `Tests.js`, `Index.js`,
+  `PIPELINE_LOGIC.md`, `docs/lineage/lineage_model.py`, `docs/lineage/chart_passport.py`, `docs/lineage/code_columns.json`, `LineageData.js`
+  (regenerated, feeds Data_Dictionary and Chart_Passport), `docs/looker_calculated_fields.txt`, `tests/pipeline.test.js`.
+- **Why:** FY 26-27 outcomes have no quarter reported yet, so they had no fct2 row and chart 1.12 / 4.06 looked empty for the whole current year.
+- **Tests:** fct2 `not_null` / `unique` on `grant_id, outcome_id, quarter` now apply to reported rows only; new `unique(grant_id, outcome_id)` on
+  placeholder rows and a new `covers_every_outcome(stg_outcome_progress)` check. Local fixture: fct1 identical before and after, existing fct2 rows unchanged.
+- **Looker change needed (not done by the pipeline):** refresh the fct2 data source; set `has_update` (Boolean) and `reporting_status` (Text);
+  change `pct_outcomes_on_track` so its denominator counts only outcomes with a reported status (formula in `docs/looker_calculated_fields.txt`),
+  otherwise the placeholders pull it towards 0%.
+- **After merging:** `clasp push`, then `runCompletePipeline`.
+
 ## [0.1.19] — 2026-10-19
 
 ### Changed — source workbook switched to the real "APFP Central Administration"

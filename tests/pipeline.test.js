@@ -106,6 +106,40 @@ test('fct2 carries target text, annual achievement and the latest notes on every
   Object.values(byOutcome).forEach((set) => assert.equal(set.size, 1));
 });
 
+test('fct2 gives an outcome with no reported quarter exactly one placeholder row and leaves reported outcomes alone', () => {
+  const base = runFull();
+  const before = base.tab('fct2_outcome_progress');
+  const src = clone(require('./fixtures/source_dummy.json'));
+  const op = src['2. Outcome Progress'];
+  const hdr = op[1];
+  op.slice(2).filter((r) => r[hdr.indexOf('Grant ID')] === 'BRIGH_01_202627_301').forEach((r) => {
+    hdr.forEach((name, i) => { if (/^Q[1-4] /.test(name) || name === 'Final Actual') r[i] = ''; });
+  });
+  const h = runFull(src);
+  const rows = h.tab('fct2_outcome_progress');
+  const mine = rows.filter((r) => r.grant_id === 'BRIGH_01_202627_301');
+  assert.equal(mine.length, 1);
+  const p = mine[0];
+  assert.equal(p.has_update, false);
+  assert.equal(p.is_latest_update, true);
+  assert.equal(p.reporting_status, 'Not yet reported');
+  assert.equal(p.quarter, '');
+  assert.equal(p.status, '');
+  assert.equal(p.target_text, '70% of annual target');
+  assert.equal(p.target_value, 0.7);
+  ['achieved_value', 'outcome_achievement_pct', 'final_actual_value', 'annual_achievement_pct', 'outcome_notes', 'latest_notes', 'evidence_link']
+    .forEach((c) => assert.equal(p[c], '', c));
+  assert.equal(p.organisation, before.find((r) => r.grant_id === p.grant_id).organisation);
+  // Every other outcome is untouched, apart from the two new columns.
+  const strip = (r) => JSON.stringify(Object.assign({}, r, { has_update: undefined, reporting_status: undefined }));
+  const others = rows.filter((r) => r.grant_id !== p.grant_id);
+  assert.deepEqual(others.map(strip), before.filter((r) => r.grant_id !== p.grant_id).map(strip));
+  others.forEach((r) => { assert.equal(r.has_update, true); assert.ok(['On Track', 'Off Track', 'Not yet reported'].includes(r.reporting_status)); });
+  assert.deepEqual(h.tab('Cardinality Test Results').filter((r) => r.status !== 'PASS'), []);
+  // fct1 does not read fct2, so it is identical.
+  assert.deepEqual(h.tab('fct1_grant_portfolio').map((r) => r.total_outcomes_count), base.tab('fct1_grant_portfolio').map((r) => r.total_outcomes_count));
+});
+
 test('grant_status is present on fct2, fct3 and fct5 so the Grant Status filter reaches every table', () => {
   const h = runFull();
   const grantStatus = Object.fromEntries(h.tab('fct1_grant_portfolio').map((r) => [r.grant_id, r.grant_status]));

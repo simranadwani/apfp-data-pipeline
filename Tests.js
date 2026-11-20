@@ -16,7 +16,8 @@ const CARDINALITY_SPECS = [
   { key: 'STG_DISBURSEMENTS', pk: ['disbursement_id'], grantFk: true },
   { key: 'STG_MATURITY', pk: ['grant_id', 'aspect', 'indicator'], grantFk: true },
   { key: 'FCT1_GRANT_PORTFOLIO', pk: ['grant_id'], orgFk: true },
-  { key: 'FCT2_OUTCOME_PROGRESS', pk: ['grant_id', 'outcome_id', 'quarter'], grantFk: true },
+  { key: 'FCT2_OUTCOME_PROGRESS', pk: ['grant_id', 'outcome_id'], label: 'placeholder rows', where: function (r) { return r.has_update === false; } },
+  { key: 'FCT2_OUTCOME_PROGRESS', pk: ['grant_id', 'outcome_id', 'quarter'], grantFk: true, label: 'reported rows', where: function (r) { return r.has_update === true; } },
   { key: 'FCT3_SUPPORT_ACTIVITY', pk: ['support_id'], grantFk: true },
   { key: 'FCT4_BUDGET_YEAR', pk: ['financial_year'] },
   { key: 'FCT5_MATURITY_RAG', pk: ['grant_id', 'aspect', 'indicator'], grantFk: true },
@@ -35,10 +36,12 @@ function runCardinalityTests(ss, idx) {
 
   CARDINALITY_SPECS.forEach(function (spec) {
     const table = idx[spec.key];
-    const rows = readSheetSafe(ss, table);
-    function record(test, ok, detail) { results.push([now, table, test, ok ? 'PASS' : 'FAIL', detail || '']); }
+    const allRows = readSheetSafe(ss, table);
+    const rows = spec.where ? allRows.filter(spec.where) : allRows;
+    const suffix = spec.label ? ' [' + spec.label + ']' : '';
+    function record(test, ok, detail) { results.push([now, table, test + suffix, ok ? 'PASS' : 'FAIL', detail || '']); }
 
-    record('has_rows', rows.length > 0, rows.length + ' row(s)');
+    if (!spec.label) record('has_rows', rows.length > 0, rows.length + ' row(s)');
     if (spec.pk.length) {
       const nulls = rows.filter(function (r) { return spec.pk.some(function (c) { return isBlank(r[c]); }); }).length;
       record('not_null(' + spec.pk.join(', ') + ')', nulls === 0, nulls ? nulls + ' row(s) with a blank key' : '');
@@ -60,6 +63,13 @@ function runCardinalityTests(ss, idx) {
       record('relationship(organization_id → stg_organisations)', bad.length === 0, bad.length ? bad.slice(0, 5).join(', ') : '');
     }
   });
+
+  // Every outcome defined in stg_outcome_progress must appear in fct2, reported or not.
+  const fct2Outcomes = {};
+  readSheetSafe(ss, idx.FCT2_OUTCOME_PROGRESS).forEach(function (r) { fct2Outcomes[key(r.grant_id, r.outcome_id)] = true; });
+  const missing = readSheetSafe(ss, idx.STG_OUTCOME_PROGRESS).filter(function (r) { return !fct2Outcomes[key(r.grant_id, r.outcome_id)]; });
+  results.push([now, idx.FCT2_OUTCOME_PROGRESS, 'covers_every_outcome(stg_outcome_progress)', missing.length ? 'FAIL' : 'PASS',
+    missing.length ? missing.length + ' outcome(s) missing, e.g. ' + missing.slice(0, 3).map(function (r) { return r.grant_id + '/' + r.outcome_id; }).join(', ') : '']);
 
   writeSheet(ss, idx.UTIL_CARDINALITY_TESTS, CARDINALITY_TEST_HEADERS, results);
   const failed = results.filter(function (r) { return r[3] === 'FAIL'; });
