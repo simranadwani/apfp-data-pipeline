@@ -79,3 +79,27 @@ function runCardinalityTests(ss, idx) {
     Date.now() - start, 'SUCCESS');
   return failed.length;
 }
+
+/**
+ * Read-only audit (run from the Apps Script editor, read the Execution log): lists every fct column whose cells carry a
+ * date format although the column is not a date column. The pipeline itself never sets formats; the sheet's Table owns them.
+ */
+function auditOutputFormats() {
+  const ss = getPipelineSpreadsheet();
+  const idx = getSheetIndex(ss);
+  const bad = [];
+  ['FCT1_GRANT_PORTFOLIO', 'FCT2_OUTCOME_PROGRESS', 'FCT3_SUPPORT_ACTIVITY', 'FCT4_BUDGET_YEAR', 'FCT5_MATURITY_RAG', 'FCT6_GRANTEE_ANNUAL_INFO'].forEach(function (k) {
+    const sheet = ss.getSheetByName(idx[k]);
+    if (!sheet || sheet.getLastRow() < 2) return;
+    const headers = sheet.getRange(1, 1, 1, sheet.getLastColumn()).getValues()[0];
+    const formats = sheet.getRange(2, 1, 1, headers.length).getNumberFormats()[0];
+    headers.forEach(function (h, i) {
+      const unquoted = String(formats[i]).replace(/"[^"]*"/g, '').replace(/\\./g, '');
+      const dateLike = /y|d{1,2}|m{2,}/i.test(unquoted) && !/^(0|#|\[)/.test(unquoted);
+      const isDateColumn = /_date$/.test(h) || h === 'as_of_date';
+      if (dateLike && !isDateColumn) bad.push(idx[k] + '.' + h + '  ' + formats[i]);
+    });
+  });
+  Logger.log(bad.length ? 'Date-formatted columns that are not dates:\n' + bad.join('\n') : 'No non-date column has a date format.');
+  return bad;
+}

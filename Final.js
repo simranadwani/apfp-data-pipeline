@@ -31,6 +31,7 @@ const FCT1_HEADERS = [
   'cost_per_beneficiary', 'is_active_grant', 'is_funded_grantee', 'is_pending_decision',
   'is_overdue_decision', 'is_due_within_30_days', 'is_on_track_active_grant',
   'is_off_track_active_grant', 'as_of_date', 'sub_category_line', 'due_window_order', 'funding_range_order',
+  'outcomes_reported_count', 'outcomes_on_track_count', 'outcomes_off_track_count', 'latest_reported_quarter',
 ];
 
 const FCT2_HEADERS = [
@@ -93,6 +94,7 @@ function buildFct1GrantPortfolio(ss, idx) {
     const outcomes = outcomesByGrant[g.grant_id] || [];
     const maturity = maturityByGrant[g.grant_id] || [];
     const performance = grantPerformanceStatus(outcomes);
+    const outcomeStatus = outcomeStatusCounts(outcomes);
     const decisionStatus = mapDecisionStatus(dec.decision_status);
     const isPending = decisionStatus === 'Pending';
     const daysToDue = dec.decision_due_date instanceof Date ? daysBetween(today, dec.decision_due_date) : null;
@@ -162,6 +164,10 @@ function buildFct1GrantPortfolio(ss, idx) {
       sub_category_line: [g.thematic_sub_area, g.proximity_to_children_beneficiary].filter(function (v) { return !isBlank(v); }).join(' \u00B7 '),
       due_window_order: '',
       funding_range_order: '',
+      outcomes_reported_count: outcomeStatus.reported,
+      outcomes_on_track_count: outcomeStatus.onTrack,
+      outcomes_off_track_count: outcomeStatus.offTrack,
+      latest_reported_quarter: outcomeStatus.latestQuarter,
     };
   });
 
@@ -511,6 +517,29 @@ function grantPerformanceStatus(outcomes) {
     return statuses.indexOf('off track') !== -1 ? 'Off Track' : 'On Track';
   }
   return '';
+}
+
+/**
+ * Per-grant outcome status counts from the Q1–Q4 status columns (same source as grantPerformanceStatus).
+ * Each outcome counts once, at its own latest quarter with a status (the same rule as fct2 is_latest_update).
+ * Outcomes with no status are in total_outcomes_count but not in reported. latestQuarter is the latest
+ * quarter with a status across the grant's outcomes, '' when nothing is reported.
+ */
+function outcomeStatusCounts(outcomes) {
+  const seen = {};
+  const result = { reported: 0, onTrack: 0, offTrack: 0, latestQuarter: '' };
+  outcomes.forEach(function (o) {
+    if (seen[o.outcome_id]) return;
+    seen[o.outcome_id] = true;
+    const q = latestReportedQuarter(o);
+    if (!q) return;
+    result.reported++;
+    const status = String(o[q.toLowerCase() + '_status']).trim().toLowerCase();
+    if (status === 'on track') result.onTrack++;
+    else if (status === 'off track') result.offTrack++;
+    if (QUARTERS.indexOf(q) > QUARTERS.indexOf(result.latestQuarter)) result.latestQuarter = q;
+  });
+  return result;
 }
 
 /** Outcome is achieved when Final Actual ≥ End-of-Program Cycle Target (both parsed as numbers). */

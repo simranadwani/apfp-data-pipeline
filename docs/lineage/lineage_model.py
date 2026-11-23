@@ -136,6 +136,10 @@ FINAL = {
         ('sub_category_line', 'calc', [g('thematic_sub_area'), g('proximity_to_children_beneficiary')], 'Ready-to-show text: sub-category and intervention model'),
         ('due_window_order', 'calc', [d('decision_status'), d('decision_due_date')], 'Sort number for the due window (Overdue 1 ... 61+ days 4)'),
         ('funding_range_order', 'calc', [ds('actual_amount'), ds('status'), g('organization_id'), g('financial_year')], 'Sort number for the funding range (1 to 5)'),
+        ('outcomes_reported_count', 'calc', QSTATUS, 'Number of the grant\'s outcomes with a status in at least one quarter'),
+        ('outcomes_on_track_count', 'calc', QSTATUS, 'Outcomes whose latest reported quarter is On Track'),
+        ('outcomes_off_track_count', 'calc', QSTATUS, 'Outcomes whose latest reported quarter is Off Track'),
+        ('latest_reported_quarter', 'calc', QSTATUS, 'Latest quarter (Q1 to Q4) with a status for any of the grant\'s outcomes; empty when nothing is reported'),
     ],
     'fct2_outcome_progress': [
         ('financial_year', 'copy', [op('financial_year')], 'Copied, in the form FY 26-27'),
@@ -301,7 +305,7 @@ BLOCKS = {
         ('Decision', ['decision_type', 'decision_status', 'recommendation', 'decision_due_date', 'reason_for_recommendation', 'proposed_amount',
             'annual_report_link', 'due_window', 'due_window_order', 'is_pending_decision', 'is_overdue_decision', 'is_due_within_30_days']),
         ('Performance and maturity', ['grant_performance_status', 'is_on_track_active_grant', 'is_off_track_active_grant', 'total_outcomes_count',
-            'achieved_outcomes_count', 'clarity_status', 'capacity_status', 'compliance_status']),
+            'achieved_outcomes_count', 'outcomes_reported_count', 'outcomes_on_track_count', 'outcomes_off_track_count', 'latest_reported_quarter', 'clarity_status', 'capacity_status', 'compliance_status']),
         ('Housekeeping', ['grantee_360_link', 'as_of_date']),
     ],
 }

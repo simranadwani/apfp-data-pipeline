@@ -3,6 +3,30 @@
 All notable changes to the APFP data pipeline. Newest first.
 Each entry lists what changed, which files, and why.
 
+## [0.1.21] — 2026-11-23
+
+### Added — fct1 outcome status counts per grant (for table 3.07)
+- **What:** four columns appended at the end of fct1: `outcomes_reported_count` (outcomes with a status in at least one quarter),
+  `outcomes_on_track_count` and `outcomes_off_track_count` (outcomes whose own latest reported quarter is On Track / Off Track) and
+  `latest_reported_quarter` (latest Q1 to Q4 with a status for any of the grant's outcomes, blank when none). Built from the stg Q1-Q4 status
+  columns, the same source and the same latest-quarter rule as `grant_performance_status` and fct2 `is_latest_update`, so 3.07 and 1.12 agree.
+  Outcomes with no status stay in `total_outcomes_count` but not in reported. Existing fct1 columns, `total_outcomes_count` and
+  `achieved_outcomes_count` are unchanged. No ready-made "7 of 10 on track (Q4)" text column: it cannot be summed across grants, so build it in Looker
+  from these counts.
+- **Files:** `Final.js` (`FCT1_HEADERS`, `buildFct1GrantPortfolio`, new `outcomeStatusCounts`), `tests/column_formats.js`, `docs/TABLE_FORMATS.md`,
+  `docs/lineage/lineage_model.py`, `docs/lineage/chart_passport.py` (3.07), `docs/lineage/code_columns.json`, `LineageData.js` (regenerated:
+  Data_Dictionary and Chart_Passport), `tests/pipeline.test.js`.
+- **Why:** 3.07 "Outcome achieved" counts only outcomes whose final actual reaches a numeric target, so grants with Q4 statuses show 0% or blank.
+
+### Added — format checks for the `*_order` sort helpers (no change to the data)
+- **What:** `funding_range_order` and `due_window_order` are written as plain numbers (1 to 5) or blank. The pipeline never sets cell formats (a test
+  enforces it), so the dd/MM/yyyy format seen in the export is on the sheet's Table column, not in the code; both columns sit right after
+  `as_of_date`, which is the likely source of the inherited format. New test: every `*_order` column holds numbers, never dates, and is listed as a
+  count column. New read-only function `auditOutputFormats()` (Tests.js) lists fct columns that carry a date format although they are not date columns.
+- **Files:** `Tests.js`, `tests/pipeline.test.js`.
+- **Manual step (sheet, not code):** in `fct1_grant_portfolio` set both `*_order` columns to Format > Number > Custom number format
+  (`docs/TABLE_FORMATS.md`, "Indian number") or Automatic, set the Table column type to Number, then refresh the Looker data source and set both fields to Number.
+
 ## [0.1.20] — 2026-11-20
 
 ### Changed — fct2_outcome_progress now lists every outcome, reported or not

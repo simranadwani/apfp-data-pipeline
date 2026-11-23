@@ -820,6 +820,70 @@ const LINEAGE_DATA = {
     "2.07"
    ]
   },
+  "fct1_grant_portfolio.outcomes_reported_count": {
+   "meaning": "Number of the grant's outcomes with a status in at least one quarter",
+   "how": "Calculated",
+   "source_tabs": [
+    "2. Outcome Progress"
+   ],
+   "source_columns": [
+    "2. Outcome Progress > Q1 Status",
+    "2. Outcome Progress > Q2 Status",
+    "2. Outcome Progress > Q3 Status",
+    "2. Outcome Progress > Q4 Status"
+   ],
+   "charts": [
+    "3.07"
+   ]
+  },
+  "fct1_grant_portfolio.outcomes_on_track_count": {
+   "meaning": "Outcomes whose latest reported quarter is On Track",
+   "how": "Calculated",
+   "source_tabs": [
+    "2. Outcome Progress"
+   ],
+   "source_columns": [
+    "2. Outcome Progress > Q1 Status",
+    "2. Outcome Progress > Q2 Status",
+    "2. Outcome Progress > Q3 Status",
+    "2. Outcome Progress > Q4 Status"
+   ],
+   "charts": [
+    "3.07"
+   ]
+  },
+  "fct1_grant_portfolio.outcomes_off_track_count": {
+   "meaning": "Outcomes whose latest reported quarter is Off Track",
+   "how": "Calculated",
+   "source_tabs": [
+    "2. Outcome Progress"
+   ],
+   "source_columns": [
+    "2. Outcome Progress > Q1 Status",
+    "2. Outcome Progress > Q2 Status",
+    "2. Outcome Progress > Q3 Status",
+    "2. Outcome Progress > Q4 Status"
+   ],
+   "charts": [
+    "3.07"
+   ]
+  },
+  "fct1_grant_portfolio.latest_reported_quarter": {
+   "meaning": "Latest quarter (Q1 to Q4) with a status for any of the grant's outcomes; empty when nothing is reported",
+   "how": "Calculated",
+   "source_tabs": [
+    "2. Outcome Progress"
+   ],
+   "source_columns": [
+    "2. Outcome Progress > Q1 Status",
+    "2. Outcome Progress > Q2 Status",
+    "2. Outcome Progress > Q3 Status",
+    "2. Outcome Progress > Q4 Status"
+   ],
+   "charts": [
+    "3.07"
+   ]
+  },
   "fct2_outcome_progress.financial_year": {
    "meaning": "Copied, in the form FY 26-27",
    "how": "Copied as entered",
@@ -2300,7 +2364,7 @@ const LINEAGE_DATA = {
    "page": "Decision Queue",
    "name": "Decision list",
    "table": "fct1_grant_portfolio",
-   "shows": "List of decisions: organisation, recommendation, due date, proposed amount, reason, outcomes achieved, report link",
+   "shows": "List of decisions: organisation, recommendation, due date, proposed amount, reason, outcomes achieved, outcomes on track and off track at the latest reported quarter, report link",
    "filter": "Pending decisions",
    "columns": [
     "organisation",
@@ -2310,6 +2374,10 @@ const LINEAGE_DATA = {
     "reason_for_recommendation",
     "achieved_outcomes_count",
     "total_outcomes_count",
+    "outcomes_reported_count",
+    "outcomes_on_track_count",
+    "outcomes_off_track_count",
+    "latest_reported_quarter",
     "annual_report_link"
    ],
    "source_tabs": [

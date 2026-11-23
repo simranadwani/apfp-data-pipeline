@@ -94,6 +94,9 @@ Every output tab is a native Google Sheets **Table**, and the Table owns the for
 | `core_policies_total_count` | Indian number (no ₹) |
 | `total_outcomes_count` | Indian number (no ₹) |
 | `achieved_outcomes_count` | Indian number (no ₹) |
+| `outcomes_reported_count` | Indian number (no ₹) |
+| `outcomes_on_track_count` | Indian number (no ₹) |
+| `outcomes_off_track_count` | Indian number (no ₹) |
 | `grant_start_date` | Date |
 | `grant_end_date` | Date |
 | `decision_due_date` | Date |

@@ -394,6 +394,48 @@ test('every numeric and date output column has a format in tests/column_formats.
   ['stg_', 'fct'].forEach((prefix) => Object.keys(h.pipeline.sheets).filter((n) => n.startsWith(prefix)).forEach((n) => assert.ok(FORMATS[n], n + ' missing from column_formats.js')));
 });
 
+test('the *_order sort helpers are plain numbers (or blank), never dates, and are formatted as counts', () => {
+  const { FORMATS } = require('./column_formats');
+  const h = runFull();
+  ['fct1_grant_portfolio', 'fct5_maturity_rag', 'fct6_grantee_annual_info'].forEach((tab) => {
+    const rows = h.tab(tab);
+    Object.keys(rows[0]).filter((c) => /_order$/.test(c)).forEach((c) => {
+      rows.forEach((r) => assert.ok(r[c] === '' || (typeof r[c] === 'number' && !isDate(r[c])), tab + '.' + c + ' = ' + r[c]));
+      assert.ok(FORMATS[tab].count.includes(c) && !(FORMATS[tab].date || []).includes(c), tab + '.' + c + ' must be a count column, not a date');
+    });
+  });
+});
+
+test('fct1 outcome status counts: each outcome counts once at its latest reported quarter', () => {
+  const src = clone(require('./fixtures/source_dummy.json'));
+  const op = src['2. Outcome Progress'];
+  const hdr = op[1];
+  const col = (n) => hdr.indexOf(n);
+  const grant = op[2][col('Grant ID')];
+  const mine = op.slice(2).filter((r) => r[col('Grant ID')] === grant);
+  // Outcome 1: Q1 On Track, Q2 Off Track  -> latest Q2, Off Track.  Outcome 2 (if any): nothing reported.
+  mine.forEach((r) => ['Q1', 'Q2', 'Q3', 'Q4'].forEach((q) => { r[col(q + ' Status')] = ''; }));
+  mine[0][col('Q1 Status')] = 'On Track';
+  mine[0][col('Q2 Status')] = 'Off Track';
+  const h = runFull(src);
+  const f = h.tab('fct1_grant_portfolio').find((r) => r.grant_id === grant);
+  assert.equal(f.outcomes_reported_count, 1);
+  assert.equal(f.outcomes_on_track_count, 0);
+  assert.equal(f.outcomes_off_track_count, 1);
+  assert.equal(f.latest_reported_quarter, 'Q2');
+  assert.ok(f.total_outcomes_count >= f.outcomes_reported_count);
+  // Untouched grants: counts agree with the staging status columns, and on + off never exceeds reported.
+  const stg = h.tab('stg_outcome_progress');
+  h.tab('fct1_grant_portfolio').filter((r) => r.grant_id !== grant).forEach((r) => {
+    const own = stg.filter((o) => o.grant_id === r.grant_id);
+    const latest = (o) => ['q4', 'q3', 'q2', 'q1'].map((q) => o[q + '_status']).find((s) => s !== '' && s !== undefined) || '';
+    assert.equal(r.outcomes_reported_count, own.filter((o) => latest(o) !== '').length, r.grant_id);
+    assert.equal(r.outcomes_on_track_count, own.filter((o) => latest(o) === 'On Track').length, r.grant_id);
+    assert.equal(r.outcomes_off_track_count, own.filter((o) => latest(o) === 'Off Track').length, r.grant_id);
+    assert.ok(r.outcomes_on_track_count + r.outcomes_off_track_count <= r.outcomes_reported_count);
+  });
+});
+
 test('helper rules', () => {
   const { ctx } = loadPipeline();
   // every accepted input gives the one format, "FY 26-27"
@@ -557,7 +599,8 @@ test('fct1 display text and sort helpers: sub_category_line, due_window_order, f
   });
   assert.ok(rows.some((r) => r.due_window_order === 4) && rows.some((r) => r.funding_range_order !== ''));
   const hdr = h.pipeline.getSheetByName('fct1_grant_portfolio').data[0];
-  assert.deepEqual(hdr.slice(-4), ['as_of_date', 'sub_category_line', 'due_window_order', 'funding_range_order']); // appended
+  assert.deepEqual(hdr.slice(-8, -4), ['as_of_date', 'sub_category_line', 'due_window_order', 'funding_range_order']); // appended, in this order
+  assert.deepEqual(hdr.slice(-4), ['outcomes_reported_count', 'outcomes_on_track_count', 'outcomes_off_track_count', 'latest_reported_quarter']);
 });
 
 test('grant_status_type_amount drops a missing amount instead of printing a blank part', () => {
