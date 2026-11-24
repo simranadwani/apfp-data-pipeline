@@ -614,7 +614,8 @@
    "outcomes_on_track_count",
    "outcomes_off_track_count",
    "latest_reported_quarter",
-   "primary_beneficiary_group_raw"
+   "primary_beneficiary_group_raw",
+   "primary_beneficiary_group_order"
   ],
   "fct2_outcome_progress": [
    "financial_year",

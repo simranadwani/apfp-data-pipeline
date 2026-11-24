@@ -32,7 +32,7 @@ const FCT1_HEADERS = [
   'is_overdue_decision', 'is_due_within_30_days', 'is_on_track_active_grant',
   'is_off_track_active_grant', 'as_of_date', 'sub_category_line', 'due_window_order', 'funding_range_order',
   'outcomes_reported_count', 'outcomes_on_track_count', 'outcomes_off_track_count', 'latest_reported_quarter',
-  'primary_beneficiary_group_raw',
+  'primary_beneficiary_group_raw', 'primary_beneficiary_group_order',
 ];
 
 const FCT2_HEADERS = [
@@ -178,6 +178,7 @@ function buildFct1GrantPortfolio(ss, idx) {
       outcomes_off_track_count: outcomeStatus.offTrack,
       latest_reported_quarter: outcomeStatus.latestQuarter,
       primary_beneficiary_group_raw: isBlank(g.primary_beneficiary_group) ? '' : String(g.primary_beneficiary_group),
+      primary_beneficiary_group_order: BENEFICIARY_GROUP_ORDER[beneficiary.bucket],
     };
   });
 

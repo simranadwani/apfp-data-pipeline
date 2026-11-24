@@ -3,6 +3,21 @@
 All notable changes to the APFP data pipeline. Newest first.
 Each entry lists what changed, which files, and why.
 
+## [0.1.23] — 2026-11-24
+
+### Added — fct1 `primary_beneficiary_group_order` (sort helper so "Not specified" sorts last in 1.09 and 1.10)
+- **What:** new last column of fct1, a plain number: Animals 1, Children & youth 2, Educators & school leaders 3, Entrepreneurs & NGOs 4,
+  Families & households 5, Good Politician participants 6, Women & girls 7, Other 8, Not specified 9. Same A to Z order as before, with Other and
+  Not specified forced to the end. No existing column changes.
+- **Files:** `Beneficiaries.js` (`BENEFICIARY_GROUP_ORDER`), `Final.js`, `PIPELINE_LOGIC.md`, `docs/lineage/lineage_model.py`,
+  `docs/lineage/chart_passport.py` (1.09), `docs/lineage/code_columns.json`, `LineageData.js`, `docs/TABLE_FORMATS.md`, `tests/column_formats.js`,
+  `tests/harness.js`, `tests/pipeline.test.js`, `tests/beneficiary_buckets.test.js`.
+- **Why:** Looker cannot put one value last in an A-Z sort without a numeric field to sort on.
+- **Tests:** one distinct number per category, Not specified is the highest, named categories are in A to Z order, every row's number matches its
+  category, and the column is numeric (never a date).
+- **Looker / sheet:** refresh the fct1 data source and set the new field to Number. Sort 1.09 and 1.10 by `primary_beneficiary_group_order` ascending.
+  After the first run, check the new column is not date-formatted (same issue as the other `*_order` columns): run `auditOutputFormats`.
+
 ## [0.1.22] — 2026-11-24
 
 ### Changed — fct1 `primary_beneficiary_group` now holds a short category (chart 1.09 needs no Looker change)

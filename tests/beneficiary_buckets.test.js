@@ -102,7 +102,7 @@ test('fct1 holds a category in primary_beneficiary_group and the original text i
   const h = load();
   h.ctx.runCompletePipeline();
   const sheet = h.pipeline.getSheetByName('fct1_grant_portfolio');
-  assert.equal(sheet.data[0][sheet.data[0].length - 1], 'primary_beneficiary_group_raw');
+  assert.ok(sheet.data[0].includes('primary_beneficiary_group_raw'));
   const rows = sheet.toObjects();
   const allowed = new Set([...h.ctx.__consts.BENEFICIARY_BUCKETS, 'Not specified']);
   rows.forEach((r) => {
@@ -171,6 +171,25 @@ test('bad rules are skipped with a warning, and a tab with no usable rule falls 
   assert.equal(rows.find((r) => r.primary_beneficiary_group_raw === 'Youth').primary_beneficiary_group, C);
   warn = h.pipeline.getSheetByName('Pipeline Log').toObjects().filter((r) => r.level === 'WARN' && /no usable rule/.test(r.message));
   assert.equal(warn.length, 1);
+});
+
+test('primary_beneficiary_group_order is a plain number: one per category, Not specified last, A to Z before it', () => {
+  const h = load();
+  const order = h.ctx.__consts.BENEFICIARY_GROUP_ORDER;
+  const cats = [...h.ctx.__consts.BENEFICIARY_BUCKETS, 'Not specified'];
+  assert.deepEqual(Object.keys(order).sort(), [...cats].sort());
+  assert.equal(new Set(Object.values(order)).size, cats.length);
+  assert.equal(order['Not specified'], Math.max(...Object.values(order)));
+  assert.equal(order.Other, order['Not specified'] - 1);
+  const named = Object.keys(order).filter((c) => c !== 'Other' && c !== 'Not specified');
+  assert.deepEqual([...named].sort((a, b) => order[a] - order[b]), [...named].sort());
+  h.ctx.runCompletePipeline();
+  const sheet = h.pipeline.getSheetByName('fct1_grant_portfolio');
+  assert.equal(sheet.data[0][sheet.data[0].length - 1], 'primary_beneficiary_group_order');
+  sheet.toObjects().forEach((r) => {
+    assert.equal(typeof r.primary_beneficiary_group_order, 'number');
+    assert.equal(r.primary_beneficiary_group_order, order[r.primary_beneficiary_group]);
+  });
 });
 
 test('the pipeline stays in step: no other fct1 column changes (the raw text is appended, the category replaces the group)', () => {

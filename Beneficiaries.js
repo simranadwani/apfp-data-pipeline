@@ -11,6 +11,11 @@ const BENEFICIARY_BUCKETS = [
   'Families & households', 'Animals', 'Good Politician participants', 'Other',
 ];
 const BENEFICIARY_NOT_SPECIFIED = 'Not specified';
+// Sort helper for the dashboard: categories A to Z, then Other, then Not specified last.
+const BENEFICIARY_GROUP_ORDER = {
+  'Animals': 1, 'Children & youth': 2, 'Educators & school leaders': 3, 'Entrepreneurs & NGOs': 4,
+  'Families & households': 5, 'Good Politician participants': 6, 'Women & girls': 7, 'Other': 8, 'Not specified': 9,
+};
 const BENEFICIARY_RULE_HEADERS = ['rule_order', 'match_type', 'pattern', 'thematic_area', 'bucket', 'note'];
 const BENEFICIARY_MATCH_TYPES = ['equals', 'contains', 'word_start'];
 const BENEFICIARY_OTHER_SHARE_WARNING = 0.1;

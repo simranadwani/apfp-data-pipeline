@@ -896,6 +896,20 @@ const LINEAGE_DATA = {
    ],
    "charts": []
   },
+  "fct1_grant_portfolio.primary_beneficiary_group_order": {
+   "meaning": "Sort number for the category (Animals 1 ... Women & girls 7, Other 8, Not specified 9 last)",
+   "how": "Calculated",
+   "source_tabs": [
+    "8. Grant Registry"
+   ],
+   "source_columns": [
+    "8. Grant Registry > Primary Beneficiary Group",
+    "8. Grant Registry > Thematic Area"
+   ],
+   "charts": [
+    "1.09"
+   ]
+  },
   "fct2_outcome_progress.financial_year": {
    "meaning": "Copied, in the form FY 26-27",
    "how": "Copied as entered",
@@ -1960,7 +1974,8 @@ const LINEAGE_DATA = {
    "filter": "None (page filters apply)",
    "columns": [
     "primary_beneficiary_count",
-    "primary_beneficiary_group"
+    "primary_beneficiary_group",
+    "primary_beneficiary_group_order"
    ],
    "source_tabs": [
     "8. Grant Registry"

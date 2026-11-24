@@ -160,7 +160,8 @@ Source for every row: `stg_grants`. Joins: `stg_organisations` on `organization_
 | outcomes_on_track_count | number | derived | Outcomes whose own latest quarter with a status is `On Track` (same rule as fct2 `is_latest_update`) |
 | outcomes_off_track_count | number | derived | Same, `Off Track` |
 | latest_reported_quarter | text | derived | Latest `Q1`–`Q4` with a status for any of the grant's outcomes; blank when nothing is reported |
-| primary_beneficiary_group_raw | text | Grant Registry › Primary Beneficiary Group | The group exactly as entered, kept so the category can be checked. Last column |
+| primary_beneficiary_group_raw | text | Grant Registry › Primary Beneficiary Group | The group exactly as entered, kept so the category can be checked |
+| primary_beneficiary_group_order | number | derived | Sort helper for `primary_beneficiary_group`: Animals 1, Children & youth 2, Educators & school leaders 3, Entrepreneurs & NGOs 4, Families & households 5, Good Politician participants 6, Women & girls 7, Other 8, Not specified 9 (always last). Last column |
 
 ### fct2_outcome_progress — one row per grant × outcome × reported quarter, plus a placeholder row for each outcome with nothing reported (T2)
 

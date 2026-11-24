@@ -141,6 +141,7 @@ FINAL = {
         ('outcomes_off_track_count', 'calc', QSTATUS, 'Outcomes whose latest reported quarter is Off Track'),
         ('latest_reported_quarter', 'calc', QSTATUS, 'Latest quarter (Q1 to Q4) with a status for any of the grant\'s outcomes; empty when nothing is reported'),
         ('primary_beneficiary_group_raw', 'copy', [g('primary_beneficiary_group')], 'The group exactly as entered in the Grant Registry, kept so the category can be checked'),
+        ('primary_beneficiary_group_order', 'calc', [g('primary_beneficiary_group'), g('thematic_area')], 'Sort number for the category (Animals 1 ... Women & girls 7, Other 8, Not specified 9 last)'),
     ],
     'fct2_outcome_progress': [
         ('financial_year', 'copy', [op('financial_year')], 'Copied, in the form FY 26-27'),
@@ -301,7 +302,7 @@ BLOCKS = {
             'has_completed_program_lifecycle', 'is_active_grant', 'grant_period', 'grant_status_type_amount', 'sub_category_line']),
         ('Organisation profile and years funded', ['fcra_registration', 'funding_year', 'duration_of_support_bucket', 'annual_budget', 'team_size',
             'attrition_rate', 'foreign_contribution_rate', 'core_policies_met_count', 'core_policies_total_count']),
-        ('Beneficiaries and money', ['primary_beneficiary_group', 'primary_beneficiary_group_raw', 'primary_beneficiary_count', 'approved_amount', 'committed_amount', 'disbursed_amount',
+        ('Beneficiaries and money', ['primary_beneficiary_group', 'primary_beneficiary_group_raw', 'primary_beneficiary_group_order', 'primary_beneficiary_count', 'approved_amount', 'committed_amount', 'disbursed_amount',
             'cost_per_beneficiary', 'funding_range', 'funding_range_order', 'is_funded_grantee']),
         ('Decision', ['decision_type', 'decision_status', 'recommendation', 'decision_due_date', 'reason_for_recommendation', 'proposed_amount',
             'annual_report_link', 'due_window', 'due_window_order', 'is_pending_decision', 'is_overdue_decision', 'is_due_within_30_days']),
