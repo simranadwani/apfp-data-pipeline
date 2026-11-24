@@ -320,7 +320,7 @@ test('a failing appendRow on the Pipeline Log never stops a run; entries go thro
   const rowsBefore = h.tab('Pipeline Log').length;
   assert.doesNotThrow(() => h.ctx.runCompletePipeline());
   const log = h.tab('Pipeline Log');
-  assert.equal(log.length - rowsBefore, 18); // 8 staging + 6 fact + dictionary + passport + cardinality tests + run summary
+  assert.equal(log.length - rowsBefore, 20); // 8 staging + 6 fact + dictionary + passport + cardinality tests + run summary + 2 beneficiary warnings (the dummy data has an unmatched group)
   assert.equal(log.filter((r) => r.status === 'ERROR').length, 0);
   assert.equal(log.pop().function, 'runCompletePipeline');
 });
@@ -599,8 +599,8 @@ test('fct1 display text and sort helpers: sub_category_line, due_window_order, f
   });
   assert.ok(rows.some((r) => r.due_window_order === 4) && rows.some((r) => r.funding_range_order !== ''));
   const hdr = h.pipeline.getSheetByName('fct1_grant_portfolio').data[0];
-  assert.deepEqual(hdr.slice(-8, -4), ['as_of_date', 'sub_category_line', 'due_window_order', 'funding_range_order']); // appended, in this order
-  assert.deepEqual(hdr.slice(-4), ['outcomes_reported_count', 'outcomes_on_track_count', 'outcomes_off_track_count', 'latest_reported_quarter']);
+  assert.deepEqual(hdr.slice(-9, -5), ['as_of_date', 'sub_category_line', 'due_window_order', 'funding_range_order']); // appended, in this order
+  assert.deepEqual(hdr.slice(-5), ['outcomes_reported_count', 'outcomes_on_track_count', 'outcomes_off_track_count', 'latest_reported_quarter', 'primary_beneficiary_group_raw']);
 });
 
 test('grant_status_type_amount drops a missing amount instead of printing a blank part', () => {

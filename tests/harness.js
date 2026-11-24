@@ -10,7 +10,7 @@ const ROOT = path.join(__dirname, '..');
 let RealmDate = Date;
 const isDate = (v) => Object.prototype.toString.call(v) === '[object Date]';
 
-const SCRIPT_FILES = ['Utilities.js', 'Index.js', 'Staging.js', 'Final.js', 'LineageData.js', 'Lineage.js', 'SourceHeaderCheck.js', 'Tests.js', 'Pipeline.js'];
+const SCRIPT_FILES = ['Utilities.js', 'Index.js', 'Staging.js', 'Final.js', 'Beneficiaries.js', 'LineageData.js', 'Lineage.js', 'SourceHeaderCheck.js', 'Tests.js', 'Pipeline.js'];
 
 class FakeRange {
   constructor(sheet, row, col, numRows, numCols) {
@@ -187,7 +187,7 @@ function loadPipeline(sourceTabs, options) {
   RealmDate = vm.runInContext('Date', ctx);
   const code = SCRIPT_FILES.map((f) => fs.readFileSync(path.join(ROOT, f), 'utf8')).join('\n;\n');
   // Expose top-level consts on the context so tests can read them.
-  vm.runInContext(code + '\n;globalThis.__consts = { SOURCE_SPREADSHEET_ID, PIPELINE_SPREADSHEET_ID };', ctx, { filename: 'apps-script-bundle.js' });
+  vm.runInContext(code + '\n;globalThis.__consts = { SOURCE_SPREADSHEET_ID, PIPELINE_SPREADSHEET_ID, BENEFICIARY_BUCKETS, BENEFICIARY_DEFAULT_RULES };', ctx, { filename: 'apps-script-bundle.js' });
   const source = new FakeSpreadsheet(ctx.__consts.SOURCE_SPREADSHEET_ID, reviveDates(fixture), options.sourceTimeZone);
   const pipeline = new FakeSpreadsheet(ctx.__consts.PIPELINE_SPREADSHEET_ID, { Sheet1: [] }, options.pipelineTimeZone);
   books[source.id] = source;

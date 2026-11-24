@@ -32,6 +32,7 @@ const FCT1_HEADERS = [
   'is_overdue_decision', 'is_due_within_30_days', 'is_on_track_active_grant',
   'is_off_track_active_grant', 'as_of_date', 'sub_category_line', 'due_window_order', 'funding_range_order',
   'outcomes_reported_count', 'outcomes_on_track_count', 'outcomes_off_track_count', 'latest_reported_quarter',
+  'primary_beneficiary_group_raw',
 ];
 
 const FCT2_HEADERS = [
@@ -75,6 +76,10 @@ function buildFct1GrantPortfolio(ss, idx) {
   const disbByGrant = groupBy(readSheet(ss, idx.STG_DISBURSEMENTS), 'grant_id');
   const maturityByGrant = groupBy(readSheet(ss, idx.STG_MATURITY), 'grant_id');
   const outcomesByGrant = groupBy(readSheet(ss, idx.STG_OUTCOME_PROGRESS), 'grant_id');
+  const beneficiaryRules = loadBeneficiaryRules(ss, idx);
+  const unmatchedBeneficiaries = {};
+  let groupedGrants = 0;
+  let otherGrants = 0;
   warnOrphanGrantIds(ss, idx, 'buildFct1GrantPortfolio', grants, {
     stg_decisions: decisionByGrant, stg_disbursements: disbByGrant,
     stg_maturity: maturityByGrant, stg_outcome_progress: outcomesByGrant,
@@ -102,6 +107,10 @@ function buildFct1GrantPortfolio(ss, idx) {
       ? Object.keys(fysByOrg[g.organization_id]).filter(function (fy) { return fy <= g.financial_year; }).length
       : null;
     const isActive = String(g.grant_status).trim().toLowerCase() === 'active';
+    const beneficiary = bucketForBeneficiary(g.primary_beneficiary_group, g.thematic_area, beneficiaryRules);
+    if (beneficiary.bucket !== BENEFICIARY_NOT_SPECIFIED) groupedGrants++;
+    if (beneficiary.bucket === 'Other') otherGrants++;
+    if (!beneficiary.matched) unmatchedBeneficiaries[normaliseBeneficiaryText(g.primary_beneficiary_group)] = true;
 
     return {
       financial_year: g.financial_year,
@@ -119,7 +128,7 @@ function buildFct1GrantPortfolio(ss, idx) {
       grant_end_date: g.grant_end_date,
       funding_year: fundingYearNumber ? 'Year ' + fundingYearNumber : '',
       duration_of_support_bucket: durationBucket(fundingYearNumber),
-      primary_beneficiary_group: g.primary_beneficiary_group,
+      primary_beneficiary_group: beneficiary.bucket,
       primary_beneficiary_count: g.primary_beneficiary_count,
       clarity_status: worstRag(maturity, 'Clarity'),
       capacity_status: worstRag(maturity, 'Capacity'),
@@ -168,8 +177,18 @@ function buildFct1GrantPortfolio(ss, idx) {
       outcomes_on_track_count: outcomeStatus.onTrack,
       outcomes_off_track_count: outcomeStatus.offTrack,
       latest_reported_quarter: outcomeStatus.latestQuarter,
+      primary_beneficiary_group_raw: isBlank(g.primary_beneficiary_group) ? '' : String(g.primary_beneficiary_group),
     };
   });
+
+  const unmatched = Object.keys(unmatchedBeneficiaries);
+  if (unmatched.length) {
+    log(ss, idx, 'WARN', 'buildFct1GrantPortfolio', 0, unmatched.length + ' beneficiary group value(s) matched no rule and went to Other; add a rule to Beneficiary_Buckets: '
+      + unmatched.slice(0, 5).map(function (v) { return '"' + v.slice(0, 80) + '"'; }).join(', ') + (unmatched.length > 5 ? ', ...' : ''), null, 'SUCCESS');
+  }
+  if (groupedGrants && otherGrants / groupedGrants > BENEFICIARY_OTHER_SHARE_WARNING) {
+    log(ss, idx, 'WARN', 'buildFct1GrantPortfolio', 0, 'Other holds ' + otherGrants + ' of ' + groupedGrants + ' grants that have a beneficiary group (over ' + Math.round(BENEFICIARY_OTHER_SHARE_WARNING * 100) + '%): review Beneficiary_Buckets', null, 'SUCCESS');
+  }
 
   // funding_range: band on total disbursed per organisation × financial year.
   const disbursedByOrgFy = {};

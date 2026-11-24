@@ -34,6 +34,7 @@ const INDEX_DEFAULTS = [
   ['FCT5_MATURITY_RAG', 'fct5_maturity_rag', 'fct', 'One row per grant_id x aspect x indicator', 'Maturity RAG at indicator level for portfolio and Grantee 360 views'],
   ['FCT6_GRANTEE_ANNUAL_INFO', 'fct6_grantee_annual_info', 'fct', 'One row per grant_id x metric', 'Annual organisational information as metric rows with the selected and previous financial year side by side (Grantee 360)'],
 
+  ['CFG_BENEFICIARY_BUCKETS', 'Beneficiary_Buckets', 'cfg', 'One row per matching rule', 'Editable rules that sort the free-text Primary Beneficiary Group into dashboard categories; the lowest rule_order that matches wins'],
   ['REF_SOURCE_HEADER_BASELINE', 'ref_source_header_baseline', 'ref', 'One row per source tab x column', 'Expected source headers used by the Source Header Check'],
   ['UTIL_SOURCE_HEADER_AUDIT', 'Source_Header_Audit', 'util', 'One row per header issue per run', 'Result of the latest Source Header Check'],
   ['UTIL_PIPELINE_LOG', 'Pipeline Log', 'util', 'One row per log entry', 'Execution log for every build function'],

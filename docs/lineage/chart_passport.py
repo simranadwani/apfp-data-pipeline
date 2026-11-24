@@ -22,7 +22,7 @@ CHARTS = {
     '1.06': (F1, 'Active grants by grant type', 'Active grants only', c(F1, 'grant_id', 'is_active_grant', 'grant_type')),
     '1.07': (F1, 'Organisations with an active grant, by thematic area', 'Active grants only', c(F1, 'organization_id', 'is_active_grant', 'thematic_area')),
     '1.08': (F1, 'Education organisations by sub-category', 'Thematic area is Education', c(F1, 'organization_id', 'thematic_area', 'education_sub_category')),
-    '1.09': (F1, 'Beneficiaries reached, by beneficiary group', 'None (page filters apply)', c(F1, 'primary_beneficiary_count', 'primary_beneficiary_group')),
+    '1.09': (F1, 'Beneficiaries reached, by beneficiary category (8 categories sorted from the free-text group)', 'None (page filters apply)', c(F1, 'primary_beneficiary_count', 'primary_beneficiary_group')),
     '1.10': (F1, 'Organisations by proximity to the children they serve', 'None (page filters apply)', c(F1, 'organization_id', 'proximity_to_children_beneficiary')),
     '1.11': (F1, 'One row per organisation: budget, approved amount, beneficiaries, cost per beneficiary and the three maturity ratings', 'None (page filters apply)',
              c(F1, 'organisation', 'annual_budget', 'approved_amount', 'primary_beneficiary_count', 'cost_per_beneficiary', 'clarity_status', 'capacity_status', 'compliance_status')),

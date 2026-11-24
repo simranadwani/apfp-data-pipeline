@@ -244,13 +244,14 @@ const LINEAGE_DATA = {
    ]
   },
   "fct1_grant_portfolio.primary_beneficiary_group": {
-   "meaning": "Copied",
-   "how": "Copied as entered",
+   "meaning": "The free-text group sorted into one of 8 categories by the rules in the Beneficiary_Buckets tab (Not specified when blank, Other when no rule matches)",
+   "how": "Calculated",
    "source_tabs": [
     "8. Grant Registry"
    ],
    "source_columns": [
-    "8. Grant Registry > Primary Beneficiary Group"
+    "8. Grant Registry > Primary Beneficiary Group",
+    "8. Grant Registry > Thematic Area"
    ],
    "charts": [
     "1.09"
@@ -883,6 +884,17 @@ const LINEAGE_DATA = {
    "charts": [
     "3.07"
    ]
+  },
+  "fct1_grant_portfolio.primary_beneficiary_group_raw": {
+   "meaning": "The group exactly as entered in the Grant Registry, kept so the category can be checked",
+   "how": "Copied as entered",
+   "source_tabs": [
+    "8. Grant Registry"
+   ],
+   "source_columns": [
+    "8. Grant Registry > Primary Beneficiary Group"
+   ],
+   "charts": []
   },
   "fct2_outcome_progress.financial_year": {
    "meaning": "Copied, in the form FY 26-27",
@@ -1944,7 +1956,7 @@ const LINEAGE_DATA = {
    "page": "Portfolio",
    "name": "Beneficiaries reached",
    "table": "fct1_grant_portfolio",
-   "shows": "Beneficiaries reached, by beneficiary group",
+   "shows": "Beneficiaries reached, by beneficiary category (8 categories sorted from the free-text group)",
    "filter": "None (page filters apply)",
    "columns": [
     "primary_beneficiary_count",
