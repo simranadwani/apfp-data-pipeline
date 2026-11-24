@@ -116,7 +116,7 @@ Source for every row: `stg_grants`. Joins: `stg_organisations` on `organization_
 | grant_start_date / grant_end_date | date | Grant Registry | As source |
 | funding_year | text | Grant Registry | `Year N`, where N = number of distinct financial years this `organization_id` has a grant in, up to and including this grant's FY |
 | duration_of_support_bucket | text | derived | From N: 1 → `Year 1`; 2–5 → `Years 2–5`; 6–10 → `Years 6–10`; >10 → `Years 11+` |
-| primary_beneficiary_group | text | Grant Registry › Primary Beneficiary Group | As source |
+| primary_beneficiary_group | text | Grant Registry › Primary Beneficiary Group | One of 8 categories (`Children & youth`, `Educators & school leaders`, `Women & girls`, `Entrepreneurs & NGOs`, `Families & households`, `Animals`, `Good Politician participants`, `Other`) or `Not specified` when the source is blank. Sorted by the ordered rules in the `Beneficiary_Buckets` tab: the lowest `rule_order` that matches wins (`equals`, `contains` or `word_start` on the lower-cased text, optionally limited to one `thematic_area`; Animal Welfare grants are always Animals). No match gives `Other` and a WARN in the Pipeline Log naming the text. The tab is created from the built-in defaults on the first run and never overwritten; unusable rows are skipped with a WARN, and a tab with no usable row falls back to the defaults. A grant is in one category only, so its count is never double-counted |
 | primary_beneficiary_count | number | Grant Registry › Primary Beneficiary Count | As source |
 | clarity_status / capacity_status / compliance_status | text | Organisation Maturity › Status | **Worst** RAG (Red > Amber > Green) across the grant's indicators for that aspect. Blank if no indicator is rated |
 | fcra_registration | text | Org Registry › FCRA Registration Status | As source |
@@ -156,6 +156,11 @@ Source for every row: `stg_grants`. Joins: `stg_organisations` on `organization_
 | sub_category_line | text | derived | `education_sub_category · proximity_to_children_beneficiary` (for example `Academics · Direct School Support`; `NA` kept as in the source). Appended after `as_of_date` |
 | due_window_order | number | derived | Sort helper for `due_window`: Overdue 1, 0–30 days 2, 31–60 days 3, 61+ days 4; blank when there is no window |
 | funding_range_order | number | derived | Sort helper for `funding_range`: <₹1 lakh 1, ₹1–10 lakh 2, ₹11–20 lakh 3, ₹21–50 lakh 4, >₹50 lakh 5; blank when there is no range. Last column |
+| outcomes_reported_count | number | derived | Outcomes with a status in at least one quarter (each outcome counted once). `total_outcomes_count` still counts all outcomes |
+| outcomes_on_track_count | number | derived | Outcomes whose own latest quarter with a status is `On Track` (same rule as fct2 `is_latest_update`) |
+| outcomes_off_track_count | number | derived | Same, `Off Track` |
+| latest_reported_quarter | text | derived | Latest `Q1`–`Q4` with a status for any of the grant's outcomes; blank when nothing is reported |
+| primary_beneficiary_group_raw | text | Grant Registry › Primary Beneficiary Group | The group exactly as entered, kept so the category can be checked. Last column |
 
 ### fct2_outcome_progress — one row per grant × outcome × reported quarter, plus a placeholder row for each outcome with nothing reported (T2)
 

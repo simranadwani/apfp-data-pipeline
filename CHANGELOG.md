@@ -3,6 +3,29 @@
 All notable changes to the APFP data pipeline. Newest first.
 Each entry lists what changed, which files, and why.
 
+## [0.1.22] — 2026-11-24
+
+### Changed — fct1 `primary_beneficiary_group` now holds a short category (chart 1.09 needs no Looker change)
+- **What:** the free-text group is sorted into 8 categories plus `Not specified`: Children & youth, Educators & school leaders, Women & girls,
+  Entrepreneurs & NGOs, Families & households, Animals, Good Politician participants, Other. Blank source = `Not specified`; text that matches no
+  rule = `Other` plus a WARN in the Pipeline Log naming it (and a WARN when Other is over 10% of grants that have a group). Animal Welfare grants are
+  always Animals (this keeps "Trauma & Medical Treatment" at an animal hospital out of the people categories). A grant is in one category only.
+  The original text is kept in a new last column, `primary_beneficiary_group_raw`. Rules are ordered and the first match wins, so the result is
+  repeatable. All 51 real group texts seen on 2026-11-24 map to the agreed category (tested).
+- **Rules live in a new tab `Beneficiary_Buckets`** (rule_order, match_type, pattern, thematic_area, bucket, note), editable without a deploy.
+  Created from built-in defaults on the first run and never overwritten afterwards; unusable rows are skipped with a WARN; a tab with no usable
+  row falls back to the defaults.
+- **Files:** new `Beneficiaries.js`; `Final.js` (`buildFct1GrantPortfolio`, `FCT1_HEADERS`), `Index.js` (new `CFG_BENEFICIARY_BUCKETS` row),
+  `PIPELINE_LOGIC.md` (also adds the four 0.1.21 outcome-count columns that were missing from it), `docs/lineage/lineage_model.py`,
+  `docs/lineage/chart_passport.py` (1.09 wording), `docs/lineage/export_model.js`, `docs/lineage/code_columns.json`, `LineageData.js`
+  (regenerated: Data_Dictionary and Chart_Passport), `tests/harness.js`, `tests/pipeline.test.js`, new `tests/beneficiary_buckets.test.js`.
+- **Why:** the raw text was a long sentence with numbers and place names, unreadable on a chart axis. 83 of 147 grants have no group in the source.
+- **Effect on numbers:** every fct1 value is unchanged except `primary_beneficiary_group` (and the run date). `primary_beneficiary_count` totals
+  do not change, but 1.09 now sums counts per category in mixed units (people, households, animals, organisations), and the same cohort can repeat across years.
+- **Looker:** refresh the fct1 data source (new text field `primary_beneficiary_group_raw`). Chart 1.09 keeps its dimension and now shows the categories.
+  The Chart_Passport lists 1.10 as reading `proximity_to_children_beneficiary`, not this column: please check which field it really uses.
+- **After merging:** `clasp push`, then `runCompletePipeline`. The `Beneficiary_Buckets` tab appears on that run. Then run `auditOutputFormats`.
+
 ## [0.1.21] — 2026-11-23
 
 ### Added — fct1 outcome status counts per grant (for table 3.07)
